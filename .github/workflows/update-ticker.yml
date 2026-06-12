@@ -1,0 +1,23 @@
+name: Update ticker
+
+on:
+  schedule:
+    - cron: '0 7 * * *'   # 07:00 UTC = 10:00 Doha daily
+    - cron: '0 15 * * *'  # 15:00 UTC = 18:00 Doha daily
+  workflow_dispatch:        # allows manual trigger from GitHub UI
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install anthropic
+      - run: python update_ticker.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
