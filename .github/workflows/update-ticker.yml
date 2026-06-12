@@ -2,9 +2,12 @@ name: Update ticker
 
 on:
   schedule:
-    - cron: '0 7 * * *'   # 07:00 UTC = 10:00 Doha daily
-    - cron: '0 15 * * *'  # 15:00 UTC = 18:00 Doha daily
-  workflow_dispatch:        # allows manual trigger from GitHub UI
+    - cron: '0 7 * * *'
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   update:
@@ -18,6 +21,6 @@ jobs:
       - run: python update_ticker.py
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          FTP_HOST: ${{ secrets.CPANEL_HOST }}
-          FTP_USER: ${{ secrets.CPANEL_USER }}
-          FTP_PASS: ${{ secrets.CPANEL_TOKEN }}
+          CPANEL_HOST: ${{ secrets.CPANEL_HOST }}
+          CPANEL_USER: ${{ secrets.CPANEL_USER }}
+          CPANEL_TOKEN: ${{ secrets.CPANEL_TOKEN }}
