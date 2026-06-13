@@ -8,14 +8,13 @@ on:
   workflow_dispatch:
     inputs:
       job:
-        description: 'Which job to run'
-        required: false
+        description: 'Which job to run (ticker or content)'
+        required: true
         default: 'ticker'
         type: choice
         options:
           - ticker
           - content
-          - both
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -25,9 +24,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: |
+    if: >-
       (github.event_name == 'schedule' && github.event.schedule != '0 8 * * 1') ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.job != 'content')
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'ticker')
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -43,9 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    if: |
+    if: >-
       (github.event_name == 'schedule' && github.event.schedule == '0 8 * * 1') ||
-      (github.event_name == 'workflow_dispatch' && github.event.inputs.job != 'ticker')
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'content')
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
