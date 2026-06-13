@@ -1,16 +1,30 @@
-name: Update ticker
+name: Update ticker and content
 
 on:
   schedule:
     - cron: '0 7 * * *'
     - cron: '0 15 * * *'
+    - cron: '0 8 * * 1'
   workflow_dispatch:
+    inputs:
+      job:
+        description: 'Which job to run'
+        required: false
+        default: 'ticker'
+        type: choice
+        options:
+          - ticker
+          - content
+          - both
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  update:
+  ticker:
+    if: >
+      (github.event_name == 'schedule' && github.event.schedule != '0 8 * * 1') ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job == 'ticker' || github.event.inputs.job == 'both'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -24,3 +38,22 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  content:
+    if: >
+      (github.event_name == 'schedule' && github.event.schedule == '0 8 * * 1') ||
+      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job == 'content' || github.event.inputs.job == 'both'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install anthropic
+      - run: python update_content.py
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
