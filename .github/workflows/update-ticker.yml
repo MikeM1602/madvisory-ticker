@@ -22,12 +22,12 @@ env:
 
 jobs:
   ticker:
-    if: >
-      (github.event_name == 'schedule' && github.event.schedule != '0 8 * * 1') ||
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job == 'ticker' || github.event.inputs.job == 'both'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    if: |
+      (github.event_name == 'schedule' && github.event.schedule != '0 8 * * 1') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.job != 'content')
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -40,12 +40,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   content:
-    if: >
-      (github.event_name == 'schedule' && github.event.schedule == '0 8 * * 1') ||
-      (github.event_name == 'workflow_dispatch' && (github.event.inputs.job == 'content' || github.event.inputs.job == 'both'))
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    if: |
+      (github.event_name == 'schedule' && github.event.schedule == '0 8 * * 1') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.job != 'ticker')
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
