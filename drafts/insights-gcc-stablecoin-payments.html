@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UAE Stablecoin Framework Goes Live: What Payments Teams Must Know | MENA Advisory</title>
+<meta name="description" content="The UAE's stablecoin regulation is live in 2026. Here's what GCC and MENA payments teams need to act on now.">
+<meta name="author" content="MENA Advisory">
+<meta property="og:title" content="GCC Instant Payments: SARIE, Aani, QPAY and What Comes Next | MENA Advisory">
+<meta property="og:description" content="The GCC's instant payment rails have moved from infrastructure projects to mainstream settlement. What payment firms need to know about connectivity, compliance and the fraud challenge specific to irrevocable push payments.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="MENA Advisory">
+<meta property="article:published_time" content="2026-06-01T09:00:00+03:00">
+<meta property="article:author" content="MENA Advisory">
+<link rel="canonical" href="https://www.madvisory.qa/insights-gcc-instant-payments.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070c1a;
+  --bg-card: #0d1424;
+  --bg-card2: #111827;
+  --border: rgba(255,255,255,0.08);
+  --accent: #3b82f6;
+  --accent-dim: rgba(59,130,246,0.12);
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px; line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(7,12,26,0.96); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem; display: flex; align-items: center; justify-content: space-between;
+  height: 60px;
+}
+.nav-logo { font-weight: 700; font-size: 0.9rem; letter-spacing: 0.08em; color: var(--text); text-decoration: none; }
+.nav-links { display: flex; align-items: center; gap: 0.2rem; }
+.nav-links a {
+  color: var(--text-muted); font-size: 0.82rem; padding: 0.4rem 0.7rem;
+  border-radius: 4px; transition: color 0.15s, background 0.15s; text-decoration: none;
+}
+.nav-links a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-dropdown { position: relative; }
+.nav-dropdown > span {
+  color: var(--text-muted); font-size: 0.82rem; padding: 0.4rem 0.7rem;
+  border-radius: 4px; cursor: default;
+}
+.nav-dropdown-menu {
+  display: none; position: absolute; top: calc(100% + 4px); left: 0;
+  background: var(--bg-card2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.5rem; min-width: 210px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+.nav-dropdown-menu a {
+  display: block; padding: 0.45rem 0.75rem; color: var(--text-muted);
+  font-size: 0.82rem; border-radius: 4px; white-space: nowrap; text-decoration: none;
+}
+.nav-dropdown-menu a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.nav-cta {
+  background: var(--accent); color: #fff !important; border-radius: 6px;
+  padding: 0.4rem 1rem !important; font-size: 0.8rem !important; font-weight: 600;
+}
+.nav-cta:hover { background: #2563eb; text-decoration: none !important; }
+
+.wrap { max-width: 760px; margin: 0 auto; padding: 3rem 1.5rem 6rem; }
+.breadcrumb { margin-bottom: 2.5rem; }
+.breadcrumb a { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
+.breadcrumb a:hover { color: var(--text); }
+.article-label {
+  display: inline-block; color: var(--accent); font-size: 0.72rem;
+  font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem;
+}
+h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 700; line-height: 1.2;
+  letter-spacing: -0.025em; color: var(--text); margin-bottom: 1.25rem;
+}
+.meta {
+  color: var(--text-dim); font-size: 0.85rem; margin-bottom: 3rem;
+  padding-bottom: 2rem; border-bottom: 1px solid var(--border);
+}
+.body { color: var(--text-muted); }
+.body p { margin-bottom: 1.5rem; }
+.body h3 {
+  color: var(--text); font-size: 1.15rem; font-weight: 600;
+  margin: 2.5rem 0 0.9rem; letter-spacing: -0.01em;
+}
+.body h4 { color: var(--text); font-size: 1rem; font-weight: 600; margin: 2rem 0 0.6rem; }
+.body ul, .body ol { margin: 0 0 1.5rem 1.5rem; }
+.body li { margin-bottom: 0.4rem; }
+.body strong { color: var(--text); font-weight: 600; }
+.body hr { border: none; border-top: 1px solid var(--border); margin: 3rem 0; }
+.callout {
+  background: var(--accent-dim); border-left: 3px solid var(--accent);
+  padding: 1.25rem 1.5rem; border-radius: 0 8px 8px 0; margin: 2rem 0;
+}
+.data-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0 2rem; font-size: 0.9rem; }
+.data-table th {
+  text-align: left; color: var(--text-dim); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.data-table td { padding: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.04); color: var(--text-muted); }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table td:first-child { color: var(--text); font-weight: 500; }
+.article-cta {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 2.5rem; margin-top: 3.5rem; text-align: center;
+}
+.article-cta h3 { color: var(--text); margin-bottom: 0.6rem; font-size: 1.1rem; }
+.article-cta p { color: var(--text-muted); font-size: 0.92rem; margin-bottom: 1.5rem; }
+.btn {
+  display: inline-block; background: var(--accent); color: #fff;
+  padding: 0.75rem 1.75rem; border-radius: 8px; font-weight: 600;
+  font-size: 0.88rem; text-decoration: none; transition: background 0.15s;
+}
+.btn:hover { background: #2563eb; text-decoration: none; }
+
+footer { border-top: 1px solid var(--border); padding: 3rem 2rem; margin-top: 4rem; }
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+}
+.footer-brand { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.08em; color: var(--text); margin-bottom: 0.5rem; }
+.footer-tagline { color: var(--text-dim); font-size: 0.78rem; line-height: 1.6; }
+.footer-col h4 {
+  color: var(--text-muted); font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem;
+}
+.footer-col a { display: block; color: var(--text-dim); font-size: 0.8rem; margin-bottom: 0.4rem; text-decoration: none; }
+.footer-col a:hover { color: var(--text-muted); }
+.footer-bottom {
+  max-width: 1100px; margin: 2rem auto 0;
+  border-top: 1px solid var(--border); padding-top: 1.5rem;
+  display: flex; justify-content: space-between;
+  color: var(--text-dim); font-size: 0.75rem;
+}
+@media (max-width: 768px) {
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  nav .nav-links { gap: 0; }
+  nav .nav-dropdown { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://madvisory.qa/" class="nav-logo">MENA.ADVISORY</a>
+  <div class="nav-links">
+    <a href="https://madvisory.qa/#about">About</a>
+    <div class="nav-dropdown">
+      <span>Services ▾</span>
+      <div class="nav-dropdown-menu">
+        <a href="https://madvisory.qa/services/due-diligence.html">Due Diligence</a>
+        <a href="https://madvisory.qa/services/strategic-planning.html">Strategic Planning</a>
+        <a href="https://madvisory.qa/services/digital-transformation.html">Digital Transformation</a>
+        <a href="https://madvisory.qa/services/electronic-payments.html">Electronic Payments</a>
+      </div>
+    </div>
+    <div class="nav-dropdown">
+      <span>Solutions ▾</span>
+      <div class="nav-dropdown-menu">
+        <a href="https://madvisory.qa/solutions/payments-infrastructure.html">Payments Infrastructure</a>
+        <a href="https://madvisory.qa/solutions/acquiring-acceptance.html">Acquiring &amp; Acceptance</a>
+        <a href="https://madvisory.qa/solutions/compliance-risk.html">Compliance &amp; Risk</a>
+        <a href="https://madvisory.qa/solutions/digital-emerging.html">Digital &amp; Emerging</a>
+        <a href="https://madvisory.qa/solutions/licensing-market-entry.html">Licensing &amp; Market Entry</a>
+      </div>
+    </div>
+    <a href="https://madvisory.qa/regulatory.html">Regulatory Hub</a>
+    <a href="https://madvisory.qa/insights.html">Insights</a>
+    <a href="https://madvisory.qa/careers.html">Careers</a>
+    <a href="https://madvisory.qa/contact.html" class="nav-cta">Book a Call</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="breadcrumb"><a href="https://madvisory.qa/insights.html">← Back to Insights</a></div>
+
+  <span class="article-label">Real-Time Payments</span>
+  <h1>GCC Instant Payments: SARIE, Aani, QPAY and What Comes Next</h1>
+  <div class="meta">MENA Advisory &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; 10 min read</div>
+
+  <div class="body">
+
+    <p>Instant payment rails across the GCC have passed the point at which they can still be treated as emerging infrastructure. SARIE in Saudi Arabia processed over 1.5 billion transactions in 2025, recording 42% annual volume growth. Aani in the UAE reached 180 million transactions in its first year of commercial operation. Qatar's QPAY domestic instant network is live. Bahrain's FAWRI+ has been operational since 2015 and remains one of the more mature instant rails in the region. For payment firms operating in the GCC, the question is no longer whether instant rails matter — it is whether your connectivity, compliance, and fraud controls are calibrated to the specific operational characteristics of each.</p>
+
+    <p>This article covers the architecture and current status of each major GCC instant rail, the fraud and AML challenges that irrevocability creates, liquidity management requirements, and what the regulatory direction of travel means for firms connecting to these networks in 2026 and beyond.</p>
+
+    <h3>The Irrevocability Problem</h3>
+
+    <p>Every instant payment rail in the GCC shares one defining characteristic: once a payment is settled, it cannot be recalled through normal banking channels. Unlike SWIFT payments, where a recall instruction can be transmitted and a correspondent bank can place the funds on hold pending investigation, an instant rail payment completes its settlement cycle in seconds. The beneficiary's account is credited. The funds are theirs.</p>
+
+    <p>This irrevocability is a feature, not a defect — it is what makes instant rails commercially useful for the payee. But it fundamentally changes the fraud and AML risk model for every institution connected to the network. Fraud controls that operate post-transaction on legacy rails — detecting suspicious patterns, holding funds, initiating a recall — are not available in the same form on instant rails. The only effective point of intervention is pre-transaction: scoring the payment instruction before authorisation, not after.</p>
+
+    <p>The specific fraud typology that has grown fastest alongside instant rails globally is authorised push payment (APP) fraud: the victim is manipulated — by social engineering, impersonation of a bank, regulator, or trusted institution — into authorising a payment themselves. Because the victim authorised the transaction, there is no authentication failure to detect. The payment looks legitimate at every technical checkpoint. The UK's experience under its PSR APP fraud reimbursement regime is instructive: mandatory reimbursement of victims has imposed direct commercial losses on sending and receiving PSPs and driven substantial investment in behavioural fraud detection, pre-transaction risk scoring, and payee confirmation services. GCC regulators are watching that experience closely.</p>
+
+    <h3>SARIE — Saudi Arabia</h3>
+
+    <p>The Saudi Payments Network (SARIE) is operated by Saudi Payments, a subsidiary of SAMA. It processes both high-value RTGS transactions and retail instant credit transfers, with 24/7/365 availability. SAMA's revised Payment Systems Oversight Framework, issued under Circular 472047719 in March 2026, introduces stricter governance obligations for systemically important payment system operators — SARIE being the primary SIPS in the Kingdom.</p>
+
+    <p>Key characteristics relevant to connecting institutions:</p>
+    <ul>
+      <li><strong>Message format:</strong> ISO 20022 MX messages are the standard for SARIE high-value transactions; retail instant credit transfers use a locally defined message schema that is progressively aligning to ISO 20022 structures.</li>
+      <li><strong>Participation model:</strong> Direct participation requires a Saudi banking licence. Indirect participation through a sponsoring bank is available to licensed payment institutions; the sponsor bears primary liability for the indirect participant's transactions.</li>
+      <li><strong>Liquidity:</strong> Direct participants must maintain pre-funded positions at SAMA sufficient to cover intraday settlement obligations. SAMA provides intraday liquidity facilities but these are collateralised.</li>
+      <li><strong>mada integration:</strong> Domestic debit transactions in Saudi Arabia route through the mada network, which connects to SARIE for settlement. Any payment institution acquiring mada transactions or offering mada acceptance needs to understand the settlement flow through SARIE and the associated timing obligations.</li>
+      <li><strong>Open Banking intersection:</strong> SAMA's Open Banking Programme moved to full licensing in March 2026. PISP-initiated payments — account-to-account transfers initiated via open banking APIs — settle over SARIE. Licensed open banking PISPs must meet SAMA's API performance and resilience standards, which include uptime SLAs measured against SARIE's own availability windows.</li>
+    </ul>
+
+    <h3>Aani — United Arab Emirates</h3>
+
+    <p>Aani is the UAE's Instant Payments Platform, operated by Al Etihad Payments (AEP), a wholly owned subsidiary of the Central Bank of the UAE. It launched commercially in late 2023 and processed over 180 million transactions in its first full year. The CBUAE has positioned Aani as the foundational layer for open banking payment initiation in the UAE, with account-to-account transfers available through both direct bank participation and via licensed payment service providers.</p>
+
+    <ul>
+      <li><strong>Proxy addressing:</strong> Aani supports mobile number and Emirates ID as payment proxies, eliminating the need for the payer to know the beneficiary's IBAN. This significantly increases consumer usability but also increases APP fraud risk — a fraudster impersonating a trusted entity needs only to provide their mobile number as a proxy to receive funds.</li>
+      <li><strong>Participation:</strong> Licensed banks participate directly. Licensed PSPs and exchange houses can participate under a tiered access model; indirect participants settle through a sponsoring direct participant.</li>
+      <li><strong>CBUAE AML alignment:</strong> The CBUAE's April 2026 AML/CFT/CPF guidance package specifically addresses obligations for payment firms on instant rails, including pre-transaction sanctions screening requirements and post-settlement monitoring obligations. Firms connecting to Aani must demonstrate that sanctions screening occurs before the payment instruction is submitted, not after settlement — the standard T+1 batch screening model does not satisfy this requirement.</li>
+      <li><strong>Cross-border development:</strong> The CBUAE and mBridge multilateral CBDC platform represent the next layer of UAE cross-border payments infrastructure. Aani's domestic settlement role is expected to interface with mBridge for cross-border leg settlement in GCC corridors.</li>
+    </ul>
+
+    <h3>QPAY — Qatar</h3>
+
+    <p>Qatar's domestic instant payment infrastructure operates under the Qatar Central Bank's payment systems framework, established under the Payment Systems Law No. 15 of 2021. QPAY provides real-time domestic credit transfers between QCB-regulated institutions, with QR code payment initiation for retail merchants delivered through the Himyan QR standard mandated by the QCB.</p>
+
+    <ul>
+      <li><strong>Himyan QR:</strong> The QCB mandates support for Himyan QR at point of sale for merchants above a defined revenue threshold. The standard uses a consumer-presented QR model linked to the payer's bank account, with settlement over the QPAY rail. Acquirers and merchants operating in Qatar must ensure their acceptance infrastructure supports Himyan QR alongside card acceptance.</li>
+      <li><strong>Participation requirements:</strong> Direct participation in QPAY is restricted to QCB-licensed banks. Payment institutions and exchange houses operating in Qatar access the network through a sponsoring bank. The QCB's licensing framework for payment service providers, updated under the 2021 Payment Systems Law, sets out the conditions under which PSPs may offer QPAY-connected services.</li>
+      <li><strong>ISO 20022:</strong> The QCB has aligned QPAY messaging standards with ISO 20022, consistent with CPMI guidance on harmonised payment data standards. Institutions migrating legacy infrastructure need to confirm that their message processing capability handles structured ISO 20022 address fields correctly — a common gap in legacy core banking systems.</li>
+      <li><strong>Open Banking framework:</strong> The QCB's open banking framework sets requirements for API connectivity between licensed third-party providers and participating banks. Payment initiation via open banking APIs routes to QPAY for domestic settlement.</li>
+    </ul>
+
+    <h3>FAWRI+ — Bahrain</h3>
+
+    <p>Bahrain's instant payment infrastructure, operated by the Bahrain Bourse under CBB oversight, is the most mature in the GCC, having been live since 2015. FAWRI+ processes retail instant credit transfers with a per-transaction limit of BHD 5,000. The CBB's open banking framework — generally regarded as the most developed in the GCC — mandates API access for licensed account information and payment initiation providers, with FAWRI+ as the settlement rail for domestic payment initiation.</p>
+
+    <p>Bahrain's experience is instructive for the rest of the region: a mature instant rail, a functional open banking ecosystem, and a relatively well-developed fintech licensing environment create a market where the theoretical promise of instant payments has been tested against commercial reality for a decade. Firms entering the GCC market should treat Bahrain as a reference implementation and examine how account-to-account adoption has developed alongside, rather than displacing, card acceptance.</p>
+
+    <h3>Comparative Rail Overview</h3>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Rail</th>
+          <th>Market</th>
+          <th>Operator</th>
+          <th>Proxy Addressing</th>
+          <th>Open Banking Integration</th>
+          <th>ISO 20022</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>SARIE</td>
+          <td>Saudi Arabia</td>
+          <td>Saudi Payments / SAMA</td>
+          <td>IBAN + mobile (developing)</td>
+          <td>SAMA OB licence required</td>
+          <td>High-value: live; retail: aligning</td>
+        </tr>
+        <tr>
+          <td>Aani</td>
+          <td>UAE</td>
+          <td>Al Etihad Payments / CBUAE</td>
+          <td>Mobile number, Emirates ID</td>
+          <td>CBUAE PSP licence</td>
+          <td>Native</td>
+        </tr>
+        <tr>
+          <td>QPAY</td>
+          <td>Qatar</td>
+          <td>QCB</td>
+          <td>Himyan QR (merchant-facing)</td>
+          <td>QCB OB framework</td>
+          <td>Aligned</td>
+        </tr>
+        <tr>
+          <td>FAWRI+</td>
+          <td>Bahrain</td>
+          <td>Bahrain Bourse / CBB</td>
+          <td>Mobile, CPR (National ID)</td>
+          <td>CBB OB framework (most mature in GCC)</td>
+          <td>Aligned</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Fraud Controls: What Works on Irrevocable Rails</h3>
+
+    <p>The fraud control architecture for instant rails is fundamentally different from that for batch or card rails. The following are the controls that have demonstrated effectiveness:</p>
+
+    <p><strong>Pre-transaction behavioural scoring.</strong> Transaction risk models must operate in the milliseconds between payment instruction submission and authorisation. This requires ML models that score in real time against features including: device and session context, payer's historical payment patterns, beneficiary history (is this payee new? have others sent to this payee and disputed?), transaction timing and value relative to baseline. Batch models run overnight are not suitable for instant rail fraud prevention.</p>
+
+    <p><strong>Confirmation of Payee / Verification of Payee.</strong> Proxy-to-account name matching — presenting the payer with the account name associated with the beneficiary proxy before they confirm the payment — is one of the most effective APP fraud mitigations. It breaks the social engineering narrative: if the fraudster's account is registered in a different name to the institution they are impersonating, the mismatch is surfaced to the payer. The UK mandated Confirmation of Payee; SAMA has introduced Verification of Payee as part of SARIE enhancements; the CBUAE's Aani proxy service incorporates similar functionality.</p>
+
+    <p><strong>Mule account detection.</strong> APP fraud requires a receiving account to collect the funds before they are moved on. Monitoring for account behaviour patterns consistent with mule activity — newly opened accounts receiving multiple inbound transfers from unrelated senders within a short window — allows receiving institutions to flag and delay (where technically possible) or report suspicious receipt patterns.</p>
+
+    <p><strong>Cooling-off periods for new payees.</strong> Several European banks have implemented voluntary friction for first-time payments to a new beneficiary: a short delay or a confirmation step that breaks the urgency narrative that social engineering typically relies on. This approach is under active regulatory and commercial discussion in GCC markets.</p>
+
+    <h3>Liquidity Management: The 24/7 Challenge</h3>
+
+    <p>Instant payment rails operate continuously. Legacy treasury and liquidity management practices — end-of-day net settlement, overnight funding, intraday credit from a clearing bank — are not designed for 24/7 irrevocable settlement obligations.</p>
+
+    <p>Direct participants in SARIE, Aani, and QPAY must maintain sufficient pre-funded positions to cover anticipated intraday settlement volumes at all times, including outside normal banking hours. The practical requirements are:</p>
+    <ul>
+      <li>Intraday liquidity forecasting models that project settlement obligations by time window, not just end-of-day net position</li>
+      <li>Automated pre-funding triggers that top up settlement accounts when positions fall below defined thresholds</li>
+      <li>Contingency liquidity facilities — credit lines with sponsoring banks or central bank intraday facilities — that can be drawn within minutes if pre-funded positions are insufficient</li>
+      <li>Reconciliation processes that run continuously against the rail's settlement file, not daily against a batch statement</li>
+    </ul>
+
+    <p>For institutions offering instant payment services through an indirect participation model — sponsoring bank carries the settlement obligation — the commercial agreement with the sponsoring bank must define clearly how prefunding is provided, what happens when the indirect participant's prefunding is exhausted, and how the settlement risk is priced into the commercial relationship.</p>
+
+    <h3>What Payment Firms Should Be Doing Now</h3>
+
+    <div class="callout">
+      <strong>Five immediate actions:</strong> (1) Audit your sanctions screening to confirm it runs pre-transaction, not post-settlement, for all instant rail payment flows. (2) Review your fraud detection model's performance on instant payment transaction populations specifically — overall model accuracy may obscure poor performance on this channel. (3) Map your liquidity management processes against 24/7 settlement obligations and identify any gaps in overnight and weekend coverage. (4) If operating in Qatar, confirm Himyan QR acceptance is live at all in-scope merchant locations. (5) Review your indirect participation agreement — if you access any GCC instant rail through a sponsoring bank — for clarity on prefunding obligations and settlement risk allocation.
+    </div>
+
+    <p>The regulatory direction across all GCC markets is toward stricter pre-transaction controls, more granular supervisory reporting on instant rail transaction volumes, and increased personal accountability at board level for payment system resilience. Firms that treat instant rail compliance as a connectivity question rather than an operational risk and fraud management question will find themselves behind the supervisory curve as these frameworks mature.</p>
+
+    <hr>
+
+    <div class="article-cta">
+      <h3>Speak to Our Team</h3>
+      <p>MENA Advisory advises payment institutions, banks, and fintechs connecting to GCC instant payment rails across SARIE, Aani, QPAY, and FAWRI+. If you are reviewing your instant payment connectivity, fraud controls, or liquidity management frameworks, contact us to discuss your requirements.</p>
+      <a href="https://madvisory.qa/contact.html" class="btn">Request a Consultation</a>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">MENA.ADVISORY</div>
+      <div class="footer-tagline">Payments &amp; Fintech Advisory.<br>Doha · London · Istanbul</div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="https://madvisory.qa/services/due-diligence.html">Due Diligence</a>
+      <a href="https://madvisory.qa/services/strategic-planning.html">Strategic Planning</a>
+      <a href="https://madvisory.qa/services/digital-transformation.html">Digital Transformation</a>
+      <a href="https://madvisory.qa/services/electronic-payments.html">Electronic Payments</a>
+    </div>
+    <div class="footer-col">
+      <h4>Solutions</h4>
+      <a href="https://madvisory.qa/solutions/payments-infrastructure.html">Payments Infrastructure</a>
+      <a href="https://madvisory.qa/solutions/acquiring-acceptance.html">Acquiring &amp; Acceptance</a>
+      <a href="https://madvisory.qa/solutions/compliance-risk.html">Compliance &amp; Risk</a>
+      <a href="https://madvisory.qa/solutions/digital-emerging.html">Digital &amp; Emerging</a>
+      <a href="https://madvisory.qa/solutions/licensing-market-entry.html">Licensing &amp; Market Entry</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="https://madvisory.qa/#about">About</a>
+      <a href="https://madvisory.qa/regulatory.html">Regulatory Hub</a>
+      <a href="https://madvisory.qa/insights.html">Insights</a>
+      <a href="https://madvisory.qa/careers.html">Careers</a>
+      <a href="https://madvisory.qa/contact.html">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 MENA Advisory. All rights reserved.</span>
+    <span>Tornado Tower, Majlis Al Taawon St, Doha, Qatar</span>
+  </div>
+</footer>
+
+</body>
+</html>
