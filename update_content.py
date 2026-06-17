@@ -190,7 +190,8 @@ Return a JSON array. Each object must have:
 - sort_date: e.g. "June 2026" (for ordering newest first)
 - is_new: true if announced or effective in {this_month} or the prior month
 
-Return ONLY valid JSON array, no markdown.
+Return ONLY valid JSON array, no markdown. Do not use the em dash character (—)
+anywhere in any field; use a comma, full stop, or colon instead.
 """
 try:
     new_cards = parse_json_array(ask(cards_prompt, max_tokens=2500))
@@ -255,8 +256,8 @@ High-priority topics not yet covered that are relevant to GCC/MENA payments prof
 - BNPL regulation in the GCC: QCB, CBUAE and SAMA frameworks
 - Stablecoins as a payment instrument: regulatory and commercial landscape 2026
 - Cross-border payment corridors: GCC-Asia and GCC-UK economics
-- Real-time payments: GCC rails vs European SEPA Instant — a comparison
-- Open Banking VRPs (Variable Recurring Payments) — UK 2026 progress
+- Real-time payments: a comparison of GCC rails versus European SEPA Instant
+- Open Banking VRPs (Variable Recurring Payments): UK 2026 progress
 - ISO 20022 migration: practical operational impact for GCC banks
 - Card scheme fee economics: PSR/FCA intervention and what it means for acquirers
 """
@@ -300,7 +301,8 @@ Return a JSON object with:
 - region: "GCC and MENA" or "Europe" or "Global"
 - is_new: true (it's being published now)
 
-Return ONLY valid JSON object, no markdown.
+Return ONLY valid JSON object, no markdown. Do not use the em dash character (—)
+anywhere in any field; use a comma, full stop, or colon instead.
 """
 try:
     meta = parse_json_object(ask(meta_prompt, max_tokens=800))
@@ -319,7 +321,7 @@ Title: {meta['title']}
 Target audience: CFOs, Heads of Payments, Compliance Directors, PE investors in payments
 
 Structure (850-1000 words of body HTML):
-<p>Opening paragraph — state the significance immediately</p>
+<p>Opening paragraph. State the significance immediately.</p>
 <h2>Section heading</h2>
 <p>Body paragraph with specific facts and data</p>
 ... repeat for 4-5 sections ...
@@ -329,8 +331,17 @@ Requirements:
 - Use <strong>term</strong> only for first use of key technical terms
 - Specific dates, figures, named regulators and regulations throughout
 - Conclude with what payments firms should do now
-- Authoritative advisory tone — no fluff, no AI-sounding language
+- Authoritative advisory tone. No fluff, no AI sounding language
 - UK English spelling
+
+CRITICAL PUNCTUATION RULE:
+- Never use the em dash character (—) anywhere in the output, under any
+  circumstances. Not in headings, not in body text, not as a separator.
+- Where you would naturally reach for an em dash to join two clauses, restructure
+  the sentence instead: use a full stop and start a new sentence, use a comma,
+  use a colon for a list or explanation, or use the word "and" or "which".
+- Before finishing, mentally re-read your own output and rewrite any sentence
+  that still contains an em dash.
 
 Return ONLY the HTML body content, no wrapper tags.
 """
