@@ -9,7 +9,17 @@ DEPLOY_TOKEN = os.environ["DEPLOY_TOKEN"]
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 REPO         = "MikeM1602/madvisory-ticker"
 
-# ── Helpers ─────────────────────────────────────────────────────
+# ── Static article shell template (embedded, not fetched live) ───────────────
+# This is a known-good, version-controlled template. It is NOT fetched from the
+# live site, because depending on a live file as a template means any bug,
+# partial edit, or temporary breakage on that live file silently corrupts every
+# article generated while it's broken. Update this constant deliberately when
+# the site's design changes, and test the change before committing.
+ARTICLE_VERSION = "v" + today.strftime("%Y%m%d")
+
+ARTICLE_SHELL_TEMPLATE = open(os.path.join(os.path.dirname(__file__), "article_shell_template.html")).read() if os.path.exists(os.path.join(os.path.dirname(__file__), "article_shell_template.html")) else None
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
 
 def search(query):
     r = client.messages.create(
@@ -96,11 +106,12 @@ def is_new(date_str):
     months_2026 = ["January 2026","February 2026","March 2026","April 2026",
                    "May 2026","June 2026","July 2026","August 2026",
                    "September 2026","October 2026","November 2026","December 2026"]
-    idx = today.month - 1
+    # Consider 'new' if in the last ~6 weeks (current month or one before)
+    idx = today.month - 1  # 0-indexed
     recent = [months_2026[max(0, idx-1)], months_2026[idx]]
     return any(m in date_str for m in recent)
 
-# ── Month sort key ──────────────────────────────────────────────────
+# ── Month sort key ────────────────────────────────────────────────────────────
 
 MONTH_ORDER = {
     "January":1,"February":2,"March":3,"April":4,"May":5,"June":6,
@@ -108,12 +119,13 @@ MONTH_ORDER = {
 }
 
 def date_sort_key(date_str):
+    """Extract (year, month) for sorting newest-first. Higher = newer."""
     m = re.search(r'(January|February|March|April|May|June|July|August|September|October|November|December)\s+(202\d)', date_str)
     if m:
         return (int(m.group(2)), MONTH_ORDER.get(m.group(1), 0))
     return (0, 0)
 
-# ── Load existing site content ────────────────────────────────────────────
+# ── Load existing site content ────────────────────────────────────────────────
 
 print("Loading existing site content...")
 reg_html = fetch_site_file("regulatory.html")
@@ -124,9 +136,9 @@ existing_art_links  = re.findall(r'href="(/insights-[^"]+\.html)"', ins_html)
 existing_art_slugs  = [l.split("/")[-1].replace(".html","") for l in existing_art_links]
 print(f"  Found {len(existing_reg_titles)} regulatory cards, {len(existing_art_links)} articles")
 
-# ── REGULATORY HUB UPDATE ───────────────────────────────────────────────────
+# ── REGULATORY HUB UPDATE ─────────────────────────────────────────────────────
 
-print("\n── Regulatory Hub ───────────────────────────────────────────────────")
+print("\n── Regulatory Hub ───────────────────────────────────────────────")
 
 KNOWN_GAPS = """
 Priority regulatory developments that may not yet be covered:
@@ -145,7 +157,7 @@ Priority regulatory developments that may not yet be covered:
 print("Searching for 2026 regulatory developments...")
 reg_research = search(f"""
 Today is {today_str}. Search for significant payments regulatory developments 
-announceed or effective in 2026 across GCC, Europe, UK and globally. 
+announced or effective in 2026 across GCC, Europe, UK and globally. 
 Focus especially on:
 {KNOWN_GAPS}
 
@@ -187,11 +199,14 @@ except Exception as e:
     print(f"  Card parse failed: {e}")
     new_cards = []
 
+# Sort new cards newest-first
 new_cards.sort(key=lambda c: date_sort_key(c.get("sort_date","January 2020")), reverse=True)
 
 if new_cards and reg_html:
     print("Injecting cards into regulatory.html...")
     updated_reg = reg_html
+
+    # Remove any existing NEW badges (we'll re-add based on fresh sort_date)
     updated_reg = re.sub(r'<span class="new-badge"[^>]*>NEW</span>\s*', '', updated_reg)
 
     for card in new_cards:
@@ -208,6 +223,7 @@ if new_cards and reg_html:
             f'<p class="reg-card-date">{card["date_label"]}</p>'
             f'</div>'
         )
+        # Find the correct region group and prepend inside its reg-grid (newest first)
         pattern = f'data-country="{region}"'
         group_pos = updated_reg.find(pattern)
         if group_pos < 0:
@@ -224,12 +240,15 @@ if new_cards and reg_html:
                 print(f"  Prepended '{card['title']}' → {region}")
 
     if updated_reg != reg_html:
-        deploy_file("regulatory.html", updated_reg)
-        commit_to_github("snapshots/regulatory.html", updated_reg, f"Regulatory hub update: {today_str}")
+        if "data-burger" not in updated_reg or "ticker-bar" not in updated_reg:
+            print("  ✗ VERIFICATION FAILED: standard site shell missing from updated regulatory.html, skipping deploy.")
+        else:
+            deploy_file("regulatory.html", updated_reg)
+            commit_to_github("snapshots/regulatory.html", updated_reg, f"Regulatory hub update: {today_str}")
 
-# ── INSIGHTS UPDATE ────────────────────────────────────────────────────────
+# ── INSIGHTS UPDATE ───────────────────────────────────────────────────────────
 
-print("\n── Insights Articles ────────────────────────────────────────────────")
+print("\n── Insights Articles ────────────────────────────────────────────")
 
 ARTICLE_GAPS = """
 High-priority topics not yet covered that are relevant to GCC/MENA payments professionals in 2026:
@@ -269,17 +288,17 @@ Existing slugs (do not duplicate):
 {chr(10).join('- ' + s for s in existing_art_slugs)}
 
 Return a JSON object with:
-- slug: starts with insights-, lowercase with hyphens only
+- slug: starts with insights-, lowercase with hyphens only (e.g. insights-bnpl-gcc-2026)
 - title: under 12 words, specific and direct
 - meta_desc: under 155 chars
-- h1: full article heading
+- h1: full article heading (can be longer than title)
 - eyebrow: short category label (e.g. "Regulation · GCC")
 - date: month and year (e.g. "June 2026")
 - readtime: integer minutes (8-12)
-- card_eyebrow: very short (e.g. "BNPL · GCC")
-- card_desc: 2 sentences, max 40 words
+- card_eyebrow: very short (e.g. "BNPL · GCC")  
+- card_desc: 2 sentences, max 40 words, what the article covers
 - region: "GCC and MENA" or "Europe" or "Global"
-- is_new: true
+- is_new: true (it's being published now)
 
 Return ONLY valid JSON object, no markdown.
 """
@@ -310,89 +329,127 @@ Requirements:
 - Use <strong>term</strong> only for first use of key technical terms
 - Specific dates, figures, named regulators and regulations throughout
 - Conclude with what payments firms should do now
-- Authoritative advisory tone, no fluff, no AI-sounding language
+- Authoritative advisory tone — no fluff, no AI-sounding language
 - UK English spelling
 
 Return ONLY the HTML body content, no wrapper tags.
 """
     art_body = ask(body_prompt, max_tokens=2500)
 
+    # Build article using the embedded static template (NOT fetched from the live site)
     print("Building article page...")
-    shell = fetch_site_file("insights-gcc-instant-payments.html")
-    if not shell:
-        shell = fetch_site_file("insights-agentic-commerce.html")
 
-    if shell:
-        shell = re.sub(r'<title>[^<]+</title>', f'<title>{meta["title"]} | MENA Advisory</title>', shell)
-        shell = re.sub(r'<meta name="description" content="[^"]*"', f'<meta name="description" content="{meta["meta_desc"]}"', shell)
-        shell = re.sub(r'<link[^>]*rel="canonical"[^>]*/>', f'<link href="https://www.madvisory.qa/{meta["slug"]}.html" rel="canonical"/>', shell)
-        shell = re.sub(r'<p class="article-category">[^<]+</p>', f'<p class="article-category">{meta["eyebrow"]}</p>', shell)
-        shell = re.sub(r'<h1 class="page-hero-title"[^>]*>[^<]+</h1>',
-                       f'<h1 class="page-hero-title" style="max-width:820px;">{meta["h1"]}</h1>', shell)
-        shell = re.sub(r'<p class="article-meta"[^>]*>[^<]+</p>',
-                       f'<p class="article-meta" style="margin-bottom:0;padding-bottom:0;border:none;">{meta["date"]} &nbsp;·&nbsp; {meta["readtime"]} min read &nbsp;·&nbsp; MENA Advisory</p>', shell)
-        body_open = shell.find('<div class="article-body">')
-        if body_open >= 0:
-            depth, i = 1, body_open + 26
-            while i < len(shell) and depth > 0:
-                if shell[i:i+4] == '<div': depth += 1
-                elif shell[i:i+6] == '</div>':
-                    depth -= 1
-                    if depth == 0:
-                        body_close = i + 6
-                        break
-                i += 1
-            new_article = shell[:body_open] + f'<div class="article-body">\n{art_body}\n      </div>' + shell[body_close:]
+    if ARTICLE_SHELL_TEMPLATE is None:
+        print("  ✗ FATAL: article_shell_template.html not found alongside script. Skipping article deploy.")
+        new_article = None
+    else:
+        new_article = ARTICLE_SHELL_TEMPLATE
+        new_article = new_article.replace("__TITLE__", meta["title"])
+        new_article = new_article.replace("__META_DESC__", meta["meta_desc"])
+        new_article = new_article.replace("__SLUG__", meta["slug"])
+        new_article = new_article.replace("__OG_TITLE__", meta["title"])
+        new_article = new_article.replace("__EYEBROW__", meta["eyebrow"])
+        new_article = new_article.replace("__H1__", meta["h1"])
+        new_article = new_article.replace("__DATE__", meta["date"])
+        new_article = new_article.replace("__READTIME__", str(meta["readtime"]))
+        new_article = new_article.replace("__VERSION__", ARTICLE_VERSION)
+        new_article = new_article.replace("__ARTICLE_BODY__", art_body)
+
+        # ── Verify before deploying ────────────────────────────────────────────
+        # Catches the exact failure mode hit previously: a substitution silently
+        # not landing, leaving placeholder text or stale content live.
+        verification_errors = []
+        remaining_placeholders = [
+            ph for ph in ["__TITLE__", "__META_DESC__", "__SLUG__", "__OG_TITLE__",
+                          "__EYEBROW__", "__H1__", "__DATE__", "__READTIME__",
+                          "__VERSION__", "__ARTICLE_BODY__"]
+            if ph in new_article
+        ]
+        if remaining_placeholders:
+            verification_errors.append(f"unresolved placeholders: {remaining_placeholders}")
+        if meta["h1"] not in new_article:
+            verification_errors.append("H1 text not found in final HTML")
+        if "data-burger" not in new_article or "ticker-bar" not in new_article:
+            verification_errors.append("missing standard site shell elements (burger/ticker)")
+        if art_body[:60] not in new_article:
+            verification_errors.append("generated article body not found in final HTML")
+        em_dash_count = len(re.findall(r"—", new_article))
+        if em_dash_count > 5:  # small allowance for headings/labels, not body prose
+            verification_errors.append(f"{em_dash_count} em-dashes found, expected near zero")
+
+        if verification_errors:
+            print(f"  ✗ VERIFICATION FAILED, skipping deploy: {'; '.join(verification_errors)}")
+            new_article = None
         else:
-            new_article = shell
+            print("  ✓ Verification passed (H1 matches, shell intact, body present, em-dashes minimal)")
 
-        art_filename = f'{meta["slug"]}.html'
-        deploy_file(art_filename, new_article)
-        commit_to_github(f"drafts/{art_filename}", new_article, f"Auto article: {meta['title']}")
+        if new_article is not None:
+            art_filename = f'{meta["slug"]}.html'
+            deploy_file(art_filename, new_article)
+            commit_to_github(f"drafts/{art_filename}", new_article, f"Auto article: {meta['title']}")
 
-        print("Updating insights.html card list...")
-        if ins_html:
-            new_badge = (' <span style="display:inline-block;background:var(--accent);color:#040810;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;">NEW</span>'
-                        if meta.get("is_new") else "")
-            new_card = (
-                f'<a href="/{art_filename}" class="news-card" style="text-decoration:none;">'
-                f'<p class="news-card-eyebrow">{meta["card_eyebrow"]}</p>'
-                f'<h3>{meta["title"]}{new_badge}</h3>'
-                f'<p>{meta["card_desc"]}</p>'
-                f'<p class="news-card-meta">{meta["date"]} · {meta["readtime"]} min read</p>'
-                f'</a>'
-            )
-            card_blocks = re.findall(
-                r'<a\s+href="/insights-[^"]+"\s+class="news-card[^"]*"[^>]*>.*?</a>',
-                ins_html, re.DOTALL
-            )
-            def card_date_key(card_html):
-                m = re.search(r'class="news-card-meta">([^<]+)</p>', card_html)
-                return date_sort_key(m.group(1)) if m else (0,0)
+            # ── Add card to insights.html, sorted newest first ────────────────
+            print("Updating insights.html card list...")
+            if ins_html:
+                new_badge = (' <span style="display:inline-block;background:var(--accent);color:#040810;'
+                            'font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:1px 6px;'
+                            'border-radius:3px;margin-left:6px;vertical-align:middle;">NEW</span>'
+                            if meta.get("is_new") else "")
 
-            all_cards = [new_card] + card_blocks
-            all_cards.sort(key=card_date_key, reverse=True)
+                new_card = (
+                    f'<a href="/{art_filename}" class="news-card" style="text-decoration:none;">'
+                    f'<p class="news-card-eyebrow">{meta["card_eyebrow"]}</p>'
+                    f'<h3>{meta["title"]}{new_badge}</h3>'
+                    f'<p>{meta["card_desc"]}</p>'
+                    f'<p class="news-card-meta">{meta["date"]} · {meta["readtime"]} min read</p>'
+                    f'</a>'
+                )
 
-            marked = []
-            for c in all_cards:
-                meta_m = re.search(r'class="news-card-meta">([^<]+)</p>', c)
-                date_str = meta_m.group(1) if meta_m else ""
-                if is_new(date_str) and 'NEW</span>' not in c:
-                    c = re.sub(r'(<h3>[^<]+)(</h3>)',
-                               r'\1 <span style="display:inline-block;background:var(--accent);color:#040810;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;">NEW</span>\2',
-                               c, count=1)
-                marked.append(c)
+                # Collect all existing cards with their dates, prepend new one, re-sort
+                # Extract all news-card blocks
+                card_blocks = re.findall(
+                    r'<a\s+href="/insights-[^"]+"\s+class="news-card[^"]*"[^>]*>.*?</a>',
+                    ins_html, re.DOTALL
+                )
 
-            cards_html = "\n          ".join(marked)
-            updated_ins = re.sub(
-                r'(<div class="cards-grid[^"]*">)\s*.*?(\s*</div>\s*</div>\s*</section>)',
-                f'\\1\n          {cards_html}\n        \\2',
-                ins_html, flags=re.DOTALL, count=1
-            )
-            if updated_ins != ins_html:
-                deploy_file("insights.html", updated_ins)
-                commit_to_github("snapshots/insights.html", updated_ins, f"Insights update: {meta['title']}")
-            else:
-                print("  No change detected in insights.html — check card grid selector")
+                def card_date_key(card_html):
+                    m = re.search(r'class="news-card-meta">([^<]+)</p>', card_html)
+                    return date_sort_key(m.group(1)) if m else (0,0)
+
+                all_cards = [new_card] + card_blocks
+                all_cards.sort(key=card_date_key, reverse=True)
+
+                # Mark the most recent card(s) as NEW if published this or last month
+                marked = []
+                for c in all_cards:
+                    meta_m = re.search(r'class="news-card-meta">([^<]+)</p>', c)
+                    date_str = meta_m.group(1) if meta_m else ""
+                    if is_new(date_str) and 'NEW</span>' not in c:
+                        # Add NEW badge to h3 if not already there
+                        c = re.sub(r'(<h3>[^<]+)(</h3>)',
+                                   r'\1 <span style="display:inline-block;background:var(--accent);color:#040810;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;">NEW</span>\2',
+                                   c, count=1)
+                    marked.append(c)
+
+                cards_html = "\n          ".join(marked)
+
+                # Replace the entire cards-grid content
+                updated_ins = re.sub(
+                    r'(<div class="cards-grid[^"]*">)\s*.*?(\s*</div>\s*</div>\s*</section>)',
+                    f'\\1\n          {cards_html}\n        \\2',
+                    ins_html, flags=re.DOTALL, count=1
+                )
+
+                if updated_ins != ins_html:
+                    if "data-burger" not in updated_ins or "ticker-bar" not in updated_ins:
+                        print("  ✗ VERIFICATION FAILED: standard site shell missing from updated insights.html, skipping deploy.")
+                    else:
+                        deploy_file("insights.html", updated_ins)
+                        commit_to_github("snapshots/insights.html", updated_ins, f"Insights update: {meta['title']}")
+                else:
+                    print("  No change detected in insights.html — check card grid selector")
+        else:
+            print("  Skipping insights.html card insertion since article failed verification.")
 
 print("\n✓ Content update complete")
+
