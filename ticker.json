@@ -1,10 +1,10 @@
 [
   {
-    "text": "UAE CBUAE Law mandates licensing for open finance and virtual asset payment services",
-    "tag": "ALERT"
+    "text": "UAE Federal Decree-Law No. 6 expands CBUAE licensing to virtual asset payment services",
+    "tag": "NEW"
   },
   {
-    "text": "Deadline approaching: UAE firms must regularise virtual asset payment activities by September 2026",
+    "text": "UAE entities have until September 16 2026 to regularise open finance licensing positions",
     "tag": "ALERT"
   },
   {
@@ -12,31 +12,31 @@
     "tag": "NEW"
   },
   {
-    "text": "DFSA updates crypto token regulatory framework including stablecoin treatment effective January 2026",
+    "text": "UAE CMA introduces revised federal framework with increased sanctions for market misconduct",
     "tag": "UPDATED"
   },
   {
-    "text": "UAE Central Bank issues responsible AI guidance mandating human-in-the-loop oversight for lenders",
-    "tag": "NEW"
-  },
-  {
-    "text": "UAE businesses face mandatory e-invoicing deadline in July 2026",
-    "tag": "ALERT"
-  },
-  {
-    "text": "UAE fintech market reaches 52 billion dollars in 2026 with rapid AI adoption",
-    "tag": "REPORT"
-  },
-  {
-    "text": "DIFC firms report 52 percent AI technology adoption reflecting institutional integration surge",
-    "tag": "REPORT"
-  },
-  {
-    "text": "Saudi Arabia SAMA updates payment system framework affecting fintech and banking providers",
+    "text": "DFSA updates crypto token regulatory framework including new stablecoin treatment effective January 2026",
     "tag": "UPDATED"
   },
   {
-    "text": "GCC markets including Saudi Arabia and Qatar developing AI finance frameworks under Vision 2030",
+    "text": "UAE Central Bank issues responsible AI guidance mandating human-in-the-loop oversight for banks",
     "tag": "NEW"
+  },
+  {
+    "text": "UAE fintech market reaches $52 billion in 2026 with 52% of DIFC firms adopting AI",
+    "tag": "REPORT"
+  },
+  {
+    "text": "Lean Technologies becomes Saudi Arabia's first licensed open banking provider under SAMA",
+    "tag": "NEW"
+  },
+  {
+    "text": "Saudi Arabia transitions open banking from SAMA regulatory sandbox to full licensing regime",
+    "tag": "UPDATED"
+  },
+  {
+    "text": "GCC markets expected to develop comparable digital finance frameworks following UAE AI guidance template",
+    "tag": "REPORT"
   }
 ]
