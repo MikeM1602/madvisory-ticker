@@ -1,2 +1,543 @@
-/* ================================================================ MENA Advisory â€” main.js Particle hero Â· Ticker feed Â· Theme Â· Lang Â· Nav Â· Forms ================================================================ */ (function () { 'use strict'; if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); } function init() { /* â”€â”€ Theme â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ const html = document.documentElement; const themeBtn = document.querySelector('[data-theme-toggle]'); const sunIcon = ``; const moonIcon = ``; let theme = localStorage.getItem('ma-theme') || 'dark'; html.setAttribute('data-theme', theme); if (themeBtn) { themeBtn.innerHTML = theme === 'dark' ? moonIcon : sunIcon; } if (themeBtn) { themeBtn.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; html.setAttribute('data-theme', theme); localStorage.setItem('ma-theme', theme); themeBtn.innerHTML = theme === 'dark' ? moonIcon : sunIcon; }); } /* â”€â”€ Scroll-aware header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ const header = document.getElementById('header'); window.addEventListener('scroll', () => { if (header) header.classList.toggle('header--scrolled', window.scrollY > 10); }, { passive: true }); /* â”€â”€ Mobile menu â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ const burger = document.querySelector('[data-burger]'); const mobileMenu = document.querySelector('[data-mobile-menu]'); if (burger && mobileMenu) { burger.addEventListener('click', () => { const open = mobileMenu.classList.toggle('is-open'); burger.classList.toggle('is-open', open); burger.setAttribute('aria-expanded', open); mobileMenu.setAttribute('aria-hidden', !open); document.body.style.overflow = open ? 'hidden' : ''; }); mobileMenu.querySelectorAll('a').forEach(a => { a.addEventListener('click', () => { mobileMenu.classList.remove('is-open'); burger.classList.remove('is-open'); burger.setAttribute('aria-expanded', 'false'); mobileMenu.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }); }); } /* â”€â”€ Dropdown nav â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ document.querySelectorAll('.nav-dropdown').forEach(dd => { const trigger = dd.querySelector('.nav-trigger'); if (!trigger) return; trigger.addEventListener('click', e => { e.stopPropagation(); const expanded = trigger.getAttribute('aria-expanded') === 'true'; document.querySelectorAll('.nav-trigger').forEach(t => t.setAttribute('aria-expanded', 'false')); trigger.setAttribute('aria-expanded', String(!expanded)); }); }); document.addEventListener('click', () => { document.querySelectorAll('.nav-trigger').forEach(t => t.setAttribute('aria-expanded', 'false')); }); /* â”€â”€ Scroll animations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) { const delay = e.target.dataset.delay ? parseFloat(e.target.dataset.delay) * 60 : 0; setTimeout(() => { e.target.classList.add('visible'); e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }, delay); observer.unobserve(e.target); } }); }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }); function observeAll() { document.querySelectorAll('.fade-up, .expertise-item, .service-card, .news-card, .testimonial-card, .client-type-item').forEach((el, i) => { if (!el.classList.contains('visible')) { if (el.classList.contains('service-card') || el.classList.contains('news-card') || el.classList.contains('testimonial-card') || el.classList.contains('client-type-item')) { el.style.opacity = '0'; el.style.transform = 'translateY(16px)'; el.style.transition = `opacity 0.5s ${i * 0.07}s ease, transform 0.5s ${i * 0.07}s ease`; } observer.observe(el); } }); } observeAll(); setTimeout(() => { document.querySelectorAll('.fade-up, .expertise-item').forEach(el => { const r = el.getBoundingClientRect(); if (r.top < window.innerHeight + 100) { el.classList.add('visible'); el.style.opacity = '1'; el.style.transform = 'translateY(0)'; } }); }, 120); /* â”€â”€ Smooth anchor scroll â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ document.querySelectorAll('a[href^="#"]').forEach(a => { a.addEventListener('click', e => { const target = document.querySelector(a.getAttribute('href')); if (target) { e.preventDefault(); target.querySelectorAll('.fade-up, .expertise-item').forEach(el => { el.classList.add('visible'); el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }); setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20); } }); }); /* â”€â”€ CTA word rotator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ const ctaWord = document.getElementById('ctaWord'); if (ctaWord) { const words = ['Achieve?', 'Accelerate?', 'Accomplish?', 'Acquire?']; let idx = 0; setInterval(() => { ctaWord.style.opacity = '0'; ctaWord.style.transform = 'translateY(8px)'; ctaWord.style.transition = 'opacity 0.28s, transform 0.28s'; setTimeout(() => { idx = (idx + 1) % words.length; ctaWord.textContent = words[idx]; ctaWord.style.opacity = '1'; ctaWord.style.transform = 'translateY(0)'; }, 280); }, 2400); } /* â”€â”€ Particle canvas hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ (function () { const canvas = document.getElementById('heroCanvas'); if (!canvas) return; const ctx = canvas.getContext('2d'); function resize() { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; } resize(); window.addEventListener('resize', resize, { passive: true }); const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light'; const N = 55; const particles = Array.from({ length: N }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.28, r: Math.random() * 1.4 + 0.5, a: Math.random() * 0.45 + 0.1 })); let raf; function draw() { raf = requestAnimationFrame(draw); ctx.clearRect(0, 0, canvas.width, canvas.height); const dark = isDark(); const c = dark ? '0,212,255' : '0,98,204'; particles.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < 0 || p.x > canvas.width) p.vx *= -1; if (p.y < 0 || p.y > canvas.height) p.vy *= -1; }); for (let i = 0; i < N; i++) { for (let j = i + 1; j < N; j++) { const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const d = Math.sqrt(dx * dx + dy * dy); if (d < 110) { ctx.beginPath(); ctx.strokeStyle = `rgba(${c},${0.09 * (1 - d / 110)})`; ctx.lineWidth = 0.6; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke(); } } ctx.beginPath(); ctx.fillStyle = `rgba(${c},${particles[i].a})`; ctx.arc(particles[i].x, particles[i].y, particles[i].r, 0, Math.PI * 2); ctx.fill(); } } draw(); document.addEventListener('visibilitychange', () => { if (document.hidden) { cancelAnimationFrame(raf); } else { draw(); } }); })(); /* â”€â”€ Ticker â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ (function () { const track = document.getElementById('tickerTrack'); if (!track) return; function buildTicker(items) { const doubled = [...items, ...items]; track.innerHTML = doubled.map(item => `${item.tag}${item.text}Â·` ).join(''); } function startScroll() { let pos = 0; const speed = 0.5; let paused = false; track.addEventListener('mouseenter', () => { paused = true; }); track.addEventListener('mouseleave', () => { paused = false; }); function animate() { if (!paused) { pos -= speed; const half = track.scrollWidth / 2; if (Math.abs(pos) >= half) pos = 0; track.style.transform = `translateX(${pos}px)`; } requestAnimationFrame(animate); } animate(); } fetch('/ticker.json?v=' + Date.now()) .then(r => r.ok ? r.json() : null) .then(data => { if (data && data.length) buildTicker(data); }) .catch(() => {}) .finally(() => startScroll()); })(); /* â”€â”€ Reg Hub filter â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ (function () { const btns = document.querySelectorAll('.filter-btn'); const groups = document.querySelectorAll('.reg-country-group'); if (!btns.length) return; btns.forEach(btn => { btn.addEventListener('click', () => { btns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); const f = btn.dataset.filter; groups.forEach(g => { g.style.display = (f === 'all' || g.dataset.country === f) ? '' : 'none'; }); }); }); })(); /* â”€â”€ Contact form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ const contactForm = document.getElementById('contactForm'); if (contactForm) { contactForm.addEventListener('submit', async e => { e.preventDefault(); const btn = contactForm.querySelector('.btn-submit'); const status = document.getElementById('formStatus'); const lang = localStorage.getItem('ma-lang') || 'en'; const name = contactForm.querySelector('#name')?.value.trim(); const company = contactForm.querySelector('#company')?.value.trim(); const email = contactForm.querySelector('#email')?.value.trim(); if (!name || !company || !email) { status.textContent = lang === 'ar' ? 'ÙŠØ±Ø¬Ù‰ Ù…Ù„Ø¡ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ„ Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©.' : 'Please complete all required fields.'; status.className = 'form-status form-status--error'; return; } btn.disabled = true; btn.textContent = lang === 'ar' ? 'Ø¬Ø§Ø±Ù Ø§Ù„Ø¥Ø±Ø³Ø§Ù„â€¦' : 'Sendingâ€¦'; status.textContent = ''; try { const res = await fetch('https://formspree.io/f/mdaygpzr', { method: 'POST', body: new FormData(contactForm), headers: { 'Accept': 'application/json' } }); if (res.ok) { status.textContent = lang === 'ar' ? 'Ø´ÙƒØ±Ø§Ù‹ Ù„ØªÙˆØ§ØµÙ„Ùƒ. Ø³Ù†Ø±Ø¯Ù‘ Ø¹Ù„ÙŠÙƒ Ù‚Ø±ÙŠØ¨Ø§Ù‹.' : 'Thank you, your enquiry has been received. We will be in touch shortly.'; status.className = 'form-status form-status--success'; contactForm.reset(); } else { throw new Error(); } } catch { status.textContent = lang === 'ar' ? 'Ø­Ø¯Ø« Ø®Ø·Ø£. ÙŠØ±Ø¬Ù‰ Ø§Ù„Ù…Ø­Ø§ÙˆÙ„Ø© Ù…Ø¬Ø¯Ø¯Ø§Ù‹ Ø£Ùˆ Ù…Ø±Ø§Ø³Ù„ØªÙ†Ø§ Ø¹Ù„Ù‰ info@madvisory.qa' : 'Something went wrong. Please try again or email info@madvisory.qa'; status.className = 'form-status form-status--error'; } btn.disabled = false; btn.textContent = lang === 'ar' ? 'Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø§Ø³ØªÙØ³Ø§Ø±' : 'Submit Enquiry'; }); } /* â”€â”€ Newsletter form â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ const nlForm = document.getElementById('newsletterForm'); if (nlForm) { nlForm.addEventListener('submit', e => { e.preventDefault(); const status = document.getElementById('newsletterStatus'); fetch(nlForm.action, { method: 'POST', body: new FormData(nlForm), headers: { 'Accept': 'application/json' } }) .then(r => { if (r.ok) { status.textContent = 'Thank you, you are subscribed.'; status.style.color = 'var(--accent)'; nlForm.reset(); } else { status.textContent = 'Something went wrong. Please try again.'; status.style.color = '#f06363'; } }).catch(() => { status.textContent = 'Connection error. Please try again.'; status.style.color = '#f06363'; }); }); } /* â”€â”€ Language / i18n â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */ const langBtn = document.querySelector('[data-lang-toggle]'); const AR = { nav_about:'Ù…Ù† Ù†Ø­Ù†', nav_services:'Ø®Ø¯Ù…Ø§ØªÙ†Ø§', nav_due_diligence:'Ø§Ù„ØªØ­Ù‚Ù‚ Ø§Ù„Ù…Ø³ØªÙ‚Ù„', nav_strategic_planning:'Ø§Ù„ØªØ®Ø·ÙŠØ· Ø§Ù„Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠ', nav_digital_transformation:'Ø§Ù„ØªØ­ÙˆÙ‘Ù„ Ø§Ù„Ø±Ù‚Ù…ÙŠ', nav_electronic_payments:'Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ©', nav_solutions:'Ø§Ù„Ø­Ù„ÙˆÙ„', nav_sol_payments_infra:'Ø§Ù„Ø¨Ù†ÙŠØ© Ø§Ù„ØªØ­ØªÙŠØ© Ù„Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª', nav_sol_acquiring:'Ø§Ù„Ø§Ù‚ØªÙ†Ø§Ø¡ ÙˆØ§Ù„Ù‚Ø¨ÙˆÙ„', nav_sol_compliance:'Ø§Ù„Ø§Ù…ØªØ«Ø§Ù„ ÙˆØ§Ù„Ù…Ø®Ø§Ø·Ø±', nav_sol_digital:'Ø§Ù„Ø±Ù‚Ù…ÙŠ ÙˆØ§Ù„Ù†Ø§Ø´Ø¦', nav_sol_licensing:'Ø§Ù„ØªØ±Ø®ÙŠØµ ÙˆØ¯Ø®ÙˆÙ„ Ø§Ù„Ø³ÙˆÙ‚', nav_regulatory:'Ø§Ù„Ù…Ø­ÙˆØ± Ø§Ù„ØªÙ†Ø¸ÙŠÙ…ÙŠ', nav_news:'Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª', nav_insights:'Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª', nav_careers:'Ø§Ù„ÙˆØ¸Ø§Ø¦Ù', nav_book:'Ø§Ø­Ø¬Ø² Ù…ÙƒØ§Ù„Ù…Ø©', nav_contact:'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§', hero_eyebrow:'Ø§Ø³ØªØ´Ø§Ø±Ø§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØ§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ© â€” Ø§Ù„Ø¯ÙˆØ­Ø© Â· Ù„Ù†Ø¯Ù† Â· Ø¥Ø³Ø·Ù†Ø¨ÙˆÙ„', hero_line1:'Ù†ØµÙ†Ø¹', hero_line2:'Ù…Ø³ØªÙ‚Ø¨Ù„ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª', hero_sub:'Ø§Ø³ØªØ´Ø§Ø±Ø§Øª Ù…Ø³ØªÙ‚Ù„Ø© Ù„Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© ÙˆØ´Ø±ÙƒØ§Øª Ø§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ© ÙˆØ§Ù„Ø­ÙƒÙˆÙ…Ø§Øª ÙÙŠ Ø±Ø³Ù… Ù…Ø³ØªÙ‚Ø¨Ù„ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª.', hero_cta1:'Ø§Ø³ØªÙƒØ´Ù Ø®Ø¯Ù…Ø§ØªÙ†Ø§', hero_cta2:'Ø·Ù„Ø¨ Ø§Ø³ØªØ´Ø§Ø±Ø©', stat_market:'Ø³ÙˆÙ‚ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙÙŠ Ø§Ù„Ø´Ø±Ù‚ Ø§Ù„Ø£ÙˆØ³Ø· 2031', stat_disciplines:'Ø­Ù„ Ø§Ø³ØªØ´Ø§Ø±ÙŠ', stat_frameworks:'Ø¥Ø·Ø§Ø± ØªÙ†Ø¸ÙŠÙ…ÙŠ', stat_continents:'Ù‚Ø§Ø±Ø§Øª', about_eyebrow:'Ù…Ù† Ù†Ø­Ù†', about_heading:'Ø´Ø±ÙƒØ© Ø§Ø³ØªØ´Ø§Ø±ÙŠØ© Ù…Ø³ØªÙ‚Ù„Ø© ÙÙŠ Ù‚Ù„Ø¨ Ù‚Ø·Ø§Ø¹ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª', services_eyebrow:'Ø§Ù„Ø®Ø¯Ù…Ø§Øª', services_heading:'Ø£Ø±Ø¨Ø¹Ø© Ù…Ø­Ø§ÙˆØ± Ù„Ù„ØªÙ…ÙŠØ² Ø§Ù„Ø§Ø³ØªØ´Ø§Ø±ÙŠ', solutions_eyebrow:'Ø§Ù„Ø­Ù„ÙˆÙ„', solutions_heading:'Ø§Ø³ØªØ´Ø§Ø±Ø§Øª Ù…ØªØ®ØµØµØ© Ù„Ù„Ø¬ÙŠÙ„ Ø§Ù„Ù‚Ø§Ø¯Ù… Ù…Ù† Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª', news_eyebrow:'Ù…Ù‚Ø§Ù„Ø§Øª', news_heading:'ØªÙÙƒÙŠØ± Ø¹Ù„Ù‰ Ø­Ø§ÙØ© Ø§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ©', reg_eyebrow:'Ø§Ù„Ù…Ø­ÙˆØ± Ø§Ù„ØªÙ†Ø¸ÙŠÙ…ÙŠ', reg_heading:'Ù…ÙˆØ§ÙƒØ¨Ø© Ø§Ù„Ø¨ÙŠØ¦Ø© Ø§Ù„ØªÙ†Ø¸ÙŠÙ…ÙŠØ© Ø§Ù„Ù…ØªØ­Ø±ÙƒØ© Ø¨Ø³Ø±Ø¹Ø©', exp_eyebrow:'Ø®Ø¨Ø±ØªÙ†Ø§', exp_heading:'Ø«Ù…Ø§Ù†ÙŠØ© Ù…Ø¬Ø§Ù„Ø§Øª Ù„Ù„ØªØ®ØµØµ Ø§Ù„Ø¹Ù…ÙŠÙ‚', clients_eyebrow:'Ø¹Ù…Ù„Ø§Ø¤Ù†Ø§', clients_heading:'Ù…ÙˆØ«ÙˆÙ‚ Ø¨Ù‡ Ø¹Ø¨Ø± Ø§Ù„ØµÙ†Ø§Ø¹Ø§Øª ÙˆØ§Ù„Ø­Ø¯ÙˆØ¯', hww_eyebrow:'Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„ØªØ¹Ø§ÙˆÙ†', hww_heading:'ÙƒÙŠÙ Ù†Ø¹Ù…Ù„', team_eyebrow:'Ø§Ù„ÙØ±ÙŠÙ‚', team_heading:'Ø§Ù„Ù…Ø¯ÙŠØ±ÙˆÙ† ÙˆØ´Ø¨ÙƒØ© Ø§Ù„Ù…Ø³ØªØ´Ø§Ø±ÙŠÙ†', contact_eyebrow:'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§', contact_heading:'ÙƒÙŠÙ ÙŠÙ…ÙƒÙ†Ù†Ø§ Ù…Ø³Ø§Ø¹Ø¯ØªÙƒ Ø¹Ù„Ù‰ ØªØ­Ù‚ÙŠÙ‚ Ø£Ù‡Ø¯Ø§ÙÙƒØŸ', contact_sub:'Ø³ÙˆØ§Ø¡ ÙƒÙ†Øª ØªÙÙ‚ÙŠÙ‘Ù… Ø§Ø³ØªØ«Ù…Ø§Ø±Ø§Ù‹ ÙÙŠ Ø§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ø£Ùˆ ØªØ³Ø¹Ù‰ Ù„ØªØ­Ø³ÙŠÙ† Ø¨Ù†ÙŠØªÙƒ Ø§Ù„ØªØ­ØªÙŠØ© Ù„Ù„Ù…Ø¯ÙÙˆØ¹Ø§ØªØŒ ÙØ±ÙŠÙ‚Ù†Ø§ Ù…Ø³ØªØ¹Ø¯.', form_name:'Ø§Ù„Ø§Ø³Ù… *', form_position:'Ø§Ù„Ù…Ù†ØµØ¨', form_company:'Ø§Ù„Ø´Ø±ÙƒØ© *', form_email:'Ø§Ù„Ø¨Ø±ÙŠØ¯ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ *', form_tel:'Ø§Ù„Ù‡Ø§ØªÙ', form_enquiry:'Ø§Ø³ØªÙØ³Ø§Ø±Ùƒ', form_submit:'Ø¥Ø±Ø³Ø§Ù„ Ø§Ù„Ø§Ø³ØªÙØ³Ø§Ø±', footer_services:'Ø§Ù„Ø®Ø¯Ù…Ø§Øª', footer_solutions:'Ø§Ù„Ø­Ù„ÙˆÙ„', footer_regulatory:'Ø§Ù„Ù…Ø­ÙˆØ± Ø§Ù„ØªÙ†Ø¸ÙŠÙ…ÙŠ', footer_company:'Ø§Ù„Ø´Ø±ÙƒØ©', footer_tagline:'Ø§Ø³ØªØ´Ø§Ø±Ø§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØ§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ©.
-Ø§Ù„Ø¯ÙˆØ­Ø© Â· Ù„Ù†Ø¯Ù† Â· Ø¥Ø³Ø·Ù†Ø¨ÙˆÙ„', footer_address:'Ø¨Ø±Ø¬ ØªÙˆØ±Ù†Ø§Ø¯ÙˆØŒ Ø´Ø§Ø±Ø¹ Ù…Ø¬Ù„Ø³ Ø§Ù„ØªØ¹Ø§ÙˆÙ†ØŒ Ø§Ù„Ø¯ÙˆØ­Ø©ØŒ Ù‚Ø·Ø±', footer_copy:'Â© 2026 MENA Advisory. Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù‚ÙˆÙ‚ Ù…Ø­ÙÙˆØ¸Ø©.', insights_label:'Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª', insights_heading:'ØªÙÙƒÙŠØ± Ø¹Ù„Ù‰ Ø­Ø§ÙØ© Ø§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ©', careers_label:'Ø§Ù„ÙˆØ¸Ø§Ø¦Ù', careers_heading:'Ø§Ù†Ø¶Ù… Ø¥Ù„Ù‰ MENA Advisory', filter_all:'Ø§Ù„ÙƒÙ„', filter_uk:'Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ù…ØªØ­Ø¯Ø©', filter_eu:'Ø£ÙˆØ±ÙˆØ¨Ø§', filter_gcc:'Ø¯ÙˆÙ„ Ù…Ø¬Ù„Ø³ Ø§Ù„ØªØ¹Ø§ÙˆÙ† Ø§Ù„Ø®Ù„ÙŠØ¬ÙŠ', filter_global:'Ø¹Ø§Ù„Ù…ÙŠ', svc_label:'Ø§Ù„Ø®Ø¯Ù…Ø§Øª', svc_heading:'Ù…Ø§Ø°Ø§ Ù†ÙØ¹Ù„', nl_eyebrow:'Ø§Ø¨Ù‚ÙŽ Ø¹Ù„Ù‰ Ø§Ø·Ù„Ø§Ø¹', nl_heading:'ØªØ­Ø¯ÙŠØ«Ø§Øª ØªÙ†Ø¸ÙŠÙ…ÙŠØ© ÙˆØ³ÙˆÙ‚ÙŠØ©', view_all_solutions:'Ø¹Ø±Ø¶ Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù„ÙˆÙ„', badge_active:'Ø³Ø§Ø±ÙŠ', badge_inprogress:'Ù‚ÙŠØ¯ Ø§Ù„ØªÙ†ÙÙŠØ°', badge_imminent:'ÙˆØ´ÙŠÙƒ', mobile_services:'Ø§Ù„Ø®Ø¯Ù…Ø§Øª', mobile_solutions:'Ø§Ù„Ø­Ù„ÙˆÙ„', ticker_label:'Ø§Ù„Ù…Ø³ØªØ¬Ø¯Ø§Øª', reg_europe:'Ø£ÙˆØ±ÙˆØ¨Ø§', reg_uk:'Ø§Ù„Ù…Ù…Ù„ÙƒØ© Ø§Ù„Ù…ØªØ­Ø¯Ø©', reg_gcc:'Ø¯ÙˆÙ„ Ù…Ø¬Ù„Ø³ Ø§Ù„ØªØ¹Ø§ÙˆÙ† Ø§Ù„Ø®Ù„ÙŠØ¬ÙŠ', reg_global:'Ø¹Ø§Ù„Ù…ÙŠ', filter_all_ar:'Ø§Ù„ÙƒÙ„', reg_badge_active:'Ø³Ø§Ø±ÙŠ', reg_badge_inprogress:'Ù‚ÙŠØ¯ Ø§Ù„ØªÙ†ÙÙŠØ°', reg_badge_imminent:'ÙˆØ´ÙŠÙƒ', // Careers page careers_sub:'Ù†Ø­Ù† Ø´Ø±ÙƒØ© Ø§Ø³ØªØ´Ø§Ø±ÙŠØ© Ù…ØªØ®ØµØµØ© ÙÙŠ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØ§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ©. Ø¹Ù†Ø¯Ù…Ø§ Ù†Ù†Ù…ÙˆØŒ Ù†Ù†Ù…Ùˆ Ø¨Ø´ÙƒÙ„ Ù…ØªØ¹Ù…Ø¯ â€” Ù†Ø¶Ù… Ø£Ø´Ø®Ø§ØµØ§Ù‹ Ø°ÙˆÙŠ Ø®Ø¨Ø±Ø© Ø¹Ù…ÙŠÙ‚Ø© ÙÙŠ Ø§Ù„Ù…Ø¬Ø§Ù„.', careers_who_label:'Ù…Ù† Ù†ÙˆØ¸Ù‘Ù', careers_who_heading:'Ø§Ù„Ø®Ø¨Ø±Ø© Ø§Ù„Ù…ØªØ®ØµØµØ© Ø£ÙˆÙ„Ø§Ù‹', careers_who_body1:'ÙƒÙ„ Ø¹Ø¶Ùˆ ÙÙŠ ÙØ±ÙŠÙ‚Ù†Ø§ Ø¹Ù…Ù„ Ø¹Ù„Ù‰ Ù…Ø³ØªÙˆÙ‰ Ø±ÙÙŠØ¹ Ø¯Ø§Ø®Ù„ Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø£Ùˆ Ø§Ù„Ø¨Ù†ÙˆÙƒ Ø£Ùˆ Ø§Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ø£Ùˆ Ø´Ø±ÙƒØ§Øª Ø§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ©.', careers_where_label:'Ø£ÙŠÙ† Ù†Ø¹Ù…Ù„', careers_where_heading:'Ø§Ù„Ø¯ÙˆØ­Ø©ØŒ Ù„Ù†Ø¯Ù†ØŒ Ø¥Ø³Ø·Ù†Ø¨ÙˆÙ„', careers_where_body:'Ù…ÙƒØªØ¨Ù†Ø§ Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠ ÙÙŠ Ø¨Ø±Ø¬ ØªÙˆØ±Ù†Ø§Ø¯Ùˆ Ø¨Ø§Ù„Ø¯ÙˆØ­Ø©. Ù„Ø¯ÙŠÙ†Ø§ Ù…Ø³ØªØ´Ø§Ø±ÙˆÙ† ÙÙŠ Ù„Ù†Ø¯Ù† ÙˆØ¥Ø³Ø·Ù†Ø¨ÙˆÙ„ØŒ ÙˆÙ†Ø¹Ù…Ù„ Ù…Ø¹ Ø¹Ù…Ù„Ø§Ø¡ ÙÙŠ Ø¯ÙˆÙ„ Ù…Ø¬Ù„Ø³ Ø§Ù„ØªØ¹Ø§ÙˆÙ† Ø§Ù„Ø®Ù„ÙŠØ¬ÙŠ ÙˆØ§Ù„Ø´Ø±Ù‚ Ø§Ù„Ø£ÙˆØ³Ø· ÙˆØ£ÙˆØ±ÙˆØ¨Ø§.', careers_register_label:'Ø³Ø¬Ù‘Ù„ Ø§Ù‡ØªÙ…Ø§Ù…Ùƒ', careers_register_heading:'Ø£Ø±Ø³Ù„ Ù„Ù†Ø§ Ù…Ù„ÙÙƒ Ø§Ù„ØªØ¹Ø±ÙŠÙÙŠ', careers_register_body:'Ø§Ø³ØªØ®Ø¯Ù… Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„ØªÙˆØ§ØµÙ„ ÙˆØµÙ ÙÙŠÙ‡ Ø®Ø¨Ø±ØªÙƒ. Ø§Ø°ÙƒØ± Ø§Ù„Ù…Ø¬Ø§Ù„Ø§Øª Ø§Ù„ØªÙŠ Ø¹Ù…Ù„Øª ÙÙŠÙ‡Ø§ ÙˆÙ…Ø§ ØªØ¨Ø­Ø« Ø¹Ù†Ù‡. Ù†Ø±Ø§Ø¬Ø¹ ÙƒÙ„ Ø·Ù„Ø¨.', careers_cta2:'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§ â†’', careers_no_openings:'Ù„Ø§ ÙˆØ¸Ø§Ø¦Ù Ø´Ø§ØºØ±Ø© Ø­Ø§Ù„ÙŠØ§Ù‹', careers_no_openings_sub:'Ù„ÙŠØ³ Ù„Ø¯ÙŠÙ†Ø§ Ø£Ø¯ÙˆØ§Ø± Ù…ÙØªÙˆØ­Ø© ÙÙŠ Ø§Ù„ÙˆÙ‚Øª Ø§Ù„Ø­Ø§Ù„ÙŠ. Ø¥Ø°Ø§ ÙƒØ§Ù†Øª Ù„Ø¯ÙŠÙƒ Ø®Ù„ÙÙŠØ© Ù‚ÙˆÙŠØ© ÙÙŠ Ø§Ù„Ø§Ø³ØªØ´Ø§Ø±Ø§ØªØŒ ÙŠØ³Ø¹Ø¯Ù†Ø§ Ø§Ù„Ø§Ø³ØªÙ…Ø§Ø¹ Ø¥Ù„ÙŠÙƒ.', // About CTA about_cta:'Ø§Ø¹Ù…Ù„ Ù…Ø¹Ù†Ø§ â†’', // Shared page elements discuss_requirements:'Ù†Ø§Ù‚Ø´ Ù…ØªØ·Ù„Ø¨Ø§ØªÙƒ', discuss_sub:'ØªØ­Ø¯Ø« Ù…Ø¨Ø§Ø´Ø±Ø© Ù…Ø¹ Ù…ØªØ®ØµØµ ÙÙŠ Ø£ÙŠ Ù…Ù† Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø¬Ø§Ù„Ø§Øª.', get_in_touch:'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§ â†’', back_to_insights:'â† Ø§Ù„Ø¹ÙˆØ¯Ø© Ø¥Ù„Ù‰ Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª', back_to_solutions:'â† Ø¬Ù…ÙŠØ¹ Ø§Ù„Ø­Ù„ÙˆÙ„', read_consultation:'Ø§Ø­Ø¬Ø² Ø§Ø³ØªØ´Ø§Ø±Ø© â†’', // Services pages svc_label_services:'Ø§Ù„Ø®Ø¯Ù…Ø§Øª', page_sub_due_diligence:'ØªÙ‚ÙŠÙŠÙ… Ù…Ø³ØªÙ‚Ù„ Ù„Ø£Ø¹Ù…Ø§Ù„ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØ§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù…Ø³ØªØ«Ù…Ø±ÙŠÙ† ÙˆØ§Ù„Ù…Ø³ØªØ­ÙˆØ°ÙŠÙ† ÙˆØ§Ù„Ø´Ø±ÙƒØ§Ø¡ Ø§Ù„Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠÙŠÙ†.', page_sub_strategic:'Ù†Ø³Ø§Ø¹Ø¯ Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø¹Ù„Ù‰ ØªØ­Ø¯ÙŠØ¯ Ø£ÙŠÙ† ØªØªÙ†Ø§ÙØ³ ÙˆÙƒÙŠÙ ØªÙÙˆØ² ÙÙŠ Ø§Ù„Ø£Ø³ÙˆØ§Ù‚ Ø§Ù„Ù…Ø³ØªÙ‡Ø¯ÙØ©.', page_sub_digital_trans:'Ù†Ø±Ø´Ø¯ Ø§Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© ÙˆØ´Ø±ÙƒØ§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø®Ù„Ø§Ù„ Ù…Ø´Ø§Ø±ÙŠØ¹ Ø§Ù„ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø±Ù‚Ù…ÙŠ Ø§Ù„Ù…Ø¹Ù‚Ø¯Ø©.', page_sub_epayments:'Ù†ØºØ·ÙŠ Ø§Ù„Ø·ÙŠÙ Ø§Ù„ÙƒØ§Ù…Ù„ Ù„Ø·Ø±Ù‚ Ø§Ù„Ø¯ÙØ¹ Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ â€” Ø¨Ø·Ø§Ù‚Ø§ØªØŒ Ù…Ø­Ø§ÙØ¸ Ø±Ù‚Ù…ÙŠØ©ØŒ Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙÙˆØ±ÙŠØ©ØŒ ØªØ­ÙˆÙŠÙ„Ø§Øª Ù…Ø¨Ø§Ø´Ø±Ø©.', // Solutions pages page_sub_payments_infra:'Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø© Ø¨Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠØŒ Ø§Ù„Ù‚Ø¶Ø¨Ø§Ù† Ø§Ù„ÙÙˆØ±ÙŠØ©ØŒ ØªØ±Ø­ÙŠÙ„ ISO 20022ØŒ ØªÙ†Ø³ÙŠÙ‚ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØªÙ‚Ù†ÙŠØ§Øª ÙƒØ´Ù Ø§Ù„Ø§Ø­ØªÙŠØ§Ù„.', page_sub_acquiring:'Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠØ© Ø§Ù„Ø§Ø³ØªØ­ÙˆØ§Ø°ØŒ Ø¥Ø·Ø§Ø± Ø¥Ø¯Ø±Ø§Ø¬ Ø§Ù„ØªØ¬Ø§Ø±ØŒ SoftPOSØŒ Ø§Ù„Ù‚Ø¨ÙˆÙ„ Ù…ØªØ¹Ø¯Ø¯ Ø§Ù„Ù‚Ù†ÙˆØ§Øª ÙˆØ¥Ø¯Ø§Ø±Ø© Ø§Ù„Ù†Ø²Ø§Ø¹Ø§Øª.', page_sub_compliance:'Ù…Ø±Ø§Ù‚Ø¨Ø© Ù…Ø¹Ø§Ù…Ù„Ø§Øª Ù…ÙƒØ§ÙØ­Ø© ØºØ³ÙŠÙ„ Ø§Ù„Ø£Ù…ÙˆØ§Ù„ØŒ ØªØµÙ…ÙŠÙ… Ø¨Ø±Ù†Ø§Ù…Ø¬ Ø§Ø¹Ø±Ù Ø¹Ù…ÙŠÙ„ÙƒØŒ Ù…Ù†Ø¹ Ø§Ù„Ø§Ø­ØªÙŠØ§Ù„ ÙˆØ§Ù„Ø£Ø·Ø± Ø§Ù„ØªÙ†Ø¸ÙŠÙ…ÙŠØ©.', page_sub_digital_em:'ØªÙˆØ¬ÙŠÙ‡ Ù…ØªØ®ØµØµ ÙÙŠ Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ© Ù„Ù„Ø¨Ù†ÙˆÙƒ Ø§Ù„Ù…Ø±ÙƒØ²ÙŠØ© ÙˆØ§Ù„ØªØ³ÙˆÙŠØ© Ø§Ù„Ù…ÙØ±Ù…ÙŽÙ‘Ø²Ø© ÙˆØ§Ù„Ø®Ø¯Ù…Ø§Øª Ø§Ù„Ù…ØµØ±ÙÙŠØ© Ø§Ù„Ù…ÙØªÙˆØ­Ø© ÙˆØ§Ù„ØªØ¬Ø§Ø±Ø© Ø§Ù„ÙˆÙƒÙŠÙ„Ø©.', page_sub_licensing:'ØªØ±Ø®ÙŠØµ Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ø¯ÙØ¹ Ù„Ø¯ÙˆÙ„ Ù…Ø¬Ù„Ø³ Ø§Ù„ØªØ¹Ø§ÙˆÙ† Ø§Ù„Ø®Ù„ÙŠØ¬ÙŠ ÙˆØ£ÙˆØ±ÙˆØ¨Ø§. QCB ÙˆSAMA ÙˆCBUAE ÙˆCBB ÙˆFCA ÙˆØ§Ù„Ø¨Ù†Ùƒ Ø§Ù„Ù…Ø±ÙƒØ²ÙŠ Ø§Ù„Ø£ÙŠØ±Ù„Ù†Ø¯ÙŠ.', // CTA strip cta_discuss:'Ù†Ø§Ù‚Ø´ Ù…ØªØ·Ù„Ø¨Ø§ØªÙƒ', cta_specialist:'ØªØ­Ø¯Ø« Ù…Ø¨Ø§Ø´Ø±Ø© Ù…Ø¹ Ù…ØªØ®ØµØµ ÙÙŠ Ø£ÙŠ Ù…Ù† Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø¬Ø§Ù„Ø§Øª.', // Regulatory hub reg_page_sub:'ØªØªØºÙŠØ± Ù„ÙˆØ§Ø¦Ø­ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø¨ÙˆØªÙŠØ±Ø© Ø£Ø³Ø±Ø¹ Ù…Ù…Ø§ ÙƒØ§Ù†Øª Ø¹Ù„ÙŠÙ‡ ÙÙŠ Ø£ÙŠ ÙˆÙ‚Øª Ù…Ø¶Ù‰. Ù†ØªØªØ¨Ø¹ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª Ø§Ù„Ø¬ÙˆÙ‡Ø±ÙŠØ© ÙˆÙ†Ù‚Ø¯Ù… Ø§Ù„Ù…Ø´ÙˆØ±Ø© Ù„Ù„Ø¹Ù…Ù„Ø§Ø¡.', // Services/solutions landing svc_page_sub:'Ø£Ø±Ø¨Ø¹Ø© ØªØ®ØµØµØ§Øª ØªØ¹ÙƒØ³ Ø§Ù„Ù†Ø¸Ø§Ù… Ø§Ù„Ø¨ÙŠØ¦ÙŠ Ø§Ù„ÙƒØ§Ù…Ù„ Ù„ØµÙ†Ø§Ø¹Ø© Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø§Ù„Ø­Ø¯ÙŠØ«Ø©.', sol_page_sub:'Ù…Ù† Ø§Ù„ØªØ¬Ø§Ø±Ø© Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø© Ø¨Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠ Ø¥Ù„Ù‰ Ø§Ù„Ø£ØµÙˆÙ„ Ø§Ù„Ù…ÙØ±Ù…ÙŽÙ‘Ø²Ø© â€” ØªÙˆØ¬ÙŠÙ‡ Ø®Ø¨ÙŠØ± ÙÙŠ Ø§Ù„ØªÙ‚Ù†ÙŠØ§Øª Ø§Ù„ØªÙŠ ØªØ¹ÙŠØ¯ ØªØ´ÙƒÙŠÙ„ ØµÙ†Ø§Ø¹Ø© Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª.', // Insights insights_page_sub:'ØªØ­Ù„ÙŠÙ„Ø§Øª ÙˆØªØ¹Ù„ÙŠÙ‚Ø§Øª Ø­ÙˆÙ„ ØªÙ†Ø¸ÙŠÙ… Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØ§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù†Ø§Ø´Ø¦Ø© ÙÙŠ Ø¯ÙˆÙ„ Ø§Ù„Ø®Ù„ÙŠØ¬ ÙˆØ§Ù„Ø´Ø±Ù‚ Ø§Ù„Ø£ÙˆØ³Ø· ÙˆØ£ÙˆØ±ÙˆØ¨Ø§.', // 404 page_not_found:'Ø§Ù„ØµÙØ­Ø© ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯Ø©', page_not_found_sub:'Ø§Ù„ØµÙØ­Ø© Ø§Ù„ØªÙŠ ØªØ¨Ø­Ø« Ø¹Ù†Ù‡Ø§ ØºÙŠØ± Ù…ÙˆØ¬ÙˆØ¯Ø© Ø£Ùˆ Ø±Ø¨Ù…Ø§ Ø§Ù†ØªÙ‚Ù„Øª. Ø¬Ø±Ù‘Ø¨ Ø£Ø­Ø¯ Ø§Ù„Ø±ÙˆØ§Ø¨Ø· Ø£Ø¯Ù†Ø§Ù‡ Ø£Ùˆ Ø¹Ø¯ Ø¥Ù„Ù‰ Ø§Ù„ØµÙØ­Ø© Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©.', go_home:'â† Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©', // â”€â”€ Career listing keys â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ career_open_role:'ÙˆØ¸ÙŠÙØ© Ø´Ø§ØºØ±Ø©', career_role_title:'Ù…Ø·ÙˆÙ‘Ø± Ø£ÙˆÙ„ Ù„ØªØ­ÙˆÙŠÙ„ Ø§Ù„Ø£Ù†Ø¸Ù…Ø© Ø§Ù„Ù…ØµØ±ÙÙŠØ© Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ©', career_apply_btn:'ØªÙ‚Ø¯Ù‘Ù… Ø§Ù„Ø¢Ù† â†', career_badge_perm:'Ø¯Ø§Ø¦Ù…', career_badge_location:'Ø§Ù„Ø¯ÙˆØ­Ø©ØŒ Ù‚Ø·Ø±', career_badge_travel:'ÙŠÙØ´ØªØ±Ø· Ø§Ù„Ø³ÙØ± Ø§Ù„Ø¯ÙˆÙ„ÙŠ', career_h3_resp:'Ø§Ù„Ù…Ø³Ø¤ÙˆÙ„ÙŠØ§Øª Ø§Ù„Ø±Ø¦ÙŠØ³ÙŠØ©', career_h3_skills:'Ø§Ù„Ù…Ù‡Ø§Ø±Ø§Øª ÙˆØ§Ù„Ø®Ø¨Ø±Ø§Øª Ø§Ù„Ù…Ø·Ù„ÙˆØ¨Ø©', career_h3_quals:'Ø§Ù„Ù…Ø¤Ù‡Ù„Ø§Øª Ø§Ù„Ù…ÙØ¶Ù‘Ù„Ø©', career_h3_why:'Ù„Ù…Ø§Ø°Ø§ ØªÙ†Ø¶Ù… Ø¥Ù„Ù‰ MENA Advisory', career_h3_apply:'Ø·Ø±ÙŠÙ‚Ø© Ø§Ù„ØªÙ‚Ø¯ÙŠÙ…', career_14days:'Ø¥Ø°Ø§ Ù„Ù… ØªØªÙ„Ù‚ÙŽÙ‘ Ø±Ø¯Ù‹Ù‘Ø§ Ø®Ù„Ø§Ù„ 14 ÙŠÙˆÙ…Ù‹Ø§ Ù…Ù† ØªØ§Ø±ÙŠØ® ØªÙ‚Ø¯ÙŠÙ… Ø·Ù„Ø¨ÙƒØŒ ÙÙŠÙØ±Ø¬Ù‰ Ø§Ø¹ØªØ¨Ø§Ø± Ø·Ù„Ø¨Ùƒ ØºÙŠØ± Ù†Ø§Ø¬Ø­ ÙÙŠ Ù‡Ø°Ù‡ Ø§Ù„Ù…Ø±Ø©. Ù†Ø´ÙƒØ±Ùƒ Ø¹Ù„Ù‰ Ø§Ù‡ØªÙ…Ø§Ù…Ùƒ Ø¨Ù€ MENA Advisory.', // â”€â”€ Added 2026-06-15: missing translations â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ // Services page cards svc_advisory_label:'Ø§Ø³ØªØ´Ø§Ø±Ø§Øª', svc_advisory_title:'Ø§Ù„ØªØ­Ù‚Ù‚ Ø§Ù„Ù…Ø³ØªÙ‚Ù„', svc_advisory_body:'ØªÙ‚ÙŠÙŠÙ… Ù…Ø³ØªÙ‚Ù„ Ù„Ù„Ø¬ÙˆØ§Ù†Ø¨ Ø§Ù„ØªÙ‚Ù†ÙŠØ© ÙˆØ§Ù„ØªÙ†Ø¸ÙŠÙ…ÙŠØ© Ù„Ø£Ø¹Ù…Ø§Ù„ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØ§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù…Ø³ØªØ«Ù…Ø±ÙŠÙ† ÙˆØ§Ù„Ù…Ø³ØªØ­ÙˆØ°ÙŠÙ† ÙˆØ§Ù„Ø´Ø±ÙƒØ§Ø¡ Ø§Ù„Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠÙŠÙ†.', svc_strategy_label:'Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠØ©', svc_strategy_title:'Ø§Ù„ØªØ®Ø·ÙŠØ· Ø§Ù„Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠ', svc_strategy_body:'ØªØ­Ù„ÙŠÙ„ Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø³ÙˆÙ‚ØŒ ÙˆÙ…Ù„Ø§Ø¡Ù…Ø© Ø§Ù„Ù…Ù†ØªØ¬ Ù„Ù„Ø³ÙˆÙ‚ØŒ ÙˆØ§Ù„ØªÙ…ÙˆØ¶Ø¹ Ø§Ù„ØªÙ†Ø§ÙØ³ÙŠØŒ ÙˆØ§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠØ© Ø§Ù„ÙˆØµÙˆÙ„ Ø¥Ù„Ù‰ Ø§Ù„Ø³ÙˆÙ‚ Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª.', svc_transform_label:'ØªØ­ÙˆÙ‘Ù„', svc_transform_title:'Ø§Ù„ØªØ­ÙˆÙ‘Ù„ Ø§Ù„Ø±Ù‚Ù…ÙŠ', svc_transform_body:'Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ù…Ù†ØµØ§ØªØŒ ÙˆØªØ±Ø­ÙŠÙ„ ISO 20022ØŒ ÙˆØ¥Ø¯Ø§Ø±Ø© Ø§Ù„ØªÙƒØ§Ù…Ù„ØŒ ÙˆØ¥Ø¯Ø§Ø±Ø© Ø§Ù„ØªØºÙŠÙŠØ± Ø§Ù„ØªØ´ØºÙŠÙ„ÙŠ Ù„ØªØ­Ø¯ÙŠØ« Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª.', svc_payments_label:'Ù…Ø¯ÙÙˆØ¹Ø§Øª', svc_payments_title:'Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø§Ù„Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠØ©', svc_payments_body:'Ø§Ù„Ø¨Ø·Ø§Ù‚Ø§Øª ÙˆØ§Ù„Ù…Ø­Ø§ÙØ¸ Ø§Ù„Ø±Ù‚Ù…ÙŠØ© ÙˆØ§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø§Ù„ÙÙˆØ±ÙŠØ© ÙˆØªØ­ÙˆÙŠÙ„Ø§Øª Ø§Ù„Ø­Ø³Ø§Ø¨ Ø¥Ù„Ù‰ Ø­Ø³Ø§Ø¨ ÙˆØ­Ù„ÙˆÙ„ Ø§Ù„Ø¯ÙØ¹ Ø¨Ø¯ÙˆÙ† ØªÙ„Ø§Ù…Ø³. Ù…Ø¹Ø±ÙØ© Ø¹Ù…ÙŠÙ‚Ø© Ø¨Ù‡ÙŠØ§ÙƒÙ„ Ø§Ù„Ù…Ø®Ø·Ø·Ø§Øª ÙˆÙ†Ù…Ø§Ø°Ø¬ Ø§Ù„Ø±Ø³ÙˆÙ… ÙˆØªÙ‚Ù†ÙŠØ§Øª Ø§Ù„Ù…Ø¹Ø§Ù„Ø¬Ø©.', svc_view_service:'Ø¹Ø±Ø¶ Ø§Ù„Ø®Ø¯Ù…Ø© â†', // Solutions page sub-text sol_infra_sub:'Ø§Ù„Ø°ÙƒØ§Ø¡ Ø§Ù„Ø§ØµØ·Ù†Ø§Ø¹ÙŠØŒ Ø§Ù„Ù‚Ø¶Ø¨Ø§Ù† Ø§Ù„ÙÙˆØ±ÙŠØ©ØŒ ISO 20022ØŒ Ø§Ù„ØªÙ†Ø³ÙŠÙ‚', sol_acquiring_sub:'Ø¥Ø¯Ø±Ø§Ø¬ Ø§Ù„ØªØ¬Ø§Ø±ØŒ SoftPOSØŒ Ø§Ù„Ù†Ø²Ø§Ø¹Ø§Øª', sol_compliance_sub:'Ù…ÙƒØ§ÙØ­Ø© ØºØ³ÙŠÙ„ Ø§Ù„Ø£Ù…ÙˆØ§Ù„ØŒ Ø§Ø¹Ø±Ù Ø¹Ù…ÙŠÙ„ÙƒØŒ Ø§Ù„Ø§Ø­ØªÙŠØ§Ù„ØŒ Ø§Ù„Ø£Ø·Ø± Ø§Ù„ØªÙ†Ø¸ÙŠÙ…ÙŠØ©', sol_digital_sub:'Ø§Ù„Ø¹Ù…Ù„Ø§Øª Ø§Ù„Ø±Ù‚Ù…ÙŠØ© Ù„Ù„Ø¨Ù†ÙˆÙƒ Ø§Ù„Ù…Ø±ÙƒØ²ÙŠØ©ØŒ Ø§Ù„ØªØ±Ù…ÙŠØ²ØŒ Ø§Ù„Ø®Ø¯Ù…Ø§Øª Ø§Ù„Ù…ØµØ±ÙÙŠØ© Ø§Ù„Ù…ÙØªÙˆØ­Ø©ØŒ Ø§Ù„ÙˆÙƒÙ„Ø§Ø¡', sol_licensing_sub:'QCBØŒ SAMAØŒ CBUAEØŒ CBBØŒ FCA', // Contact form placeholders ph_name:'Ø§Ø³Ù…Ùƒ Ø§Ù„ÙƒØ§Ù…Ù„', ph_position:'Ù…Ù†ØµØ¨Ùƒ', ph_company:'Ù…Ø¤Ø³Ø³ØªÙƒ', ph_email:'you@company.com', ph_tel:'+1 234 567 8900', ph_enquiry:'ØµÙÙ ØªØ­Ø¯ÙŠÙƒ Ø£Ùˆ Ø³Ø¤Ø§Ù„Ùƒ...', // 404 page buttons not_found_contact:'ØªÙˆØ§ØµÙ„ Ù…Ø¹Ù†Ø§', not_found_insights:'Ø§Ù„Ù…Ù‚Ø§Ù„Ø§Øª', not_found_services:'Ø§Ù„Ø®Ø¯Ù…Ø§Øª', // Homepage about body paragraphs about_p1:'ØªØ£Ø³Ø³Øª MENA Advisory ÙÙŠ Ø§Ù„Ø¯ÙˆØ­Ø© ÙÙŠ ÙŠÙ†Ø§ÙŠØ± 2020. ÙˆÙÙŠ ØºØ¶ÙˆÙ† Ø£Ø³Ø§Ø¨ÙŠØ¹ØŒ Ø£ØºÙ„Ù‚ ÙˆØ¨Ø§Ø¡ Ø¹Ø§Ù„Ù…ÙŠ Ø§Ù„Ø­Ø¯ÙˆØ¯ ÙˆØ£Ø±Ø¨Ùƒ Ø§Ù„Ù†Ù…ÙˆØ°Ø¬ Ø§Ù„Ø°ÙŠ ÙƒØ§Ù†Øª ØªØ¹ØªÙ…Ø¯ Ø¹Ù„ÙŠÙ‡ Ø´Ø±ÙƒØ§Øª Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø¯ÙˆÙ„ Ù…Ø¬Ù„Ø³ Ø§Ù„ØªØ¹Ø§ÙˆÙ† Ø§Ù„Ø®Ù„ÙŠØ¬ÙŠ â€” Ø§Ø³ØªÙ‚Ø·Ø§Ø¨ Ø§Ù„Ø®Ø¨Ø±Ø§Øª Ø§Ù„Ø±ÙÙŠØ¹Ø© Ù…Ù† Ø¯Ø¨ÙŠ ÙˆÙ„Ù†Ø¯Ù† ÙˆÙ†ÙŠÙˆÙŠÙˆØ±Ùƒ ÙˆØ³Ù†ØºØ§ÙÙˆØ±Ø© Ø¹Ù†Ø¯ Ø§Ù„Ø·Ù„Ø¨.', about_p2:'Ù†Ø­Ù† Ù…Ø¤Ø³Ø³Ø© Ø§Ø³ØªØ´Ø§Ø±ÙŠØ© Ø¯ÙˆÙ„ÙŠØ© Ù…Ø³ØªÙ‚Ù„Ø© ØªØ¹Ù…Ù„ Ø­ØµØ±ÙŠØ§Ù‹ ÙÙŠ Ù‚Ø·Ø§Ø¹ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØ§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ©. Ù†Ù†Ø·Ù„Ù‚ Ù…Ù† Ø§Ù„Ø¯ÙˆØ­Ø© ÙˆÙ„Ù†Ø¯Ù† ÙˆØ¥Ø³Ø·Ù†Ø¨ÙˆÙ„ Ù„Ù†Ù‚Ø¯Ù‘Ù… Ø§Ù„Ù…Ø´ÙˆØ±Ø© Ù„Ù„Ù…Ø¤Ø³Ø³Ø§Øª Ø§Ù„Ù…Ø§Ù„ÙŠØ© ÙˆÙƒØ¨Ø§Ø± ØªØ¬Ø§Ø± Ø§Ù„ØªØ¬Ø²Ø¦Ø© ÙˆØ´Ø±ÙƒØ§Øª Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø³ÙØ± ÙˆØ§Ù„Ù…Ø³ØªØ­ÙˆØ°ÙŠÙ† ÙˆØ´Ø±ÙƒØ§Øª Ø§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ© ÙˆØ§Ù„Ø¬Ù‡Ø§Øª Ø§Ù„Ø­ÙƒÙˆÙ…ÙŠØ© ÙÙŠ Ù…Ù†Ø·Ù‚Ø© Ø¯ÙˆÙ„ Ù…Ø¬Ù„Ø³ Ø§Ù„ØªØ¹Ø§ÙˆÙ† Ø§Ù„Ø®Ù„ÙŠØ¬ÙŠ ÙˆØ§Ù„Ø´Ø±Ù‚ Ø§Ù„Ø£ÙˆØ³Ø· ÙˆØ´Ù…Ø§Ù„ Ø£ÙØ±ÙŠÙ‚ÙŠØ§ ÙˆØ£ÙˆØ±ÙˆØ¨Ø§.', about_p3:'Ø§Ø³ØªÙ‚Ù„Ø§Ù„ÙŠØªÙ†Ø§ Ø®ÙŠØ§Ø± Ù…Ù‚ØµÙˆØ¯. Ù„Ø§ ØªØ±Ø¨Ø·Ù†Ø§ Ø£ÙŠ Ø¹Ù„Ø§Ù‚Ø§Øª Ù…Ø¹ Ù…ÙˆØ±Ø¯ÙŠÙ† Ø£Ùˆ Ø´Ø±ÙƒØ§Ø¡ ØªÙ‚Ù†ÙŠÙŠÙ† Ù…Ù† Ø´Ø£Ù†Ù‡Ø§ Ø£Ù† ØªÙØ®Ù„Ù‘ Ø¨Ù…ÙˆØ¶ÙˆØ¹ÙŠØ© Ù…Ø´ÙˆØ±ØªÙ†Ø§. ÙƒÙ„ ØªÙˆØµÙŠØ© ØªÙØ¨Ù†Ù‰ Ø¹Ù„Ù‰ Ù…Ø§ Ù‡Ùˆ Ø§Ù„Ø£Ù†Ø³Ø¨ Ù„Ù†Ù…ÙˆØ°Ø¬ Ø¹Ù…Ù„ Ø§Ù„Ø¹Ù…ÙŠÙ„ ÙˆØ¨ÙŠØ¦ØªÙ‡ Ø§Ù„ØªÙ†Ø¸ÙŠÙ…ÙŠØ© ÙˆØ£Ù‡Ø¯Ø§ÙÙ‡ Ø§Ù„ØªØ¬Ø§Ø±ÙŠØ©.', // Homepage services card descriptions home_svc_due_sub:'ØªÙ‚ÙŠÙŠÙ… ØªÙ‚Ù†ÙŠ ÙˆØªÙ†Ø¸ÙŠÙ…ÙŠ Ù…Ø³ØªÙ‚Ù„', home_svc_due_body:'ØªÙ‚ÙŠÙŠÙ… Ù…Ø³ØªÙ‚Ù„ Ù„Ø£Ø¹Ù…Ø§Ù„ Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª ÙˆØ§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§ Ø§Ù„Ù…Ø§Ù„ÙŠØ© Ù„Ù„Ù…Ø³ØªØ«Ù…Ø±ÙŠÙ† ÙˆØ§Ù„Ù…Ø³ØªØ­ÙˆØ°ÙŠÙ† ÙˆØ§Ù„Ø´Ø±ÙƒØ§Ø¡ Ø§Ù„Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠÙŠÙ†.', home_svc_strategy_sub:'Ø§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠØ© Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø³ÙˆÙ‚ ÙˆØ§Ù„Ù†Ù…Ùˆ', home_svc_strategy_body:'ØªØ­Ù„ÙŠÙ„ Ø¯Ø®ÙˆÙ„ Ø§Ù„Ø³ÙˆÙ‚ ÙˆÙ…Ù„Ø§Ø¡Ù…Ø© Ø§Ù„Ù…Ù†ØªØ¬ Ù„Ù„Ø³ÙˆÙ‚ ÙˆØ§Ù„ØªÙ…ÙˆØ¶Ø¹ Ø§Ù„ØªÙ†Ø§ÙØ³ÙŠ ÙˆØ§Ø³ØªØ±Ø§ØªÙŠØ¬ÙŠØ© Ø§Ù„ÙˆØµÙˆÙ„ Ù„Ø´Ø±ÙƒØ§Øª Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª.', home_svc_digital_sub:'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª', home_svc_digital_body:'Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ù…Ù†ØµØ© ÙˆØ¥Ø¯Ø§Ø±Ø© Ø§Ù„ØªÙƒØ§Ù…Ù„ ÙˆØªØ±Ø­ÙŠÙ„ ISO 20022 ÙˆØ¥Ø¯Ø§Ø±Ø© Ø§Ù„ØªØºÙŠÙŠØ± Ø§Ù„ØªØ´ØºÙŠÙ„ÙŠ.', home_svc_epay_sub:'ØªØºØ·ÙŠØ© ÙƒØ§Ù…Ù„Ø© Ù„ÙˆØ³Ø§Ø¦Ù„ Ø§Ù„Ø¯ÙØ¹', home_svc_epay_body:'Ø§Ù„Ø¨Ø·Ø§Ù‚Ø§Øª ÙˆØ§Ù„Ù…Ø­Ø§ÙØ¸ Ø§Ù„Ø±Ù‚Ù…ÙŠØ© ÙˆØ§Ù„Ù…Ø¯ÙÙˆØ¹Ø§Øª Ø§Ù„ÙÙˆØ±ÙŠØ© ÙˆØªØ­ÙˆÙŠÙ„Ø§Øª A2A ÙˆØ­Ù„ÙˆÙ„ Ø§Ù„Ø¯ÙØ¹ Ø¨Ø¯ÙˆÙ† ØªÙ„Ø§Ù…Ø³ ÙÙŠ Ø¯ÙˆÙ„ Ø§Ù„Ø®Ù„ÙŠØ¬ ÙˆØ§Ù„Ø´Ø±Ù‚ Ø§Ù„Ø£ÙˆØ³Ø· ÙˆØ£ÙˆØ±ÙˆØ¨Ø§.', home_svc_explore:'Ø§Ø³ØªÙƒØ´Ù â†', }; const enCache = {}; function applyLang(lang) { const isAr = lang === 'ar'; html.setAttribute('lang', isAr ? 'ar' : 'en-GB'); html.setAttribute('dir', isAr ? 'rtl' : 'ltr'); if (langBtn) { langBtn.textContent = isAr ? 'EN' : 'AR'; langBtn.setAttribute('aria-label', isAr ? 'Switch to English' : 'Switch to Arabic'); langBtn.dataset.lang = lang; } document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.getAttribute('data-i18n'); if (!enCache[k]) { enCache[k] = el.getAttribute('data-en-original') || el.textContent.trim(); el.setAttribute('data-en-original', enCache[k]); } const val = isAr ? (AR[k] || enCache[k]) : enCache[k]; if (el.tagName === 'BUTTON' || el.tagName === 'A') { const svg = el.querySelector('svg'); el.textContent = val + ' '; if (svg) el.appendChild(svg); } else if (el.tagName === 'META') { el.setAttribute('content', val); } else { el.innerHTML = val; } }); document.querySelectorAll('[data-i18n-placeholder]').forEach(el => { const k = el.getAttribute('data-i18n-placeholder'); if (!enCache['ph_' + k]) enCache['ph_' + k] = el.placeholder; el.placeholder = isAr ? (AR[k] || enCache['ph_' + k]) : enCache['ph_' + k]; }); localStorage.setItem('ma-lang', lang); } if (langBtn) { langBtn.dataset.lang = localStorage.getItem('ma-lang') || 'en'; langBtn.addEventListener('click', () => { const cur = langBtn.dataset.lang || 'en'; applyLang(cur === 'en' ? 'ar' : 'en'); }); } const savedLang = localStorage.getItem('ma-lang'); if (savedLang && savedLang !== 'en')
+/* ================================================================
+   MENA Advisory — main.js
+   Particle hero · Ticker feed · Theme · Lang · Nav · Forms
+   ================================================================ */
+(function () {
+  'use strict';
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  function init() {
+
+  /* ── Theme ─────────────────────────────────────────────────── */
+  const html = document.documentElement;
+  const themeBtn = document.querySelector('[data-theme-toggle]');
+  const sunIcon = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+  const moonIcon = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+  let theme = localStorage.getItem('ma-theme') || 'dark';
+  html.setAttribute('data-theme', theme);
+  if (themeBtn) { themeBtn.innerHTML = theme === 'dark' ? moonIcon : sunIcon; }
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      theme = theme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('ma-theme', theme);
+      themeBtn.innerHTML = theme === 'dark' ? moonIcon : sunIcon;
+    });
+  }
+
+  /* ── Scroll-aware header ───────────────────────────────────── */
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    if (header) header.classList.toggle('header--scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  /* ── Mobile menu ───────────────────────────────────────────── */
+  const burger = document.querySelector('[data-burger]');
+  const mobileMenu = document.querySelector('[data-mobile-menu]');
+  if (burger && mobileMenu) {
+    burger.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('is-open');
+      burger.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', open);
+      mobileMenu.setAttribute('aria-hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('is-open');
+        burger.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  /* ── Dropdown nav ──────────────────────────────────────────── */
+  document.querySelectorAll('.nav-dropdown').forEach(dd => {
+    const trigger = dd.querySelector('.nav-trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.nav-trigger').forEach(t => t.setAttribute('aria-expanded', 'false'));
+      trigger.setAttribute('aria-expanded', String(!expanded));
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-trigger').forEach(t => t.setAttribute('aria-expanded', 'false'));
+  });
+
+  /* ── Scroll animations ─────────────────────────────────────── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const delay = e.target.dataset.delay ? parseFloat(e.target.dataset.delay) * 60 : 0;
+        setTimeout(() => {
+          e.target.classList.add('visible');
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }, delay);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+  function observeAll() {
+    document.querySelectorAll('.fade-up, .expertise-item, .service-card, .news-card, .testimonial-card, .client-type-item').forEach((el, i) => {
+      if (!el.classList.contains('visible')) {
+        if (el.classList.contains('service-card') || el.classList.contains('news-card') || el.classList.contains('testimonial-card') || el.classList.contains('client-type-item')) {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(16px)';
+          el.style.transition = `opacity 0.5s ${i * 0.07}s ease, transform 0.5s ${i * 0.07}s ease`;
+        }
+        observer.observe(el);
+      }
+    });
+  }
+  observeAll();
+
+  setTimeout(() => {
+    document.querySelectorAll('.fade-up, .expertise-item').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight + 100) {
+        el.classList.add('visible');
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }
+    });
+  }, 120);
+
+  /* ── Smooth anchor scroll ──────────────────────────────────── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.querySelectorAll('.fade-up, .expertise-item').forEach(el => {
+          el.classList.add('visible');
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20);
+      }
+    });
+  });
+
+  /* ── CTA word rotator ──────────────────────────────────────── */
+  const ctaWord = document.getElementById('ctaWord');
+  if (ctaWord) {
+    const words = ['Achieve?', 'Accelerate?', 'Accomplish?', 'Acquire?'];
+    let idx = 0;
+    setInterval(() => {
+      ctaWord.style.opacity = '0';
+      ctaWord.style.transform = 'translateY(8px)';
+      ctaWord.style.transition = 'opacity 0.28s, transform 0.28s';
+      setTimeout(() => {
+        idx = (idx + 1) % words.length;
+        ctaWord.textContent = words[idx];
+        ctaWord.style.opacity = '1';
+        ctaWord.style.transform = 'translateY(0)';
+      }, 280);
+    }, 2400);
+  }
+
+  /* ── Particle canvas hero ──────────────────────────────────── */
+  (function () {
+    const canvas = document.getElementById('heroCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
+    const N = 55;
+    const particles = Array.from({ length: N }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.4 + 0.5,
+      a: Math.random() * 0.45 + 0.1
+    }));
+
+    let raf;
+    function draw() {
+      raf = requestAnimationFrame(draw);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const dark = isDark();
+      const c = dark ? '0,212,255' : '0,98,204';
+
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      });
+
+      for (let i = 0; i < N; i++) {
+        for (let j = i + 1; j < N; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 110) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${c},${0.09 * (1 - d / 110)})`;
+            ctx.lineWidth = 0.6;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(${c},${particles[i].a})`;
+        ctx.arc(particles[i].x, particles[i].y, particles[i].r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    draw();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { cancelAnimationFrame(raf); } else { draw(); }
+    });
+  })();
+
+  /* ── Ticker ────────────────────────────────────────────────── */
+  (function () {
+    const track = document.getElementById('tickerTrack');
+    if (!track) return;
+
+    function buildTicker(items) {
+      const doubled = [...items, ...items];
+      track.innerHTML = doubled.map(item =>
+        `<span class="ticker-item"><span class="tag">${item.tag}</span><span class="text">${item.text}</span></span><span class="ticker-sep">·</span>`
+      ).join('');
+    }
+
+    function startScroll() {
+      let pos = 0;
+      const speed = 0.5;
+      let paused = false;
+      track.addEventListener('mouseenter', () => { paused = true; });
+      track.addEventListener('mouseleave', () => { paused = false; });
+      function animate() {
+        if (!paused) {
+          pos -= speed;
+          const half = track.scrollWidth / 2;
+          if (Math.abs(pos) >= half) pos = 0;
+          track.style.transform = `translateX(${pos}px)`;
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    fetch('/ticker.json?v=' + Date.now())
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && data.length) buildTicker(data);
+      })
+      .catch(() => {})
+      .finally(() => startScroll());
+  })();
+
+  /* ── Reg Hub filter ────────────────────────────────────────── */
+  (function () {
+    const btns = document.querySelectorAll('.filter-btn');
+    const groups = document.querySelectorAll('.reg-country-group');
+    if (!btns.length) return;
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        groups.forEach(g => {
+          g.style.display = (f === 'all' || g.dataset.country === f) ? '' : 'none';
+        });
+      });
+    });
+  })();
+
+  /* ── Contact form ──────────────────────────────────────────── */
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = contactForm.querySelector('.btn-submit');
+      const status = document.getElementById('formStatus');
+      const lang = localStorage.getItem('ma-lang') || 'en';
+      const name = contactForm.querySelector('#name')?.value.trim();
+      const company = contactForm.querySelector('#company')?.value.trim();
+      const email = contactForm.querySelector('#email')?.value.trim();
+      if (!name || !company || !email) {
+        status.textContent = lang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة.' : 'Please complete all required fields.';
+        status.className = 'form-status form-status--error';
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = lang === 'ar' ? 'جارٍ الإرسال…' : 'Sending…';
+      status.textContent = '';
+      try {
+        const res = await fetch('https://formspree.io/f/mdaygpzr', {
+          method: 'POST', body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          status.textContent = lang === 'ar'
+            ? 'شكراً لتواصلك. سنردّ عليك قريباً.'
+            : 'Thank you, your enquiry has been received. We will be in touch shortly.';
+          status.className = 'form-status form-status--success';
+          contactForm.reset();
+        } else { throw new Error(); }
+      } catch {
+        status.textContent = lang === 'ar'
+          ? 'حدث خطأ. يرجى المحاولة مجدداً أو مراسلتنا على info@madvisory.qa'
+          : 'Something went wrong. Please try again or email info@madvisory.qa';
+        status.className = 'form-status form-status--error';
+      }
+      btn.disabled = false;
+      btn.textContent = lang === 'ar' ? 'إرسال الاستفسار' : 'Submit Enquiry';
+    });
+  }
+
+  /* ── Newsletter form ───────────────────────────────────────── */
+  const nlForm = document.getElementById('newsletterForm');
+  if (nlForm) {
+    nlForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const status = document.getElementById('newsletterStatus');
+      fetch(nlForm.action, { method: 'POST', body: new FormData(nlForm), headers: { 'Accept': 'application/json' } })
+        .then(r => {
+          if (r.ok) { status.textContent = 'Thank you, you are subscribed.'; status.style.color = 'var(--accent)'; nlForm.reset(); }
+          else { status.textContent = 'Something went wrong. Please try again.'; status.style.color = '#f06363'; }
+        }).catch(() => { status.textContent = 'Connection error. Please try again.'; status.style.color = '#f06363'; });
+    });
+  }
+
+  /* ── Language / i18n ───────────────────────────────────────── */
+  const langBtn = document.querySelector('[data-lang-toggle]');
+  const AR = {
+    nav_about:'من نحن', nav_services:'خدماتنا', nav_due_diligence:'التحقق المستقل',
+    nav_strategic_planning:'التخطيط الاستراتيجي', nav_digital_transformation:'التحوّل الرقمي',
+    nav_electronic_payments:'المدفوعات الإلكترونية', nav_solutions:'الحلول',
+    nav_sol_payments_infra:'البنية التحتية للمدفوعات', nav_sol_acquiring:'الاقتناء والقبول',
+    nav_sol_compliance:'الامتثال والمخاطر', nav_sol_digital:'الرقمي والناشئ',
+    nav_sol_licensing:'الترخيص ودخول السوق', nav_regulatory:'المحور التنظيمي',
+    nav_news:'المقالات', nav_insights:'المقالات', nav_careers:'الوظائف',
+    nav_book:'احجز مكالمة', nav_contact:'تواصل معنا',
+    hero_eyebrow:'استشارات المدفوعات والتكنولوجيا المالية — الدوحة · لندن · إسطنبول',
+    hero_line1:'نصنع', hero_line2:'مستقبل المدفوعات',
+    hero_sub:'استشارات مستقلة للمؤسسات المالية وشركات التكنولوجيا المالية والحكومات في رسم مستقبل المدفوعات.',
+    hero_cta1:'استكشف خدماتنا', hero_cta2:'طلب استشارة',
+    stat_market:'سوق المدفوعات في الشرق الأوسط 2031', stat_disciplines:'حل استشاري',
+    stat_frameworks:'إطار تنظيمي', stat_continents:'قارات',
+    about_eyebrow:'من نحن', about_heading:'شركة استشارية مستقلة في قلب قطاع المدفوعات',
+    services_eyebrow:'الخدمات', services_heading:'أربعة محاور للتميز الاستشاري',
+    solutions_eyebrow:'الحلول', solutions_heading:'استشارات متخصصة للجيل القادم من المدفوعات',
+    news_eyebrow:'مقالات', news_heading:'تفكير على حافة التكنولوجيا المالية',
+    reg_eyebrow:'المحور التنظيمي', reg_heading:'مواكبة البيئة التنظيمية المتحركة بسرعة',
+    exp_eyebrow:'خبرتنا', exp_heading:'ثمانية مجالات للتخصص العميق',
+    clients_eyebrow:'عملاؤنا', clients_heading:'موثوق به عبر الصناعات والحدود',
+    hww_eyebrow:'نموذج التعاون', hww_heading:'كيف نعمل',
+    team_eyebrow:'الفريق', team_heading:'المديرون وشبكة المستشارين',
+    contact_eyebrow:'تواصل معنا', contact_heading:'كيف يمكننا مساعدتك على تحقيق أهدافك؟',
+    contact_sub:'سواء كنت تُقيّم استثماراً في التكنولوجيا المالية أو تسعى لتحسين بنيتك التحتية للمدفوعات، فريقنا مستعد.',
+    form_name:'الاسم *', form_position:'المنصب', form_company:'الشركة *',
+    form_email:'البريد الإلكتروني *', form_tel:'الهاتف',
+    form_enquiry:'استفسارك', form_submit:'إرسال الاستفسار',
+    footer_services:'الخدمات', footer_solutions:'الحلول',
+    footer_regulatory:'المحور التنظيمي', footer_company:'الشركة',
+    footer_tagline:'استشارات المدفوعات والتكنولوجيا المالية.<br>الدوحة · لندن · إسطنبول',
+    footer_address:'برج تورنادو، شارع مجلس التعاون، الدوحة، قطر',
+    footer_copy:'© 2026 MENA Advisory. جميع الحقوق محفوظة.',
+    insights_label:'المقالات', insights_heading:'تفكير على حافة التكنولوجيا المالية',
+    careers_label:'الوظائف', careers_heading:'انضم إلى MENA Advisory',
+    filter_all:'الكل', filter_uk:'المملكة المتحدة', filter_eu:'أوروبا',
+    filter_gcc:'دول مجلس التعاون الخليجي', filter_global:'عالمي',
+    svc_label:'الخدمات', svc_heading:'ماذا نفعل',
+    nl_eyebrow:'ابقَ على اطلاع', nl_heading:'تحديثات تنظيمية وسوقية',
+    view_all_solutions:'عرض جميع الحلول',
+    badge_active:'ساري', badge_inprogress:'قيد التنفيذ', badge_imminent:'وشيك',
+    mobile_services:'الخدمات',
+    mobile_solutions:'الحلول',
+    ticker_label:'المستجدات',
+    reg_europe:'أوروبا',
+    reg_uk:'المملكة المتحدة',
+    reg_gcc:'دول مجلس التعاون الخليجي',
+    reg_global:'عالمي',
+    filter_all_ar:'الكل',
+    reg_badge_active:'ساري',
+    reg_badge_inprogress:'قيد التنفيذ',
+    reg_badge_imminent:'وشيك',
+    // Careers page
+    careers_sub:'نحن شركة استشارية متخصصة في المدفوعات والتكنولوجيا المالية. عندما ننمو، ننمو بشكل متعمد — نضم أشخاصاً ذوي خبرة عميقة في المجال.',
+    careers_who_label:'من نوظّف',
+    careers_who_heading:'الخبرة المتخصصة أولاً',
+    careers_who_body1:'كل عضو في فريقنا عمل على مستوى رفيع داخل شركات المدفوعات أو البنوك أو المؤسسات المالية أو شركات التكنولوجيا المالية.',
+    careers_where_label:'أين نعمل',
+    careers_where_heading:'الدوحة، لندن، إسطنبول',
+    careers_where_body:'مكتبنا الرئيسي في برج تورنادو بالدوحة. لدينا مستشارون في لندن وإسطنبول، ونعمل مع عملاء في دول مجلس التعاون الخليجي والشرق الأوسط وأوروبا.',
+    careers_register_label:'سجّل اهتمامك',
+    careers_register_heading:'أرسل لنا ملفك التعريفي',
+    careers_register_body:'استخدم نموذج التواصل وصف فيه خبرتك. اذكر المجالات التي عملت فيها وما تبحث عنه. نراجع كل طلب.',
+    careers_cta2:'تواصل معنا →',
+    careers_no_openings:'لا وظائف شاغرة حالياً',
+    careers_no_openings_sub:'ليس لدينا أدوار مفتوحة في الوقت الحالي. إذا كانت لديك خلفية قوية في الاستشارات، يسعدنا الاستماع إليك.',
+    // About CTA
+    about_cta:'اعمل معنا →',
+    // Shared page elements
+    discuss_requirements:'ناقش متطلباتك',
+    discuss_sub:'تحدث مباشرة مع متخصص في أي من هذه المجالات.',
+    get_in_touch:'تواصل معنا →',
+    back_to_insights:'← العودة إلى المقالات',
+    back_to_solutions:'← جميع الحلول',
+    read_consultation:'احجز استشارة →',
+    // Services pages
+    svc_label_services:'الخدمات',
+    page_sub_due_diligence:'تقييم مستقل لأعمال المدفوعات والتكنولوجيا المالية للمستثمرين والمستحوذين والشركاء الاستراتيجيين.',
+    page_sub_strategic:'نساعد شركات المدفوعات على تحديد أين تتنافس وكيف تفوز في الأسواق المستهدفة.',
+    page_sub_digital_trans:'نرشد المؤسسات المالية وشركات المدفوعات خلال مشاريع التحديث الرقمي المعقدة.',
+    page_sub_epayments:'نغطي الطيف الكامل لطرق الدفع الإلكتروني — بطاقات، محافظ رقمية، مدفوعات فورية، تحويلات مباشرة.',
+    // Solutions pages
+    page_sub_payments_infra:'المدفوعات المدفوعة بالذكاء الاصطناعي، القضبان الفورية، ترحيل ISO 20022، تنسيق المدفوعات وتقنيات كشف الاحتيال.',
+    page_sub_acquiring:'استراتيجية الاستحواذ، إطار إدراج التجار، SoftPOS، القبول متعدد القنوات وإدارة النزاعات.',
+    page_sub_compliance:'مراقبة معاملات مكافحة غسيل الأموال، تصميم برنامج اعرف عميلك، منع الاحتيال والأطر التنظيمية.',
+    page_sub_digital_em:'توجيه متخصص في العملات الرقمية للبنوك المركزية والتسوية المُرمَّزة والخدمات المصرفية المفتوحة والتجارة الوكيلة.',
+    page_sub_licensing:'ترخيص مؤسسات الدفع لدول مجلس التعاون الخليجي وأوروبا. QCB وSAMA وCBUAE وCBB وFCA والبنك المركزي الأيرلندي.',
+    // CTA strip
+    cta_discuss:'ناقش متطلباتك',
+    cta_specialist:'تحدث مباشرة مع متخصص في أي من هذه المجالات.',
+    // Regulatory hub
+    reg_page_sub:'تتغير لوائح المدفوعات بوتيرة أسرع مما كانت عليه في أي وقت مضى. نتتبع التغييرات الجوهرية ونقدم المشورة للعملاء.',
+    // Services/solutions landing
+    svc_page_sub:'أربعة تخصصات تعكس النظام البيئي الكامل لصناعة المدفوعات الحديثة.',
+    sol_page_sub:'من التجارة المدفوعة بالذكاء الاصطناعي إلى الأصول المُرمَّزة — توجيه خبير في التقنيات التي تعيد تشكيل صناعة المدفوعات.',
+    // Insights
+    insights_page_sub:'تحليلات وتعليقات حول تنظيم المدفوعات والتكنولوجيا الناشئة في دول الخليج والشرق الأوسط وأوروبا.',
+    // 404
+    page_not_found:'الصفحة غير موجودة',
+    page_not_found_sub:'الصفحة التي تبحث عنها غير موجودة أو ربما انتقلت. جرّب أحد الروابط أدناه أو عد إلى الصفحة الرئيسية.',
+    go_home:'← الرئيسية',
+
+  // ── Career listing keys ────────────────────────────────────────────────────
+  career_open_role:'وظيفة شاغرة',
+  career_role_title:'مطوّر أول لتحويل الأنظمة المصرفية الأساسية',
+  career_apply_btn:'تقدّم الآن ←',
+  career_badge_perm:'دائم',
+  career_badge_location:'الدوحة، قطر',
+  career_badge_travel:'يُشترط السفر الدولي',
+  career_h3_resp:'المسؤوليات الرئيسية',
+  career_h3_skills:'المهارات والخبرات المطلوبة',
+  career_h3_quals:'المؤهلات المفضّلة',
+  career_h3_why:'لماذا تنضم إلى MENA Advisory',
+  career_h3_apply:'طريقة التقديم',
+  career_14days:'إذا لم تتلقَّ ردًّا خلال 14 يومًا من تاريخ تقديم طلبك، فيُرجى اعتبار طلبك غير ناجح في هذه المرة. نشكرك على اهتمامك بـ MENA Advisory.',
+
+  // ── Added 2026-06-15: missing translations ─────────────────────────────
+
+  // Services page cards
+  svc_advisory_label:'استشارات',
+  svc_advisory_title:'التحقق المستقل',
+  svc_advisory_body:'تقييم مستقل للجوانب التقنية والتنظيمية لأعمال المدفوعات والتكنولوجيا المالية للمستثمرين والمستحوذين والشركاء الاستراتيجيين.',
+  svc_strategy_label:'استراتيجية',
+  svc_strategy_title:'التخطيط الاستراتيجي',
+  svc_strategy_body:'تحليل دخول السوق، وملاءمة المنتج للسوق، والتموضع التنافسي، واستراتيجية الوصول إلى السوق لشركات المدفوعات.',
+  svc_transform_label:'تحوّل',
+  svc_transform_title:'التحوّل الرقمي',
+  svc_transform_body:'اختيار المنصات، وترحيل ISO 20022، وإدارة التكامل، وإدارة التغيير التشغيلي لتحديث المدفوعات.',
+  svc_payments_label:'مدفوعات',
+  svc_payments_title:'المدفوعات الإلكترونية',
+  svc_payments_body:'البطاقات والمحافظ الرقمية والمدفوعات الفورية وتحويلات الحساب إلى حساب وحلول الدفع بدون تلامس. معرفة عميقة بهياكل المخططات ونماذج الرسوم وتقنيات المعالجة.',
+  svc_view_service:'عرض الخدمة ←',
+
+  // Solutions page sub-text
+  sol_infra_sub:'الذكاء الاصطناعي، القضبان الفورية، ISO 20022، التنسيق',
+  sol_acquiring_sub:'إدراج التجار، SoftPOS، النزاعات',
+  sol_compliance_sub:'مكافحة غسيل الأموال، اعرف عميلك، الاحتيال، الأطر التنظيمية',
+  sol_digital_sub:'العملات الرقمية للبنوك المركزية، الترميز، الخدمات المصرفية المفتوحة، الوكلاء',
+  sol_licensing_sub:'QCB، SAMA، CBUAE، CBB، FCA',
+
+  // Contact form placeholders
+  ph_name:'اسمك الكامل',
+  ph_position:'منصبك',
+  ph_company:'مؤسستك',
+  ph_email:'you@company.com',
+  ph_tel:'+1 234 567 8900',
+  ph_enquiry:'صِف تحديك أو سؤالك...',
+
+  // 404 page buttons
+  not_found_contact:'تواصل معنا',
+  not_found_insights:'المقالات',
+  not_found_services:'الخدمات',
+
+  // Homepage about body paragraphs
+  about_p1:'تأسست MENA Advisory في الدوحة في يناير 2020. وفي غضون أسابيع، أغلق وباء عالمي الحدود وأربك النموذج الذي كانت تعتمد عليه شركات مدفوعات دول مجلس التعاون الخليجي — استقطاب الخبرات الرفيعة من دبي ولندن ونيويورك وسنغافورة عند الطلب.',
+  about_p2:'نحن مؤسسة استشارية دولية مستقلة تعمل حصرياً في قطاع المدفوعات والتكنولوجيا المالية. ننطلق من الدوحة ولندن وإسطنبول لنقدّم المشورة للمؤسسات المالية وكبار تجار التجزئة وشركات إدارة السفر والمستحوذين وشركات التكنولوجيا المالية والجهات الحكومية في منطقة دول مجلس التعاون الخليجي والشرق الأوسط وشمال أفريقيا وأوروبا.',
+  about_p3:'استقلاليتنا خيار مقصود. لا تربطنا أي علاقات مع موردين أو شركاء تقنيين من شأنها أن تُخلّ بموضوعية مشورتنا. كل توصية تُبنى على ما هو الأنسب لنموذج عمل العميل وبيئته التنظيمية وأهدافه التجارية.',
+
+  // Homepage services card descriptions
+  home_svc_due_sub:'تقييم تقني وتنظيمي مستقل',
+  home_svc_due_body:'تقييم مستقل لأعمال المدفوعات والتكنولوجيا المالية للمستثمرين والمستحوذين والشركاء الاستراتيجيين.',
+  home_svc_strategy_sub:'استراتيجية دخول السوق والنمو',
+  home_svc_strategy_body:'تحليل دخول السوق وملاءمة المنتج للسوق والتموضع التنافسي واستراتيجية الوصول لشركات المدفوعات.',
+  home_svc_digital_sub:'تحديث المدفوعات',
+  home_svc_digital_body:'اختيار المنصة وإدارة التكامل وترحيل ISO 20022 وإدارة التغيير التشغيلي.',
+  home_svc_epay_sub:'تغطية كاملة لوسائل الدفع',
+  home_svc_epay_body:'البطاقات والمحافظ الرقمية والمدفوعات الفورية وتحويلات A2A وحلول الدفع بدون تلامس في دول الخليج والشرق الأوسط وأوروبا.',
+  home_svc_explore:'استكشف ←',
+  };
+  const enCache = {};
+
+  function applyLang(lang) {
+    const isAr = lang === 'ar';
+    html.setAttribute('lang', isAr ? 'ar' : 'en-GB');
+    html.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+    if (langBtn) {
+      langBtn.textContent = isAr ? 'EN' : 'AR';
+      langBtn.setAttribute('aria-label', isAr ? 'Switch to English' : 'Switch to Arabic');
+      langBtn.dataset.lang = lang;
+    }
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.getAttribute('data-i18n');
+      if (!enCache[k]) {
+        enCache[k] = el.getAttribute('data-en-original') || el.textContent.trim();
+        el.setAttribute('data-en-original', enCache[k]);
+      }
+      const val = isAr ? (AR[k] || enCache[k]) : enCache[k];
+      if (el.tagName === 'BUTTON' || el.tagName === 'A') {
+        const svg = el.querySelector('svg');
+        el.textContent = val + ' ';
+        if (svg) el.appendChild(svg);
+      } else if (el.tagName === 'META') {
+        el.setAttribute('content', val);
+      } else {
+        el.innerHTML = val;
+      }
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const k = el.getAttribute('data-i18n-placeholder');
+      if (!enCache['ph_' + k]) enCache['ph_' + k] = el.placeholder;
+      el.placeholder = isAr ? (AR[k] || enCache['ph_' + k]) : enCache['ph_' + k];
+    });
+    localStorage.setItem('ma-lang', lang);
+  }
+
+  if (langBtn) {
+    langBtn.dataset.lang = localStorage.getItem('ma-lang') || 'en';
+    langBtn.addEventListener('click', () => {
+      const cur = langBtn.dataset.lang || 'en';
+      applyLang(cur === 'en' ? 'ar' : 'en');
+    });
+  }
+  const savedLang = localStorage.getItem('ma-lang');
+  if (savedLang && savedLang !== 'en') applyLang(savedLang);
+
+  } // end init
+})();
