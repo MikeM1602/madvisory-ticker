@@ -329,7 +329,7 @@
     nav_electronic_payments:'المدفوعات الإلكترونية', nav_solutions:'الحلول',
     nav_sol_payments_infra:'البنية التحتية للمدفوعات', nav_sol_acquiring:'الاقتناء والقبول',
     nav_sol_compliance:'الامتثال والمخاطر', nav_sol_digital:'الرقمي والناشئ',
-    nav_sol_licensing:'الترخيص ودخول السوق', nav_regulatory:'المحور التنظيمي',nav_industry_news:'أخبار الصناعة',
+    nav_sol_licensing:'الترخيص ودخول السوق', nav_sol_card_issuing:'إصدار البطاقات وإدارة البرامج', nav_sol_fx:'مدفوعات العملات الأجنبية والخزينة', nav_regulatory:'المحور التنظيمي',nav_industry_news:'أخبار الصناعة',
     nav_news:'المقالات', nav_insights:'المقالات', nav_careers:'الوظائف',
     nav_book:'احجز مكالمة', nav_contact:'تواصل معنا',
     hero_eyebrow:'استشارات المدفوعات والتكنولوجيا المالية — الدوحة · لندن · إسطنبول',
