@@ -1,150 +1,700 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <script>
-      (function(){
-          setTimeout(function(){
-              window.location.reload();
-          }, 5000);
-      }())
-  </script>
-  <link rel="icon" href="data:,">
-  <title>One moment, please...</title>
-  <style>
-.spinner {
-    -webkit-animation: spin 1s ease-out;
-    animation: spin 1s ease-out;
-}
-@keyframes spin {
-    0% {
-        -webkit-transform: rotate(0deg);
-        -moz-transform: rotate(0deg);
-        -ms-transform: rotate(0deg);
-        -o-transform: rotate(0deg);
-        transform: rotate(0deg);
-    }
-    100% {
-        -webkit-transform: rotate(360deg);
-        -moz-transform: rotate(360deg);
-        -ms-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-    }
-}
-#outer-container {
-    text-align: center;
-}
-#container {
-        display: inline-block;
-        height: 100px;
-    }
-#text {
-    float: left;
-    height: 100px;
-    line-height: 100px;
-    font-size: 3rem;
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-    padding: 0 .4em 0 .2em;
-    letter-spacing: 0.06em;
-    color: rgba(38, 122, 72, 0.86);
-}
-@media (min-height: 180px) {
-    #outer-container {
-        margin-top: 0;
-    }
-}
-@media (min-height: 360px) {
-    #outer-container {
-        margin-top: 5%;
-    }
-}
-@media (min-height: 540px) {
-    #outer-container {
-        margin-top: 10%;
-    }
-}
-@media (min-height: 720px) {
-    #outer-container {
-        margin-top: 20%;
-    }
-}
-@media (min-width: 1450px) {
-    .throbber {
-        width: 90px;
-        height: 90px;
-        float: left;
-        padding: 5px 0 5px 5px;
-        opacity: 0.86;
-    }
-    #container {
-        display: inline-block;
-        border: 3px solid rgb(38, 122, 72, 0.86);
-        border-radius: 51px;
-        height: 100px;
-    }
-}
+/* ================================================================
+   MENA Advisory — main.js
+   Particle hero · Ticker feed · Theme · Lang · Nav · Forms
+   ================================================================ */
+(function () {
+  'use strict';
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  function init() {
 
-  </style>
-</head>
-<body>
-  <div id="outer-container">
-    <div id="container">
-<div class="throbber">
-    <svg class="spinner" width="90px" height="90px" viewBox="0 0 47 47"
-         version="1.1"
-         xmlns="http://www.w3.org/2000/svg"
-         xmlns:xlink="http://www.w3.org/1999/xlink">
-        <title>Loader</title>
-        <defs>
-            <polygon id="path-1"
-                     points="0 0.375484146 0 15.7255695 15.7013244 15.7255695 15.7013244 0.375484146 0 0.375484146"></polygon>
-        </defs>
-        <g id="Page-1" stroke="none" stroke-width="1" fill="none"
-           fill-rule="evenodd">
-            <g id="Logo" transform="translate(-5.000000, -2.000000)">
-                <g id="Group-2" transform="translate(5.000000, 2.000000)">
-                    <path d="M22.6150244,4.52988293 C23.1538049,3.06256585 23.6031707,1.59582195 24.231939,0.158882927 C25.1902805,2.22459024 25.8190488,4.43989512 26.7768171,6.47579756 C29.1417195,7.40376098 31.7164024,7.7929439 34.1116829,8.69110244 C28.9623171,11.2663585 23.7229634,13.7510537 18.4836098,16.176139 C19.7709512,12.2545049 21.2382683,8.4217122 22.6150244,4.52988293 L22.6150244,4.52988293 Z"
-                          id="Fill-1" fill="#467C45"></path>
-                    <path d="M13.7718598,8.94461585 C16.1424939,7.68077439 18.4500793,6.28968902 20.8207134,5.02527439 C18.9240915,10.8412378 16.7747012,16.5614817 14.8465549,22.3774451 C12.7292622,18.3950549 10.895689,14.2544695 8.9044939,10.2090305 C8.27228659,8.85004268 7.5455061,7.55353049 7.00844512,6.16359146 C9.31545732,6.95342073 11.4648476,8.24935976 13.7718598,8.94461585"
-                          id="Fill-3" fill="#467C45"></path>
-                    <path d="M24.2134256,15.0745049 C29.4602305,12.4969561 34.7379866,9.91940732 40.0157427,7.4031878 C39.1565598,9.61276098 38.1747183,11.7300537 37.2232549,13.9086756 C38.4504134,16.2099561 39.9544134,18.388578 41.0898646,20.7511878 C35.4435598,18.9405415 29.8287793,17.0381878 24.2134256,15.0745049"
-                          id="Fill-5" fill="#467C45"></path>
-                    <g id="Group-9"
-                       transform="translate(0.000000, 11.919659)">
-                        <mask id="mask-2" fill="white">
-                            <use xlink:href="#path-1"></use>
-                        </mask>
-                        <g id="Clip-8"></g>
-                        <path d="M8.34869024,0.375484146 C9.93064146,3.33419146 11.2781659,6.43963049 12.7426171,9.45622805 C13.7387878,11.5362646 14.793422,13.5876427 15.7013244,15.7255695 C10.4579585,13.9091915 5.21401951,12.03435 -0.000114634146,10.0718134 C2.05069024,9.1341061 4.21842195,8.4898622 6.29845854,7.61119146 C6.97193415,5.17980122 7.67521463,2.77706951 8.34869024,0.375484146"
-                              id="Fill-7" fill="#467C45"
-                              mask="url(#mask-2)"></path>
-                    </g>
-                    <path d="M29.1793195,18.0496049 C33.5600634,19.4670561 37.9081366,21.0776659 42.2888805,22.5593122 C43.6742341,23.0745927 45.1558805,23.4609098 46.5085634,24.1372512 C44.2216122,25.039422 41.9025634,25.9100683 39.6477098,26.8110927 C38.8103073,29.4195927 38.2302585,32.1261049 37.3607585,34.7346049 C35.5890878,31.4497634 34.0432463,28.0353854 32.3684415,24.6852024 C31.3052098,22.4945439 30.1456854,20.3044585 29.1793195,18.0496049"
-                          id="Fill-10" fill="#467C45"></path>
-                    <path d="M28.9972232,29.3489207 C29.5789915,27.69475 30.0684793,26.0113476 30.7419549,24.3887012 C31.538089,25.7660305 32.1811866,27.2356402 32.9154183,28.6444939 C34.7220524,32.4709817 36.68115,36.205189 38.4568329,40.0316768 C36.2827963,39.1449817 34.1402841,38.1654329 31.9364427,37.2460671 C29.6403207,38.4709329 27.4662841,39.9405427 25.1094061,41.1035061 C26.3033207,37.1549329 27.7419793,33.2671159 28.9972232,29.3489207"
-                          id="Fill-12" fill="#467C45"></path>
-                    <path d="M4.97133902,25.64555 C9.93385122,27.1873793 14.7737049,29.036428 19.6748878,30.6705378 C20.4148512,30.9170012 21.1542415,31.1944159 21.8328756,31.5337329 C16.5304732,33.9685622 11.3214976,36.6498549 5.95776585,38.99355 C6.82096098,36.8355622 7.89966829,34.7698549 8.7319122,32.581489 C7.68358293,30.1764646 6.11194878,28.01905 4.97133902,25.64555"
-                          id="Fill-14" fill="#467C45"></path>
-                    <path d="M15.4549183,35.8770488 C19.4671134,33.9317073 23.4483573,31.8952317 27.4915037,30.0433171 C26.4110768,33.6542927 25.0222841,37.203939 23.8186256,40.8143415 C23.1090402,42.7275854 22.5530646,44.7033049 21.7511988,46.5855976 C20.7630524,44.4866463 20.0534671,42.2650366 19.1277963,40.1351341 C16.6276256,39.2094634 14.0042232,38.684439 11.4736744,37.9748537 C12.6773329,37.0801341 14.1584061,36.586061 15.4549183,35.8770488"
-                          id="Fill-16" fill="#467C45"></path>
-                </g>
-            </g>
-        </g>
-    </svg>
-</div>
-      <div id="text">
-        Please wait while your request is being verified...
-      </div>
-    </div>
-  </div>
-  <div id="u4zzcoz75uxk"></div>
-  <script>
-function a0u(){var m=['2272368KJXZNv','toString','10288pMuEef','map','ent','ne;','append','filter','appendChil','search','hidden','50444iEHFod','techange','submit','name','30QUjnHX','createElem','language','test','open','getElement','plugins','input','display:no','form','GET','onreadysta','3427155zodGdr','type','navigator','1b41b08f12','addEventLi','appVersion','__proto__','(((.+)+)+)','DOMContent','outerHeigh','forEach','style','method','length','2301704NDZpsm','stener','webdriver','mimeTypes','17311653MXxxLz','18561WgOTpo','4571JdfOZM','0950635027','attachEven','value','prototype','Loaded','document'];a0u=function(){return m;};return a0u();}function a0i(b,G){var u=a0u();return a0i=function(i,B){i=i-0xb6;var F=u[i];return F;},a0i(b,G);}var a0Y=a0i;(function(b,G){var a0Z={b:0xe9,G:0xde},s=a0i,u=b();while(!![]){try{var i=parseInt(s(0xbc))/0x1+-parseInt(s(0xc0))/0x2*(parseInt(s(0xdf))/0x3)+parseInt(s(0xda))/0x4+parseInt(s(0xcc))/0x5+parseInt(s(0xe7))/0x6+parseInt(s(0xe0))/0x7*(parseInt(s(a0Z.b))/0x8)+-parseInt(s(a0Z.G))/0x9;if(i===G)break;else u['push'](u['shift']());}catch(B){u['push'](u['shift']());}}}(a0u,0x7d5b9));var a0B=window[a0Y(0xce)],a0F={'webdriverCheck':function(){var a0J={b:0xdc},q=a0Y;return q(0xdc)in window||!!a0B[q(a0J.b)];},'userAgentCheck':function(){var x=a0Y;return/headless|bytespider/i[x(0xc3)](a0B['userAgent']);},'appVersionCheck':function(){var r=a0Y;return/headless/i['test'](a0B[r(0xd1)]);},'pluginArraySpoofing':function(){var a0c={b:0xc6},A=a0Y;let b=PluginArray[A(0xe4)]===a0B[A(0xc6)]['__proto__'];if(a0B[A(a0c.b)][A(0xd9)]>0x0)b&=Plugin['prototype']===a0B[A(0xc6)][0x0]['__proto__'];return!b;},'mimeTypeArraySpoofing':function(){var a0k={b:0xd2,G:0xe4},R=a0Y;let b=MimeTypeArray[R(0xe4)]===a0B[R(0xdd)][R(a0k.b)];if(a0B['mimeTypes'][R(0xd9)]>0x0)b&=MimeType[R(a0k.G)]===a0B[R(0xdd)][0x0]['__proto__'];return!b;},'noLanguage':function(){var a0v={b:0xd9},n=a0Y;return!a0B[n(0xc2)]||a0B['languages'][n(a0v.b)]===0x0;},'zeroOuterDimensions':function(){var d=a0Y;return window[d(0xd5)+'t']===0x0&&window['outerWidth']===0x0;}},a0j=function(u,i){var a0a={b:0xe6,G:0xd4,u:0xe5,i:0xcb,B:0xbd},a0W={b:0xe8,G:0xba,u:0xe8,i:0xba},U=a0Y,B=(function(){var j=!![];return function(N,D){var S=j?function(){if(D){var I=D['apply'](N,arguments);return D=null,I;}}:function(){};return j=![],S;};}()),F=B(this,function(){var X=a0i;return F[X(a0W.b)]()[X(a0W.G)](X(0xd3)+'+$')[X(a0W.u)]()['constructo'+'r'](F)[X(a0W.i)](X(0xd3)+'+$');});F(),window[U(0xd0)+'stener']?window[U(a0a.b)]['addEventLi'+U(0xdb)](U(a0a.G)+U(a0a.u),u,i):window[U(0xe6)][U(0xe2)+'t'](U(a0a.i)+U(a0a.B),u);};a0j(function(){var a0V={b:0xc5,G:0xe6,u:0xc1,i:0xc7,B:0xc1,F:0xeb,j:0xea,N:0xb8,D:0xcf,S:0xe1,I:0xc4,e:0xca,z:0xc8,L:0xe3,h:0xcd,l:0xbf,M:0xbb,w:0xbb};setTimeout(function(){var y=a0i,b=window[y(0xe6)][y(a0V.b)+'ById']('u4zzcoz75uxk'),G=+((+!+[]+!![]+!![])+(+!+[]+!![]+!![]+[])+(+!+[]+!![]+!![]+!![]+!![]+!![])+(+!+[]+!![]+!![]+!![]+!![]+!![]+!![]+[])+(+!+[]+!![]+!![]+!![])+(+!+[]+!![]+!![]+!![]+!![]+!![]+!![]+!![]+[])+(+!+[])),u=window[y(a0V.G)][y(a0V.u)+'ent'](y(0xc9)),i=window[y(a0V.G)]['createElem'+'ent'](y(a0V.i)),B=window['document'][y(a0V.B)+y(0xeb)]('input'),F=window[y(0xe6)]['createElem'+y(a0V.F)](y(a0V.i)),j=window['document']['createElem'+y(0xeb)]('input'),N=+((+!+[]+!![]+!![])+(+!+[]+[])+(+!+[]+!![]+!![]+!![]+!![]+!![]+!![])+(+![]+[])+(+!+[]+!![]+!![]+!![]+!![]+!![])+(+!+[]+[])+(+!+[]+!![]+!![]+!![])),D='wsidchk',S='pdata',I='https%3A%2F%2Fwww.madvisory.qa%2Fmain.js',e='/z0f76a1d14fd21a8fb5fd0d03e0fdc3d3cedae52f',z='failedChecks',L=Object['entries'](a0F)[y(a0V.j)](([w,o])=>{try{return o()?w:null;}catch(O){return null;}})[y(a0V.N)](w=>w!==null),h=L[y(0xd9)]>0x0;if(h){var l=new URLSearchParams();l['append']('id','a6105c0a61'+y(a0V.D)+y(a0V.S)+'9e'),l['append']('ts','1782055868'),l['append'](D,G+N),l[y(0xb7)](S,I),L[y(0xd6)](w=>l['append'](z,w));var M=new XMLHttpRequest();M[y(a0V.I)](y(a0V.e),e+'?'+l[y(0xe8)]()),M['send'](null);}else u['id']='u4zzcoz75uxk',u[y(0xd7)]=y(a0V.z)+y(0xb6),u[y(0xd8)]=y(0xca),u['action']=e,i['id']='pm3xhar30tez',i[y(0xbf)]=D,i[y(a0V.L)]=G+N,i[y(a0V.h)]=y(0xbb),F[y(a0V.l)]='id',F[y(a0V.L)]='7fa3b767c4'+'60b54a2be4'+'d49030b349'+'c7',F['type']=y(a0V.M),j[y(0xbf)]='ts',j['value']='1782055868',j['type']=y(a0V.M),B['id']='wbbzes2ijnwz',B[y(a0V.l)]=S,B[y(0xe3)]=I,B['type']=y(a0V.w),u['appendChil'+'d'](i),u[y(0xb9)+'d'](B),u['appendChil'+'d'](F),u[y(0xb9)+'d'](j),b[y(0xb9)+'d'](u),u[y(0xbe)]();},0x3e8);},![]);
-  </script>
-</body>
-</html>
+  /* ── Theme ─────────────────────────────────────────────────── */
+  const html = document.documentElement;
+  const themeBtn = document.querySelector('[data-theme-toggle]');
+  const sunIcon = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`;
+  const moonIcon = `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+  let theme = localStorage.getItem('ma-theme') || 'dark';
+  html.setAttribute('data-theme', theme);
+  if (themeBtn) { themeBtn.innerHTML = theme === 'dark' ? moonIcon : sunIcon; }
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      theme = theme === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', theme);
+      localStorage.setItem('ma-theme', theme);
+      themeBtn.innerHTML = theme === 'dark' ? moonIcon : sunIcon;
+    });
+  }
+
+  /* ── Scroll-aware header ───────────────────────────────────── */
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    if (header) header.classList.toggle('header--scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  /* ── Mobile menu ───────────────────────────────────────────── */
+  const burger = document.querySelector('[data-burger]');
+  const mobileMenu = document.querySelector('[data-mobile-menu]');
+  if (burger && mobileMenu) {
+    burger.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('is-open');
+      burger.classList.toggle('is-open', open);
+      burger.setAttribute('aria-expanded', open);
+      mobileMenu.setAttribute('aria-hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('is-open');
+        burger.classList.remove('is-open');
+        burger.setAttribute('aria-expanded', 'false');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      });
+    });
+  }
+
+  /* ── Dropdown nav ──────────────────────────────────────────── */
+  document.querySelectorAll('.nav-dropdown').forEach(dd => {
+    const trigger = dd.querySelector('.nav-trigger');
+    if (!trigger) return;
+    trigger.addEventListener('click', e => {
+      e.stopPropagation();
+      const expanded = trigger.getAttribute('aria-expanded') === 'true';
+      document.querySelectorAll('.nav-trigger').forEach(t => t.setAttribute('aria-expanded', 'false'));
+      trigger.setAttribute('aria-expanded', String(!expanded));
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.nav-trigger').forEach(t => t.setAttribute('aria-expanded', 'false'));
+  });
+
+  /* ── Scroll animations ─────────────────────────────────────── */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const delay = e.target.dataset.delay ? parseFloat(e.target.dataset.delay) * 60 : 0;
+        setTimeout(() => {
+          e.target.classList.add('visible');
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }, delay);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+  function observeAll() {
+    document.querySelectorAll('.fade-up, .expertise-item, .service-card, .news-card, .testimonial-card, .client-type-item').forEach((el, i) => {
+      if (!el.classList.contains('visible')) {
+        if (el.classList.contains('service-card') || el.classList.contains('news-card') || el.classList.contains('testimonial-card') || el.classList.contains('client-type-item')) {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(16px)';
+          el.style.transition = `opacity 0.5s ${i * 0.07}s ease, transform 0.5s ${i * 0.07}s ease`;
+        }
+        observer.observe(el);
+      }
+    });
+  }
+  observeAll();
+
+  setTimeout(() => {
+    document.querySelectorAll('.fade-up, .expertise-item').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight + 100) {
+        el.classList.add('visible');
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      }
+    });
+  }, 120);
+
+  /* ── Smooth anchor scroll ──────────────────────────────────── */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.querySelectorAll('.fade-up, .expertise-item').forEach(el => {
+          el.classList.add('visible');
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 20);
+      }
+    });
+  });
+
+  /* ── CTA word rotator ──────────────────────────────────────── */
+  const ctaWord = document.getElementById('ctaWord');
+  if (ctaWord) {
+    const words = ['Achieve?', 'Accelerate?', 'Accomplish?', 'Acquire?'];
+    let idx = 0;
+    setInterval(() => {
+      ctaWord.style.opacity = '0';
+      ctaWord.style.transform = 'translateY(8px)';
+      ctaWord.style.transition = 'opacity 0.28s, transform 0.28s';
+      setTimeout(() => {
+        idx = (idx + 1) % words.length;
+        ctaWord.textContent = words[idx];
+        ctaWord.style.opacity = '1';
+        ctaWord.style.transform = 'translateY(0)';
+      }, 280);
+    }, 2400);
+  }
+
+  /* ── Particle canvas hero ──────────────────────────────────── */
+  (function () {
+    const canvas = document.getElementById('heroCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
+    const N = 55;
+    const particles = Array.from({ length: N }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r: Math.random() * 1.4 + 0.5,
+      a: Math.random() * 0.45 + 0.1
+    }));
+
+    let raf;
+    function draw() {
+      raf = requestAnimationFrame(draw);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const dark = isDark();
+      const c = dark ? '0,212,255' : '0,98,204';
+
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+      });
+
+      for (let i = 0; i < N; i++) {
+        for (let j = i + 1; j < N; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 110) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${c},${0.09 * (1 - d / 110)})`;
+            ctx.lineWidth = 0.6;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(${c},${particles[i].a})`;
+        ctx.arc(particles[i].x, particles[i].y, particles[i].r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    draw();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { cancelAnimationFrame(raf); } else { draw(); }
+    });
+  })();
+
+  /* ── Ticker ────────────────────────────────────────────────── */
+  (function () {
+    const track = document.getElementById('tickerTrack');
+    if (!track) return;
+
+    function buildTicker(items) {
+      const doubled = [...items, ...items];
+      track.innerHTML = doubled.map(item =>
+        `<span class="ticker-item"><span class="tag">${item.tag}</span><span class="text">${item.text}</span></span><span class="ticker-sep">·</span>`
+      ).join('');
+    }
+
+    function startScroll() {
+      let pos = 0;
+      const speed = 0.5;
+      let paused = false;
+      track.addEventListener('mouseenter', () => { paused = true; });
+      track.addEventListener('mouseleave', () => { paused = false; });
+      function animate() {
+        if (!paused) {
+          pos -= speed;
+          const half = track.scrollWidth / 2;
+          if (Math.abs(pos) >= half) pos = 0;
+          track.style.transform = `translateX(${pos}px)`;
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    fetch('/ticker.json?v=' + Date.now())
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && data.length) buildTicker(data);
+      })
+      .catch(() => {})
+      .finally(() => startScroll());
+  })();
+
+  /* ── Reg Hub filter ────────────────────────────────────────── */
+  (function () {
+    const btns = document.querySelectorAll('.filter-btn');
+    const groups = document.querySelectorAll('.reg-country-group');
+    if (!btns.length) return;
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const f = btn.dataset.filter;
+        groups.forEach(g => {
+          g.style.display = (f === 'all' || g.dataset.country === f) ? '' : 'none';
+        });
+      });
+    });
+  })();
+
+  /* ── Contact form ──────────────────────────────────────────── */
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = contactForm.querySelector('.btn-submit');
+      const status = document.getElementById('formStatus');
+      const lang = localStorage.getItem('ma-lang') || 'en';
+      const name = contactForm.querySelector('#name')?.value.trim();
+      const company = contactForm.querySelector('#company')?.value.trim();
+      const email = contactForm.querySelector('#email')?.value.trim();
+      if (!name || !company || !email) {
+        status.textContent = lang === 'ar' ? 'يرجى ملء جميع الحقول المطلوبة.' : 'Please complete all required fields.';
+        status.className = 'form-status form-status--error';
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = lang === 'ar' ? 'جارٍ الإرسال…' : 'Sending…';
+      status.textContent = '';
+      try {
+        const res = await fetch('https://formspree.io/f/mdaygpzr', {
+          method: 'POST', body: new FormData(contactForm),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          status.textContent = lang === 'ar'
+            ? 'شكراً لتواصلك. سنردّ عليك قريباً.'
+            : 'Thank you, your enquiry has been received. We will be in touch shortly.';
+          status.className = 'form-status form-status--success';
+          contactForm.reset();
+        } else { throw new Error(); }
+      } catch {
+        status.textContent = lang === 'ar'
+          ? 'حدث خطأ. يرجى المحاولة مجدداً أو مراسلتنا على info@madvisory.qa'
+          : 'Something went wrong. Please try again or email info@madvisory.qa';
+        status.className = 'form-status form-status--error';
+      }
+      btn.disabled = false;
+      btn.textContent = lang === 'ar' ? 'إرسال الاستفسار' : 'Submit Enquiry';
+    });
+  }
+
+  /* ── Newsletter form ───────────────────────────────────────── */
+  const nlForm = document.getElementById('newsletterForm');
+  if (nlForm) {
+    nlForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const status = document.getElementById('newsletterStatus');
+      fetch(nlForm.action, { method: 'POST', body: new FormData(nlForm), headers: { 'Accept': 'application/json' } })
+        .then(r => {
+          if (r.ok) { status.textContent = 'Thank you, you are subscribed.'; status.style.color = 'var(--accent)'; nlForm.reset(); }
+          else { status.textContent = 'Something went wrong. Please try again.'; status.style.color = '#f06363'; }
+        }).catch(() => { status.textContent = 'Connection error. Please try again.'; status.style.color = '#f06363'; });
+    });
+  }
+
+  /* ── Language / i18n ───────────────────────────────────────── */
+  const langBtn = document.querySelector('[data-lang-toggle]');
+  const AR = {
+    nav_about:'من نحن', nav_services:'خدماتنا', nav_due_diligence:'التحقق المستقل',
+    nav_strategic_planning:'التخطيط الاستراتيجي', nav_digital_transformation:'التحوّل الرقمي',
+    nav_electronic_payments:'المدفوعات الإلكترونية', nav_solutions:'الحلول',
+    nav_sol_payments_infra:'البنية التحتية للمدفوعات', nav_sol_acquiring:'الاقتناء والقبول',
+    nav_sol_compliance:'الامتثال والمخاطر', nav_sol_digital:'الرقمي والناشئ',
+    nav_sol_licensing:'الترخيص ودخول السوق', nav_regulatory:'المحور التنظيمي',nav_industry_news:'أخبار الصناعة',
+    nav_news:'المقالات', nav_insights:'المقالات', nav_careers:'الوظائف',
+    nav_book:'احجز مكالمة', nav_contact:'تواصل معنا',
+    hero_eyebrow:'استشارات المدفوعات والتكنولوجيا المالية — الدوحة · لندن · إسطنبول',
+    hero_line1:'نصنع', hero_line2:'مستقبل المدفوعات',
+    hero_sub:'استشارات مستقلة للمؤسسات المالية وشركات التكنولوجيا المالية والحكومات في رسم مستقبل المدفوعات.',
+    hero_cta1:'استكشف خدماتنا', hero_cta2:'طلب استشارة',
+    stat_market:'سوق المدفوعات في الشرق الأوسط 2031', stat_disciplines:'حل استشاري',
+    stat_frameworks:'إطار تنظيمي', stat_continents:'قارات',
+    about_eyebrow:'من نحن', about_heading:'شركة استشارية مستقلة في قلب قطاع المدفوعات',
+    services_eyebrow:'الخدمات', services_heading:'أربعة محاور للتميز الاستشاري',
+    solutions_eyebrow:'الحلول', solutions_heading:'استشارات متخصصة للجيل القادم من المدفوعات',
+    news_eyebrow:'مقالات', news_heading:'تفكير على حافة التكنولوجيا المالية',news_page_sub:'ملخص أسبوعي للإعلانات من شبكات البطاقات، والمحصّلين، ومقدمي خدمات الدفع، ومزودي الحساب إلى الحساب والبنوك المفتوحة، وموردي الأنظمة المصرفية الأساسية، والبنوك الرقمية، ومنصات الإصدار، ومتخصصي صرف العملات، في دول الخليج والمملكة المتحدة وأوروبا وخارجها.',news_page_eyebrow:'أخبار الصناعة',news_page_heading:'آخر التحركات في قطاع المدفوعات',
+    reg_eyebrow:'المحور التنظيمي', reg_heading:'مواكبة البيئة التنظيمية المتحركة بسرعة',
+    exp_eyebrow:'خبرتنا', exp_heading:'ثمانية مجالات للتخصص العميق',
+    clients_eyebrow:'عملاؤنا', clients_heading:'موثوق به عبر الصناعات والحدود',
+    hww_eyebrow:'نموذج التعاون', hww_heading:'كيف نعمل',
+    team_eyebrow:'الفريق', team_heading:'المديرون وشبكة المستشارين',
+    contact_eyebrow:'تواصل معنا', contact_heading:'كيف يمكننا مساعدتك على تحقيق أهدافك؟',
+    contact_sub:'سواء كنت تُقيّم استثماراً في التكنولوجيا المالية أو تسعى لتحسين بنيتك التحتية للمدفوعات، فريقنا مستعد.',
+    form_name:'الاسم *', form_position:'المنصب', form_company:'الشركة *',
+    form_email:'البريد الإلكتروني *', form_tel:'الهاتف',
+    form_enquiry:'استفسارك', form_submit:'إرسال الاستفسار',
+    footer_services:'الخدمات', footer_solutions:'الحلول',
+    footer_regulatory:'المحور التنظيمي', footer_company:'الشركة',
+    footer_tagline:'استشارات المدفوعات والتكنولوجيا المالية.<br>الدوحة · لندن · إسطنبول',
+    footer_address:'برج تورنادو، شارع مجلس التعاون، الدوحة، قطر',
+    footer_copy:'© 2026 MENA Advisory. جميع الحقوق محفوظة.',
+    insights_label:'المقالات', insights_heading:'تفكير على حافة التكنولوجيا المالية',
+    careers_label:'الوظائف', careers_heading:'انضم إلى MENA Advisory',
+    filter_all:'الكل', filter_uk:'المملكة المتحدة', filter_eu:'أوروبا',
+    filter_gcc:'دول مجلس التعاون الخليجي', filter_global:'عالمي',filter_cat_all:'جميع الفئات',filter_cat_card_networks:'شبكات البطاقات',filter_cat_acquiring_psp:'التحصيل ومقدمو خدمات الدفع',filter_cat_a2a:'الحساب إلى الحساب والبنوك المفتوحة',filter_cat_core_banking:'الأنظمة المصرفية الأساسية',filter_cat_digital_banks:'البنوك الرقمية',filter_cat_issuing:'منصات الإصدار',filter_cat_fx:'صرف العملات والتحويلات عبر الحدود',
+    svc_label:'الخدمات', svc_heading:'ماذا نفعل',
+    nl_eyebrow:'ابقَ على اطلاع', nl_heading:'تحديثات تنظيمية وسوقية',
+    view_all_solutions:'عرض جميع الحلول',
+    badge_active:'ساري', badge_inprogress:'قيد التنفيذ', badge_imminent:'وشيك',
+    mobile_services:'الخدمات',
+    mobile_solutions:'الحلول',
+    ticker_label:'المستجدات',
+    reg_europe:'أوروبا',
+    reg_uk:'المملكة المتحدة',
+    reg_gcc:'دول مجلس التعاون الخليجي',
+    reg_global:'عالمي',
+    filter_all_ar:'الكل',
+    reg_badge_active:'ساري',
+    reg_badge_inprogress:'قيد التنفيذ',
+    reg_badge_imminent:'وشيك',
+    // Careers page
+    careers_sub:'نحن شركة استشارية متخصصة في المدفوعات والتكنولوجيا المالية. عندما ننمو، ننمو بشكل متعمد — نضم أشخاصاً ذوي خبرة عميقة في المجال.',
+    careers_who_label:'من نوظّف',
+    careers_who_heading:'الخبرة المتخصصة أولاً',
+    careers_who_body1:'كل عضو في فريقنا عمل على مستوى رفيع داخل شركات المدفوعات أو البنوك أو المؤسسات المالية أو شركات التكنولوجيا المالية.',
+    careers_where_label:'أين نعمل',
+    careers_where_heading:'الدوحة، لندن، إسطنبول',
+    careers_where_body:'مكتبنا الرئيسي في برج تورنادو بالدوحة. لدينا مستشارون في لندن وإسطنبول، ونعمل مع عملاء في دول مجلس التعاون الخليجي والشرق الأوسط وأوروبا.',
+    careers_register_label:'سجّل اهتمامك',
+    careers_register_heading:'أرسل لنا ملفك التعريفي',
+    careers_register_body:'استخدم نموذج التواصل وصف فيه خبرتك. اذكر المجالات التي عملت فيها وما تبحث عنه. نراجع كل طلب.',
+    careers_cta2:'تواصل معنا →',
+    careers_no_openings:'لا وظائف شاغرة حالياً',
+    careers_no_openings_sub:'ليس لدينا أدوار مفتوحة في الوقت الحالي. إذا كانت لديك خلفية قوية في الاستشارات، يسعدنا الاستماع إليك.',
+    // About CTA
+    about_cta:'اعمل معنا →',
+    // Shared page elements
+    discuss_requirements:'ناقش متطلباتك',
+    discuss_sub:'تحدث مباشرة مع متخصص في أي من هذه المجالات.',
+    get_in_touch:'تواصل معنا →',
+    back_to_insights:'← العودة إلى المقالات',
+    back_to_solutions:'← جميع الحلول',
+    read_consultation:'احجز استشارة →',
+    // Services pages
+    svc_label_services:'الخدمات',
+    page_sub_due_diligence:'تقييم مستقل لأعمال المدفوعات والتكنولوجيا المالية للمستثمرين والمستحوذين والشركاء الاستراتيجيين.',
+    page_sub_strategic:'نساعد شركات المدفوعات على تحديد أين تتنافس وكيف تفوز في الأسواق المستهدفة.',
+    page_sub_digital_trans:'نرشد المؤسسات المالية وشركات المدفوعات خلال مشاريع التحديث الرقمي المعقدة.',
+    dt_h2_platform:'اختيار المنصات وتقييم الموردين',
+    dt_p_platform:'تقييم منهجي لمنصات معالجة المدفوعات وأنظمة إدارة البطاقات ومحركات الاحتيال والتقنيات المكمّلة للمؤسسات المالية وشركات المدفوعات. نضع أطراً لمتطلبات مبنية على النموذج التشغيلي الخاص بالمؤسسة وبيئتها التنظيمية وحجم معاملاتها، ثم نقود عملية تقييم موردين منضبطة تُفضي إلى توصية اختيار قابلة للدفاع. استقلاليتنا عن موردي التقنيات تامة: لا تربطنا أي علاقة تجارية بأي مزوّد منصة.',
+    dt_h2_iso:'استشارات الهجرة إلى معيار ISO 20022',
+    dt_p_iso:'يتحوّل ISO 20022 إلى المعيار الافتراضي لرسائل المدفوعات عالية القيمة والعابرة للحدود على مستوى العالم. مع تشديد سويفت لمتطلبات ترجمة رسائل MT القديمة، تتصاعد الضغوط نحو الترقية. نساعد مؤسسات الدفع في تحديد نطاق برامج الهجرة وتقييم تعقيد التكامل وإدارة اختيار موردي أدوات الهجرة، والتعامل مع التحديات التقنية والتشغيلية للانتقال، بما في ذلك مخاطر اقتطاع البيانات والتنسيق مع البنوك المراسلة.',
+    dt_h2_programme:'إدارة البرامج وتسليم التكامل',
+    dt_p_programme:'مشاركة فعّالة في برامج تطبيق تقنيات الدفع: مراجعة مخرجات الموردين وإدارة مسارات التكامل وحل النزاعات التقنية والتجارية مع شركاء التنفيذ، وضمان الاستمرارية في الخبرة التقنية والتنظيمية طوال دورة التسليم. دعمنا مؤسسات تبيّن فيها عدم ملاءمة اختيار المورد الأولي، فاستلزم البرنامج إعادة تحديد النطاق وإعادة الانطلاق مع شريك تنفيذ جديد.',
+    page_sub_epayments:'نغطي الطيف الكامل لطرق الدفع الإلكتروني — بطاقات، محافظ رقمية، مدفوعات فورية، تحويلات مباشرة.',
+    ep_h2_card:'استراتيجية مخططات البطاقات واقتصادياتها',
+    ep_p_card:'استشارات في تصميم برامج البطاقات واختيار معالجي المدفوعات واعتبارات العضوية في المخططات بما فيها العضوية الرئيسية، وتحسين الرسوم البينية وإدارة المحافظ للبطاقات الاستهلاكية والتجارية. نمتلك معرفة معمّقة بآليات عمل Visa وMastercard ومدى وBENEFIT والمخططات المحلية من الناحية التجارية، وكيفية التعامل مع قواعد المخططات وعمليات الاعتماد. تتراوح مشاركاتنا بين تصميم برامج بطاقات جديدة لمصدري التقنية المالية ومراجعات المحافظ للبنوك الراسخة.',
+    ep_h2_instant:'المدفوعات الفورية والشبكات اللحظية',
+    ep_p_instant:'أطلقت دول مجلس التعاون الخليجي عدة شبكات دفع فوري في السنوات الأخيرة؛ سريع في المملكة العربية السعودية وآني في الإمارات وQPay في قطر، ولكلٍّ منها مواصفات تقنية ومتطلبات سيولة وخصائص احتيال مميّزة. وفي أوروبا، جعلت لائحة المدفوعات الفورية الأوروبية تحويل SEPA الائتماني الفوري إلزامياً للبنوك في منطقة اليورو. نقدم المشورة لمؤسسات الدفع بشأن متطلبات الاتصال والالتزامات التنظيمية وإدارة السيولة اليومية وضوابط الاحتيال الخاصة بالمدفوعات اللحظية غير القابلة للرجوع.',
+    ep_h2_wallet:'المحافظ الرقمية والمدفوعات عبر الجوال',
+    ep_p_wallet:'استشارات استراتيجية وتطبيقية لبرامج المحافظ الرقمية وقبول المدفوعات عبر الجوال ونشر بنية الدفع برمز QR. نغطي تكامل المُصدِر مع Apple Pay وGoogle Pay واتفاقيات مخطط Samsung Pay وبرامج المحافظ الإقليمية وبنية قبول QR المنتشرة في أسواق دول مجلس التعاون. وللمُحصِّلين والتجار، نُقيّم اقتصاديات قبول المحافظ قياساً بمعاملات البطاقات والمتطلبات التقنية لقبول المدفوعات متعدد القنوات.',
+    // Solutions pages
+    page_sub_payments_infra:'المدفوعات المدفوعة بالذكاء الاصطناعي، القضبان الفورية، ترحيل ISO 20022، تنسيق المدفوعات وتقنيات كشف الاحتيال.',
+    page_sub_acquiring:'استراتيجية الاستحواذ، إطار إدراج التجار، SoftPOS، القبول متعدد القنوات وإدارة النزاعات.',
+    page_sub_compliance:'مراقبة معاملات مكافحة غسيل الأموال، تصميم برنامج اعرف عميلك، منع الاحتيال والأطر التنظيمية.',
+    page_sub_digital_em:'توجيه متخصص في العملات الرقمية للبنوك المركزية والتسوية المُرمَّزة والخدمات المصرفية المفتوحة والتجارة الوكيلة.',
+    page_sub_licensing:'ترخيص مؤسسات الدفع لدول مجلس التعاون الخليجي وأوروبا. QCB وSAMA وCBUAE وCBB وFCA والبنك المركزي الأيرلندي.',
+    // CTA strip
+    cta_discuss:'ناقش متطلباتك',
+    cta_specialist:'تحدث مباشرة مع متخصص في أي من هذه المجالات.',
+    // Regulatory hub
+    reg_page_sub:'تتغير لوائح المدفوعات بوتيرة أسرع مما كانت عليه في أي وقت مضى. نتتبع التغييرات الجوهرية ونقدم المشورة للعملاء.',
+    // Services/solutions landing
+    svc_page_sub:'أربعة تخصصات تعكس النظام البيئي الكامل لصناعة المدفوعات الحديثة.',
+    sol_page_sub:'من التجارة المدفوعة بالذكاء الاصطناعي إلى الأصول المُرمَّزة — توجيه خبير في التقنيات التي تعيد تشكيل صناعة المدفوعات.',
+    // Insights
+    insights_page_sub:'تحليلات وتعليقات حول تنظيم المدفوعات والتكنولوجيا الناشئة في دول الخليج والشرق الأوسط وأوروبا.',
+    // 404
+    page_not_found:'الصفحة غير موجودة',
+    page_not_found_sub:'الصفحة التي تبحث عنها غير موجودة أو ربما انتقلت. جرّب أحد الروابط أدناه أو عد إلى الصفحة الرئيسية.',
+    go_home:'← الرئيسية',
+
+  // ── Career listing keys ────────────────────────────────────────────────────
+  career_open_role:'وظيفة شاغرة',
+  career_role_title:'مطوّر أول لتحويل الأنظمة المصرفية الأساسية',
+  career_apply_btn:'تقدّم الآن ←',
+  career_badge_perm:'دائم',
+  career_badge_location:'الدوحة، قطر',
+  career_badge_travel:'يُشترط السفر الدولي',
+  career_h3_resp:'المسؤوليات الرئيسية',
+  career_h3_skills:'المهارات والخبرات المطلوبة',
+  career_h3_quals:'المؤهلات المفضّلة',
+  career_h3_why:'لماذا تنضم إلى MENA Advisory',
+  career_h3_apply:'طريقة التقديم',
+  career_14days:'إذا لم تتلقَّ ردًّا خلال 14 يومًا من تاريخ تقديم طلبك، فيُرجى اعتبار طلبك غير ناجح في هذه المرة. نشكرك على اهتمامك بـ MENA Advisory.',
+
+  // ── Added 2026-06-15: missing translations ─────────────────────────────
+
+  // Services page cards
+  svc_advisory_label:'استشارات',
+  svc_advisory_title:'التحقق المستقل',
+  svc_advisory_body:'تقييم مستقل للجوانب التقنية والتنظيمية لأعمال المدفوعات والتكنولوجيا المالية للمستثمرين والمستحوذين والشركاء الاستراتيجيين.',
+  svc_strategy_label:'استراتيجية',
+  svc_strategy_title:'التخطيط الاستراتيجي',
+  svc_strategy_body:'تحليل دخول السوق، وملاءمة المنتج للسوق، والتموضع التنافسي، واستراتيجية الوصول إلى السوق لشركات المدفوعات.',
+  svc_transform_label:'تحوّل',
+  svc_transform_title:'التحوّل الرقمي',
+  svc_transform_body:'اختيار المنصات، وترحيل ISO 20022، وإدارة التكامل، وإدارة التغيير التشغيلي لتحديث المدفوعات.',
+  svc_payments_label:'مدفوعات',
+  svc_payments_title:'المدفوعات الإلكترونية',
+  svc_payments_body:'البطاقات والمحافظ الرقمية والمدفوعات الفورية وتحويلات الحساب إلى حساب وحلول الدفع بدون تلامس. معرفة عميقة بهياكل المخططات ونماذج الرسوم وتقنيات المعالجة.',
+  svc_view_service:'عرض الخدمة ←',
+
+  // Solutions page sub-text
+  sol_infra_sub:'الذكاء الاصطناعي، القضبان الفورية، ISO 20022، التنسيق',
+  sol_acquiring_sub:'إدراج التجار، SoftPOS، النزاعات',
+  sol_compliance_sub:'مكافحة غسيل الأموال، اعرف عميلك، الاحتيال، الأطر التنظيمية',
+  sol_digital_sub:'العملات الرقمية للبنوك المركزية، الترميز، الخدمات المصرفية المفتوحة، الوكلاء',
+  sol_licensing_sub:'QCB، SAMA، CBUAE، CBB، FCA',
+
+  // Contact form placeholders
+  ph_name:'اسمك الكامل',
+  ph_position:'منصبك',
+  ph_company:'مؤسستك',
+  ph_email:'you@company.com',
+  ph_tel:'+1 234 567 8900',
+  ph_enquiry:'صِف تحديك أو سؤالك...',
+
+  // 404 page buttons
+  not_found_contact:'تواصل معنا',
+  not_found_insights:'المقالات',
+  not_found_services:'الخدمات',
+
+  // Homepage about body paragraphs
+  about_p1:'تأسست MENA Advisory في الدوحة في يناير 2020. وفي غضون أسابيع، أغلق وباء عالمي الحدود وأربك النموذج الذي كانت تعتمد عليه شركات مدفوعات دول مجلس التعاون الخليجي — استقطاب الخبرات الرفيعة من دبي ولندن ونيويورك وسنغافورة عند الطلب.',
+  about_p2:'نحن مؤسسة استشارية دولية مستقلة تعمل حصرياً في قطاع المدفوعات والتكنولوجيا المالية. ننطلق من الدوحة ولندن وإسطنبول لنقدّم المشورة للمؤسسات المالية وكبار تجار التجزئة وشركات إدارة السفر والمستحوذين وشركات التكنولوجيا المالية والجهات الحكومية في منطقة دول مجلس التعاون الخليجي والشرق الأوسط وشمال أفريقيا وأوروبا.',
+  about_p3:'استقلاليتنا خيار مقصود. لا تربطنا أي علاقات مع موردين أو شركاء تقنيين من شأنها أن تُخلّ بموضوعية مشورتنا. كل توصية تُبنى على ما هو الأنسب لنموذج عمل العميل وبيئته التنظيمية وأهدافه التجارية.',
+
+  // Homepage services card descriptions
+  home_svc_due_sub:'تقييم تقني وتنظيمي مستقل',
+  home_svc_due_body:'تقييم مستقل لأعمال المدفوعات والتكنولوجيا المالية للمستثمرين والمستحوذين والشركاء الاستراتيجيين.',
+  home_svc_strategy_sub:'استراتيجية دخول السوق والنمو',
+  home_svc_strategy_body:'تحليل دخول السوق وملاءمة المنتج للسوق والتموضع التنافسي واستراتيجية الوصول لشركات المدفوعات.',
+  home_svc_digital_sub:'تحديث المدفوعات',
+  home_svc_digital_body:'اختيار المنصة وإدارة التكامل وترحيل ISO 20022 وإدارة التغيير التشغيلي.',
+  home_svc_epay_sub:'تغطية كاملة لوسائل الدفع',
+  home_svc_epay_body:'البطاقات والمحافظ الرقمية والمدفوعات الفورية وتحويلات A2A وحلول الدفع بدون تلامس في دول الخليج والشرق الأوسط وأوروبا.',
+  home_svc_explore:'استكشف ←',
+  nav_sol_card_issuing: 'إصدار البطاقات وإدارة البرامج',
+  nav_sol_fx: 'مدفوعات العملات الأجنبية والخزينة',
+
+  fx_h1: 'مدفوعات العملات الأجنبية والخزينة',
+  fx_cta_discuss: 'ناقشنا هذا الحلّ ←',
+  fx_cta_all_sol: 'جميع الحلول',
+  fx_h2_gcc: 'سياق المدفوعات العابرة للحدود في دول مجلس التعاون',
+  fx_p_gcc1: 'تُعدّ تدفقات المدفوعات العابرة للحدود في منطقة مجلس التعاون الخليجي من أعلى المعدلات عالمياً قياساً بالناتج المحلي الإجمالي، إذ تُشكّل التحويلات الخارجية والتجارة الدولية وتدفقات الاستثمار ثلاث قنوات رئيسية للمدفوعات تعمل في ظل بيئة تنظيمية تزداد تطوراً.',
+  fx_stat_remit: 'التحويلات الخارجية السنوية لدول مجلس التعاون',
+  fx_stat_trade: 'تدفقات تمويل التجارة السنوية لدول مجلس التعاون',
+  fx_stat_curr: 'عملات مجلس التعاون: جميعها مرتبطة بالدولار الأمريكي',
+  fx_p_gcc2: 'يواجه أمناء الخزينة في الشركات تحديات عملية في المدفوعات العابرة للحدود من دول مجلس التعاون، أبرزها: تجزئة علاقات البنوك المراسلة، والتفاوت في قواعد التحقق من هوية المستفيد، ومتطلبات الامتثال لمبادئ اعرف عميلك في الأسواق المستقبِلة.',
+  fx_p_gcc3: 'تواجه مؤسسات الدفع وشركات التقنية المالية التي تقدّم خدمات المدفوعات العابرة للحدود متطلبات ترخيص متباينة عبر ولايات قضائية متعددة، إلى جانب التزامات قاعدة السفر المتعلقة بـ FATF وصعوبات التكامل مع منصات مزودي السيولة.',
+  fx_discuss_gcc: 'ناقشنا متطلباتك ←',
+  fx_h2_swift: 'SWIFT GPI والهجرة إلى معيار ISO 20022',
+  fx_p_swift1: 'أصبحت خدمة SWIFT للابتكار في المدفوعات العالمية (GPI) المعيارَ القياسي للمدفوعات المؤسسية العابرة للحدود، إذ توفّر تتبّع المدفوعات في الوقت الفعلي وشفافية الرسوم وتحسين سرعة التسوية. ومع ذلك، يتباين توافر GPI ودرجة التكامل معه تبايناً كبيراً بين البنوك المراسلة في منطقة مجلس التعاون.',
+  fx_h3_iso: 'ISO 20022: الوضع الراهن والالتزامات',
+  fx_p_iso1: 'انتهت مرحلة التعايش مع معيار ISO 20022 في SWIFT في نوفمبر 2025. وباتت رسائل MX معيار ISO 20022 مطلوبة لجميع رسائل SWIFT عالية القيمة. المؤسسات التي لم تُكمل هجرتها تواجه خطر تدهور جودة البيانات واحتمال رفض المعاملات.',
+  fx_p_iso2: 'الفجوة العملية التي تُحدثها هجرة ISO 20022 للمؤسسات غير الممتثلة: عدم القدرة على إرسال أو استقبال حقول البيانات المنظّمة التي بات الشركاء الامتثاليون يتوقعون تلقّيها.',
+  fx_li_iso_1: 'تقييم جاهزية الهجرة إلى ISO 20022: تحليل الفجوات مقابل متطلبات رسائل MX واحتياجات حقول البيانات المنظّمة',
+  fx_li_iso_2: 'إكمال حقول البيانات المنظّمة: امتثال رمز LEI وكود الغرض وهيكل العنوان لمتطلبات ISO 20022',
+  fx_li_iso_3: 'معايرة فحص العقوبات لبيانات ISO 20022 المنظّمة: تقليل النتائج الإيجابية الكاذبة مع الحفاظ على دقة الفحص',
+  fx_li_iso_4: 'تقييم وتحسين اتصال GPI: تكامل التتبع وشفافية الرسوم وأداء بنك المراسل',
+  fx_discuss_swift: 'ناقشنا SWIFT GPI / ISO 20022 ←',
+  fx_h2_multicurr: 'استراتيجية التسوية متعددة العملات',
+  fx_p_multicurr1: 'لمؤسسات الدفع وشركات التقنية المالية التي تقدّم خدمات الدفع متعددة العملات: تحديد العملات التي تُسوَّى مباشرةً، وتلك التي تُحتاز أو تُحوَّل، والعملات التي تُوفَّر عبر علاقات سيولة من أطراف ثالثة — هذه القرارات تؤثر مباشرةً على هوامش FX وأوقات التسوية وتكاليف التمويل الأساسية.',
+  fx_h3_fxrisk: 'إدارة مخاطر العملات الأجنبية لشركات الدفع',
+  fx_p_fxrisk1: 'شركة الدفع التي تُحدّد سعر تحويل للعميل عند البدء وتُسوّي مع البنوك المراسلة في وقت لاحق تتحمّل مخاطر العملات الأجنبية — في كثير من الأحيان دون أطر رسمية لقياس هذا التعرّض أو التحوّط منه.',
+  fx_li_fx_1: 'قياس مخاطر تعرّض العملات الأجنبية: تحليل القيمة في المخاطر على مستوى المحفظة حسب أزواج العملات ومناطق التسوية',
+  fx_li_fx_2: 'تصميم استراتيجية التحوّط: العقود الآجلة والخيارات والتحوّط الطبيعي عبر مطابقة عملات الأصول والخصوم',
+  fx_li_fx_3: 'اختيار الطرف المقابل في الخزينة: مقارنة بين مكاتب FX في البنوك ومزودي FX المتخصصين واستراتيجيات التفاوض',
+  fx_li_fx_4: 'البنية التحتية للحسابات متعددة العملات: هياكل التجميع والحسابات الافتراضية وتحسين التسوية',
+  fx_h3_gcc_fx: 'اعتبارات العملات الأجنبية الخاصة بمجلس التعاون الخليجي',
+  fx_p_gcc_fx1: 'تحافظ جميع عملات دول مجلس التعاون الست على ربطها بالدولار الأمريكي، مما يُلغي مخاطر العملات الأجنبية داخل المنطقة للمعاملات الإقليمية، غير أنه يُوجِد ديناميكيات محددة في تدفقات الدولار والتحوّط في المعاملات خارج المنطقة.',
+  fx_p_gcc_fx2: 'منصة mBridge والبنية التحتية للتسوية المستقبلية: تستهدف منصة mBridge متعددة الأطراف للعملة الرقمية للبنوك المركزية — بمشاركة الإمارات والمملكة العربية السعودية وهونغ كونغ والصين — تحسين كفاءة التسوية العابرة للحدود، مما قد يُعيد تشكيل ديناميكيات السيولة لمؤسسات الدفع في منطقة مجلس التعاون.',
+  fx_discuss_fx: 'ناقشنا استراتيجية العملات الأجنبية ←',
+  fx_h2_treasury: 'مدفوعات الخزينة للشركات',
+  fx_p_treasury1: 'الشركات الكبرى في دول مجلس التعاون — ولا سيما تلك العاملة في قطاعات الطاقة والإنشاء والخدمات الحكومية — تُدير تدفقات مدفوعات عابرة للحدود بمليارات الدولارات عبر علاقات بنكية متعددة وأنظمة ERP وعمليات خزينة مُجزَّأة.',
+  fx_p_treasury2: 'تعالج إدارة مدفوعات الخزينة للشركات هذا التشتّت من خلال توحيد تدفقات الدفع وإدارة علاقات البنوك والامتثال لمتطلبات الشفافية في تحويل الأموال العابرة للحدود.',
+  fx_h3_factory: 'مصنع الدفع والخزينة الداخلية',
+  fx_p_factory1: 'يوجّه هيكل مصنع الدفع جميع تعليمات الدفع العابرة للحدود للمجموعة إلى كيان مركزي واحد، مما يُتيح التفاوض على الأسعار الجماعية وتوحيد الامتثال وتحسين إدارة السيولة عبر كيانات المجموعة.',
+  fx_li_treas_1: 'تقييم جدوى مصنع الدفع: تحليل الحجم وهيكل الكيانات القانونية وتحليل التكلفة والعائد',
+  fx_li_treas_2: 'تصميم هيكل الخزينة الداخلية: إطار الإقراض بين الشركات والتجميع الاسمي وبنية الحساب الرئيسي',
+  fx_li_treas_3: 'ترشيد المجموعة البنكية: تصميم RFP واختيار البنك الشريك وتحسين بنية الحساب',
+  fx_li_treas_4: 'تكامل ERP: تهيئة وحدات الدفع في SAP وOracle وMicrosoft Dynamics واتصال Swift وتحسين STP',
+  fx_li_treas_5: 'تكامل فحص العقوبات: قوائم عقوبات OFAC والأمم المتحدة والاتحاد الأوروبي وQCB/SAMA/CBUAE والامتثال لمتطلبات البيانات المنظّمة في ISO 20022',
+  fx_discuss_treas: 'ناقشنا مدفوعات الخزينة ←',
+  fx_h3_cta: 'ناقشنا متطلبات مدفوعات العملات الأجنبية والخزينة',
+  fx_p_cta: 'تقدّم MENA Advisory المشورة للبنوك ومؤسسات الدفع وأمناء خزينة الشركات في مجال تحسين عمليات الدفع العابرة للحدود وهجرة ISO 20022 وإدارة مخاطر العملات الأجنبية وتحوّلات بنية خزينة الشركات.',
+
+  ci_h1: 'إصدار البطاقات وإدارة البرامج',
+  ci_cta_discuss: 'ناقشنا هذا الحلّ ←',
+  ci_cta_all_sol: 'جميع الحلول',
+  ci_h2_design: 'تصميم برنامج البطاقة',
+  ci_p_design1: 'برنامج البطاقة ليس فئة منتج بسيطة: إنه مجموعة مترابطة من القرارات التجارية والتقنية والتنظيمية التي تُحدّد أداء البرنامج على مدار سنوات.',
+  ci_p_design2: 'كل قرار من هذه القرارات يتفاعل مع غيره بطرق لا تكون واضحة دائماً في مرحلة التصميم المبدئي.',
+  ci_p_design3: 'نعمل مع البنوك وشركات التقنية المالية والجهات المُصدِرة غير المصرفية في مرحلة تصميم البرنامج لتحديد هيكل البرنامج الأمثل قبل اتخاذ الالتزامات مع المعالجين والمخططات والشركاء.',
+  ci_li_design_1: 'هيكل البرنامج: نوع البطاقة والمخطط وشريحة العملاء والنموذج التجاري',
+  ci_li_design_2: 'نمذجة الاقتصاديات الوحدوية: دخل الرسوم البينية وتكاليف المعالج وخسائر الاحتيال وتكاليف المكافآت وهوامش صافي الربح',
+  ci_li_design_3: 'التصنيف التنظيمي: ترخيص مصرفي مقابل ترخيص نقود إلكترونية مقابل رعاية BIN',
+  ci_li_design_4: 'استراتيجية الذهاب إلى السوق: نموذج التوزيع وقنوات الشراكة واستراتيجية اكتساب العملاء',
+  ci_discuss: 'ناقشنا هذا ←',
+  ci_h2_processor: 'اختيار معالج البطاقات',
+  ci_p_processor1: 'تغيّر سوق معالجة البطاقات تغيّراً جوهرياً منذ العصر الذي كان فيه البنك مقيّداً من الناحية التقنية بمعالج واحد.',
+  ci_p_processor2: 'اختيار المعالج لبرنامج البطاقة هو أحد أكثر قرارات التكنولوجيا تأثيراً في مسيرة البرنامج، إذ يُحدّد القدرات المتاحة وسرعة الوصول إلى السوق والهيكل التجاري طوال فترة العقد.',
+  ci_h4_apifirst: 'منصات API-First للتقنية المالية',
+  ci_p_apifirst: 'Marqeta وi2c وThredd وPomelo: مصمّمة لتحقيق قدر عالٍ من التخصيص والتمويل المدمج وشركات التقنية المالية التي تحتاج إلى تحكّم دقيق في المعاملات.',
+  ci_h4_tier1: 'معالجو الصف الأول الراسخون',
+  ci_p_tier1: 'TSYS (Global Payments) وFIS وFiserv: وظائف متعمّقة لمنتجات البنوك المعقدة وبرامج البطاقات الضخمة المنتشرة في أسواق متعددة.',
+  ci_h4_regional: 'معالجو منطقة الخليج الإقليميون',
+  ci_p_regional: 'Network International وMagnati (الإمارات) والمعالجون المتصلون بمدى (المملكة العربية السعودية): مُحسَّنون للمتطلبات التنظيمية المحلية وقواعد المخططات الإقليمية والتشغيل البيني مع الشبكات المحلية.',
+  ci_h4_embedded: 'البنية التحتية لإصدار البطاقات المدمجة',
+  ci_p_embedded: 'Stripe Issuing وAdyen Issuing وRailsr: مصمّمة لمنصات SaaS والأسواق الرقمية والمؤسسات التي تُضمّن وظائف بطاقات في منتجاتها الأساسية.',
+  ci_p_processor3: 'تشمل مشاركاتنا في اختيار المعالج: تحديد المتطلبات ووضع معايير التقييم وإدارة عملية RFP والتفاوض على الشروط التجارية.',
+  ci_li_proc_1: 'تحديد المتطلبات عبر وظائف المعالجة ودعم المخطط والتوافر الإقليمي والتكامل مع الأنظمة الأساسية',
+  ci_li_proc_2: 'تصميم RFP وإطار تقييم النقاط المُعيَّر وفق أولويات البرنامج',
+  ci_li_proc_3: 'التحقق المستقل من المراجع مع تطبيقات مماثلة لمشروع العميل',
+  ci_li_proc_4: 'التفاوض على الشروط التجارية: رسوم المعالجة وتكاليف كل تفويض والحجم الأدنى وشروط العقد',
+  ci_li_proc_5: 'تخطيط الانتقال للبرامج المهاجرة من معالج حالي',
+  ci_h2_bin: 'رعاية BIN وعضوية المخطط',
+  ci_p_bin1: 'إصدار بطاقة Visa أو Mastercard يستلزم الحصول على رقم تعريف البنك (BIN) الذي يُتيح معالجة المعاملات. المنظمات التي لا تحمل عضوية مباشرة في المخطط تصل إليه عبر بنك راعٍ.',
+  ci_p_bin2: 'الاختيار بين هذه المسارات ليس مجرد تساؤل عن التكلفة — وإن كانت التكلفة عاملاً محورياً — بل ينطوي على تبعات تشغيلية وتنظيمية وتجارية تمتد آثارها على مدار سنوات.',
+  ci_li_bin_1: 'هيكل رعاية BIN: اختيار البنك الراعي والشروط التعاقدية وهياكل توزيع المسؤولية وأُطر الامتثال',
+  ci_li_bin_2: 'تقييم عضوية المخطط: عضوية رئيسية مقابل تابعة ومتطلبات رأس المال والمعايير التقنية وجداول الاعتماد',
+  ci_li_bin_3: 'المشاركة في المخططات المحلية: مدى (المملكة العربية السعودية) وBENEFIT (البحرين/الإقليمية) وشبكة NAPS (قطر) وضوابط محتوى رمز الدولة',
+  ci_li_bin_4: 'اختيار منتجات برامج المخطط: Visa Commercial Solutions وMastercard Business وبرامج السفر والمكافآت والمتطلبات التقنية المرتبطة بها',
+  ci_h2_commercial: 'برامج البطاقات التجارية',
+  ci_p_commercial1: 'برامج البطاقات التجارية — بطاقات الشركات وبطاقات الشراء والبطاقات الافتراضية لمدفوعات B2B — تختلف اختلافاً جوهرياً عن برامج بطاقات المستهلكين في هيكلها الائتماني وأُطر إدارة الإنفاق ومتطلبات تكامل ERP.',
+  ci_p_commercial2: 'تتمحور قيمة البطاقات التجارية للشركات حول رؤية الإنفاق والتحكّم فيه وتحسين رأس المال العامل والكفاءة الإدارية في عمليات دفع B2B.',
+  ci_h3_virtual: 'برامج البطاقات الافتراضية',
+  ci_p_virtual1: 'إصدار البطاقات الافتراضية: أرقام بطاقات أحادية الاستخدام أو متعددة الاستخدام تُولَّد برمجياً لأغراض شراء محددة — تُلغي احتيال بطاقات الشركات المادية وتُمكّن من ضوابط إنفاق دقيقة على مستوى المعاملة.',
+  ci_p_virtual2: 'لشركات التقنية المالية والشركات الخليجية التي تبني برامج بطاقات افتراضية، يُحدّد اختيار المعالج نطاقَ التخصيص المتاح: قيود حجم المعاملة والفئة والتاجر وإمكانات التكامل مع ERP.',
+  ci_li_comm_1: 'تصميم برنامج البطاقة التجارية: الهيكل الائتماني وضوابط الإنفاق والتكامل مع ERP وإطار إعداد تقارير المصاريف',
+  ci_li_comm_2: 'تقديم بيانات Level 2 وLevel 3: متطلبات الأهلية والتطبيق التقني ومراجعات مؤهّلات الرسوم البينية',
+  ci_li_comm_3: 'هيكل برنامج البطاقة الافتراضية: أحادية الاستخدام مقابل متعددة الاستخدام وضوابط كل معاملة وبروتوكولات تسليم أرقام البطاقات',
+  ci_li_comm_4: 'تصميم برنامج المكافآت: هياكل حدود الإنفاق ومعدلات الاسترداد المُعجَّلة حسب الفئة وأطر تحسين الرسوم البينية',
+  ci_li_comm_5: 'استراتيجية السفر والمصاريف: تكامل البطاقة المُجمَّعة وشراكات شركات إدارة السفر والإطار التقني',
+  ci_h2_portfolio: 'إدارة المحافظ وتحسين الرسوم البينية',
+  ci_p_portfolio1: 'محفظة البطاقات التي صُمِّمت وأُطلقت بشكل صحيح ستُواجه تحديات في الأداء مع مرور الوقت دون إدارة مستمرة لمؤشرات تشغيل البطاقة.',
+  ci_p_portfolio2: 'إدارة معدل الاحتيال وتكوين احتياطيات خسائر الائتمان وتحسين معدل الموافقة — كلها تحمل تبعات مباشرة على المراكز التنافسية والنتائج المالية.',
+  ci_li_port_1: 'مراجعة أهلية الرسوم البينية: تحديد الثغرات في تقديم البيانات التي تُفضي إلى تصنيفات رسوم بينية دون المستوى الأمثل',
+  ci_li_port_2: 'تحسين استراتيجية التفويض: تحسين معدل الموافقة دون زيادة التعرّض للاحتيال أو الخسائر الائتمانية',
+  ci_li_port_3: 'مراجعة نموذج الاحتيال: معايرة رصد المعاملات وتقسيم مخاطر حاملي البطاقات وتكاليف المراجعة اليدوية',
+  ci_li_port_4: 'تحليل ربحية المحفظة: تفصيل الإيرادات والتكاليف حسب نوع البطاقة والقطاع والمنطقة الجغرافية',
+  ci_li_port_5: 'إدارة دورة حياة حامل البطاقة: تحسين معدل التفعيل وتحفيز الإنفاق المبكر واستراتيجيات الاحتفاظ',
+  ci_h3_cta: 'ناقشنا متطلبات برنامج بطاقتك',
+  ci_p_cta: 'تعمل MENA Advisory مع البنوك وشركات التقنية المالية والجهات المُصدِرة غير المصرفية في تصميم برامج البطاقات وإطلاقها وتحسين محافظ البطاقات القائمة في منطقة دول مجلس التعاون والأسواق الأوروبية.'
+
+};
+  const enCache = {};
+
+  function applyLang(lang) {
+    const isAr = lang === 'ar';
+    html.setAttribute('lang', isAr ? 'ar' : 'en-GB');
+    html.setAttribute('dir', isAr ? 'rtl' : 'ltr');
+    if (langBtn) {
+      langBtn.textContent = isAr ? 'EN' : 'AR';
+      langBtn.setAttribute('aria-label', isAr ? 'Switch to English' : 'Switch to Arabic');
+      langBtn.dataset.lang = lang;
+    }
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const k = el.getAttribute('data-i18n');
+      if (!enCache[k]) {
+        enCache[k] = el.getAttribute('data-en-original') || el.textContent.trim();
+        el.setAttribute('data-en-original', enCache[k]);
+      }
+      const val = isAr ? (AR[k] || enCache[k]) : enCache[k];
+      if (el.tagName === 'BUTTON' || el.tagName === 'A') {
+        const svg = el.querySelector('svg');
+        el.textContent = val + ' ';
+        if (svg) el.appendChild(svg);
+      } else if (el.tagName === 'META') {
+        el.setAttribute('content', val);
+      } else {
+        el.innerHTML = val;
+      }
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const k = el.getAttribute('data-i18n-placeholder');
+      if (!enCache['ph_' + k]) enCache['ph_' + k] = el.placeholder;
+      el.placeholder = isAr ? (AR[k] || enCache['ph_' + k]) : enCache['ph_' + k];
+    });
+    localStorage.setItem('ma-lang', lang);
+  }
+
+  if (langBtn) {
+    langBtn.dataset.lang = localStorage.getItem('ma-lang') || 'en';
+    langBtn.addEventListener('click', () => {
+      const cur = langBtn.dataset.lang || 'en';
+      applyLang(cur === 'en' ? 'ar' : 'en');
+    });
+  }
+  const savedLang = localStorage.getItem('ma-lang');
+  if (savedLang && savedLang !== 'en') applyLang(savedLang);
+
+  } // end init
+})();
+
+  /* ── Industry News page: dual filter (region + category) ────────── */
+  (function () {
+    const feed = document.getElementById('newsFeed');
+    if (!feed) return;
+    const regionBtns = document.querySelectorAll('#newsRegionFilter .filter-btn');
+    const catBtns = document.querySelectorAll('#newsCategoryFilter .filter-btn');
+    const rows = document.querySelectorAll('.news-row');
+    let activeRegion = 'all';
+    let activeCat = 'all';
+
+    function applyFilters() {
+      rows.forEach(row => {
+        const regionMatch = activeRegion === 'all' || row.dataset.region === activeRegion;
+        const catMatch = activeCat === 'all' || row.dataset.category === activeCat;
+        row.style.display = (regionMatch && catMatch) ? '' : 'none';
+      });
+    }
+
+    regionBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        regionBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeRegion = btn.dataset.filter;
+        applyFilters();
+      });
+    });
+
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        catBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.dataset.catFilter;
+        applyFilters();
+      });
+    });
+  })();
