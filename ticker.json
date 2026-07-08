@@ -1,42 +1,42 @@
 [
   {
-    "text": "UAE e-invoicing goes voluntary July 1 with mandatory rollout from January 2027",
+    "text": "UAE e-invoicing pilot launches July 2026 for businesses exceeding AED 50M revenue",
     "tag": "NEW"
   },
   {
-    "text": "CBUAE Law sets September 16 2026 deadline for virtual asset payment providers",
+    "text": "UAE FTA mandates PINT AE XML format via Peppol network for all B2B invoices",
+    "tag": "NEW"
+  },
+  {
+    "text": "Businesses face AED 5,000 monthly fines for missing UAE e-invoicing compliance deadline",
     "tag": "ALERT"
   },
   {
-    "text": "UAE large enterprises must adopt e-invoicing by January 1 2027",
-    "tag": "NEW"
+    "text": "UAE ASP appointment deadline set for 31 July 2026 under Cabinet Decision No. 106",
+    "tag": "ALERT"
   },
   {
-    "text": "DFSA crypto token regulatory framework updated effective January 12 2026",
+    "text": "CBUAE new banking law requires virtual asset payment providers to obtain licensing",
     "tag": "UPDATED"
   },
   {
-    "text": "UAE CMA established under Federal Decree-Law No 32 of 2025",
-    "tag": "NEW"
-  },
-  {
-    "text": "Gulf AML enforcement intensifies with larger fines and license revocations",
-    "tag": "ALERT"
-  },
-  {
-    "text": "SAMA replaces 2021 payments framework with updated oversight regulations March 2026",
+    "text": "UAE open finance services classified as regulated financial activity under new CBUAE law",
     "tag": "UPDATED"
   },
   {
-    "text": "UAE open finance services now require CBUAE licensing under new law",
+    "text": "CBUAE grants one-year reconciliation period expiring 16 September 2026 for compliance",
     "tag": "ALERT"
   },
   {
-    "text": "VARA virtual asset regulatory framework remains comprehensive benchmark for UAE market",
+    "text": "DFSA updates crypto token regulatory framework effective January 2026 including stablecoins",
+    "tag": "UPDATED"
+  },
+  {
+    "text": "Dubai VARA comprehensive virtual assets regulatory framework remains active for 2026",
     "tag": "REPORT"
   },
   {
-    "text": "UAE SMEs under 50 million dirhams must comply with e-invoicing by July 2027",
-    "tag": "NEW"
+    "text": "UAE processed 139.55 million payments worth AED 25.9 trillion through UAEFTS and ICCS",
+    "tag": "REPORT"
   }
 ]
