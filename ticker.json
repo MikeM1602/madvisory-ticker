@@ -1,42 +1,42 @@
 [
   {
-    "text": "UAE e-invoicing pilot launches July 2026 for businesses exceeding AED 50M revenue",
+    "text": "Saudi-UAE payment corridor faces serious disruption with blocked transfers",
+    "tag": "ALERT"
+  },
+  {
+    "text": "Companies rerouting payments through Bahrain amid Saudi-UAE tensions",
+    "tag": "ALERT"
+  },
+  {
+    "text": "CBUAE Law identifies open finance and virtual asset payments requiring licensing",
     "tag": "NEW"
   },
   {
-    "text": "UAE FTA mandates PINT AE XML format via Peppol network for all B2B invoices",
+    "text": "UAE Central Bank grants Tabby Stored Value Facilities licence for BNPL",
     "tag": "NEW"
   },
   {
-    "text": "Businesses face AED 5,000 monthly fines for missing UAE e-invoicing compliance deadline",
+    "text": "UAE launches unified electronic KYC framework reducing onboarding friction nationwide",
+    "tag": "NEW"
+  },
+  {
+    "text": "UAE businesses face July 2026 mandatory e-invoicing compliance deadline",
     "tag": "ALERT"
   },
   {
-    "text": "UAE ASP appointment deadline set for 31 July 2026 under Cabinet Decision No. 106",
-    "tag": "ALERT"
-  },
-  {
-    "text": "CBUAE new banking law requires virtual asset payment providers to obtain licensing",
+    "text": "DFSA updates crypto token regulatory framework effective January 2026",
     "tag": "UPDATED"
   },
   {
-    "text": "UAE open finance services classified as regulated financial activity under new CBUAE law",
-    "tag": "UPDATED"
+    "text": "SAMA grants first live open banking approvals in March 2026",
+    "tag": "NEW"
   },
   {
-    "text": "CBUAE grants one-year reconciliation period expiring 16 September 2026 for compliance",
-    "tag": "ALERT"
-  },
-  {
-    "text": "DFSA updates crypto token regulatory framework effective January 2026 including stablecoins",
-    "tag": "UPDATED"
-  },
-  {
-    "text": "Dubai VARA comprehensive virtual assets regulatory framework remains active for 2026",
+    "text": "Abu Dhabi April exit from OPEC deepens UAE-Saudi financial rift",
     "tag": "REPORT"
   },
   {
-    "text": "UAE processed 139.55 million payments worth AED 25.9 trillion through UAEFTS and ICCS",
+    "text": "Bilateral UAE-Saudi trade hit USD 25.7 billion amid payment strains",
     "tag": "REPORT"
   }
 ]
