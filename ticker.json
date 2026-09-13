@@ -1,42 +1,42 @@
 [
   {
-    "text": "Qatar's Himyan national payment scheme integrates with Samsung Wallet for contactless payments",
-    "tag": "NEW"
-  },
-  {
-    "text": "Samsung Knox tokenization secures Himyan cards on Galaxy smartphones and smartwatches",
-    "tag": "NEW"
-  },
-  {
-    "text": "Himyan card scheme expands acceptance to Bahrain following earlier Kuwait launch",
-    "tag": "UPDATED"
-  },
-  {
-    "text": "Qatar Central Bank scales open banking from sandbox to full production in 2026",
-    "tag": "NEW"
-  },
-  {
-    "text": "QNB launches live account-information and payment-initiation APIs under QCB framework",
-    "tag": "NEW"
-  },
-  {
-    "text": "QCB to publish unified consent model and interoperability standards for open banking",
-    "tag": "UPDATED"
-  },
-  {
-    "text": "UAE Federal Decree-Law No. 6 of 2025 consolidates banking insurance and payments regulation",
-    "tag": "NEW"
-  },
-  {
-    "text": "CRITICAL: UAE Central Bank Law full compliance deadline is 16 September 2026",
+    "text": "UAE Federal Decree-Law No. 6 compliance deadline hits 16 September 2026",
     "tag": "ALERT"
   },
   {
-    "text": "Virtual asset payment operators newly in scope under UAE CBUAE regulatory framework",
+    "text": "CBUAE fines reach AED 1 billion for unlicensed financial activity violations",
     "tag": "ALERT"
   },
   {
-    "text": "Open finance service providers must regularise licensing position before UAE deadline expires",
+    "text": "XTransfer secures in-principle approval for UAE Retail Payment Services Licence",
+    "tag": "NEW"
+  },
+  {
+    "text": "Article 62 extends CBUAE licensing perimeter to fintechs and API providers",
+    "tag": "UPDATED"
+  },
+  {
+    "text": "UAE open finance Circular 3 of 2025 activates service initiation rights",
+    "tag": "NEW"
+  },
+  {
+    "text": "Decentralised platforms now explicitly under CBUAE supervision following decree",
+    "tag": "UPDATED"
+  },
+  {
+    "text": "Criminal liability risk under Article 170 for unlicensed UAE financial activity",
+    "tag": "ALERT"
+  },
+  {
+    "text": "Saudi Arabia enters regulated innovation phase under dual SAMA and CMA oversight",
+    "tag": "NEW"
+  },
+  {
+    "text": "SAMA expands digital payments licensing as open banking providers multiply",
+    "tag": "UPDATED"
+  },
+  {
+    "text": "UAE one-year transitional period for consolidated banking and insurance regime expires",
     "tag": "ALERT"
   }
 ]
