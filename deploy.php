@@ -6,7 +6,7 @@
  */
 
 // ── Auth ─────────────────────────────────────────────────────────────────────
-define('DEPLOY_TOKEN', 'm1dv3s4ry-Ticker-2026-Secure');
+define('DEPLOY_TOKEN', $_SERVER['DEPLOY_TOKEN'] ?? getenv('DEPLOY_TOKEN') ?: '');
 define('WEB_ROOT',     '/home/madvisor/public_html');
 
 header('Content-Type: application/json');
