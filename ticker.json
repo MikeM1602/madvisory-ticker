@@ -1,42 +1,53 @@
-[
-  {
-    "text": "UAE Federal Decree-Law No. 6 compliance deadline hits 16 September 2026",
-    "tag": "ALERT"
-  },
-  {
-    "text": "CBUAE fines reach AED 1 billion for unlicensed financial activity violations",
-    "tag": "ALERT"
-  },
-  {
-    "text": "XTransfer secures in-principle approval for UAE Retail Payment Services Licence",
-    "tag": "NEW"
-  },
-  {
-    "text": "Article 62 extends CBUAE licensing perimeter to fintechs and API providers",
-    "tag": "UPDATED"
-  },
-  {
-    "text": "UAE open finance Circular 3 of 2025 activates service initiation rights",
-    "tag": "NEW"
-  },
-  {
-    "text": "Decentralised platforms now explicitly under CBUAE supervision following decree",
-    "tag": "UPDATED"
-  },
-  {
-    "text": "Criminal liability risk under Article 170 for unlicensed UAE financial activity",
-    "tag": "ALERT"
-  },
-  {
-    "text": "Saudi Arabia enters regulated innovation phase under dual SAMA and CMA oversight",
-    "tag": "NEW"
-  },
-  {
-    "text": "SAMA expands digital payments licensing as open banking providers multiply",
-    "tag": "UPDATED"
-  },
-  {
-    "text": "UAE one-year transitional period for consolidated banking and insurance regime expires",
-    "tag": "ALERT"
-  }
-]
+{
+  "updated": "2026-09-27",
+  "items": [
+    {
+      "tag": "New",
+      "text": "SAMA and Qatar Central Bank announce gradual cross-border acceptance of mada and HIMYAN cards",
+      "ar_tag": "جديد",
+      "ar_text": "SAMA والبنك المركزي القطري يعلنان القبول التدريجي العابر للحدود لبطاقتي mada وHIYMAN"
+    },
+    {
+      "tag": "New",
+      "text": "SAMA Open Banking Forum identifies Payment Initiation Services as next development priority",
+      "ar_tag": "جديد",
+      "ar_text": "منتدى SAMA للبنوك المفتوحة يحدد خدمات بدء الدفع باعتبارها الأولوية التنموية التالية"
+    },
+    {
+      "tag": "New",
+      "text": "SAMA confirms Alipay+ acceptance for international visitors and plans Apple Tap to Pay rollout",
+      "ar_tag": "جديد",
+      "ar_text": "SAMA تؤكد قبول Alipay+ للزوار الدوليين وتخطط لطرح Apple Tap to Pay"
+    },
+    {
+      "tag": "New",
+      "text": "SAMA and Ant International to connect mada with Alipay+ for cross-border QR code payments",
+      "ar_tag": "جديد",
+      "ar_text": "SAMA وAnt International تربطان mada بـAlipay+ لمدفوعات رمز QR العابرة للحدود"
+    },
+    {
+      "tag": "Regulatory",
+      "text": "PhonePe receives in-principle approval from CBUAE for two payment licences in UAE",
+      "ar_tag": "تنظيمي",
+      "ar_text": "PhonePe تحصل على موافقة مبدئية من CBUAE على ترخيصَي دفع في الإمارات"
+    },
+    {
+      "tag": "New",
+      "text": "Jaywan cards to gain acceptance outside UAE and GCC through MoU with UnionPay International",
+      "ar_tag": "جديد",
+      "ar_text": "بطاقات Jaywan ستحظى بالقبول خارج الإمارات ودول الخليج عبر اتفاقية مع UnionPay International"
+    },
+    {
+      "tag": "New",
+      "text": "Oman launches national fintech strategy and centralised digital portal led by CBO and FSA",
+      "ar_tag": "جديد",
+      "ar_text": "عُمان تطلق استراتيجية وطنية للتكنولوجيا المالية وبوابة رقمية مركزية بقيادة البنك المركزي العُماني والهيئة المالية"
+    },
+    {
+      "tag": "New",
+      "text": "FinTra Holding launches UPN Consortium as open global cross-border payments platform at Money20/20",
+      "ar_tag": "جديد",
+      "ar_text": "FinTra Holding تطلق تحالف UPN بوصفه منصة مفتوحة عالمية للمدفوعات العابرة للحدود في Money20/20"
+    }
+  ]
+}
