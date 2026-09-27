@@ -1,4 +1,4 @@
-import anthropic, sys, json, datetime, os, re, urllib.request, urllib.error, base64
+import anthropic, sys, json, datetime, os, re, html, urllib.request, urllib.error, base64
 
 if not os.environ.get("ANTHROPIC_API_KEY"):
     print("::warning::ANTHROPIC_API_KEY not set. Nothing was changed on the site.")
@@ -158,6 +158,35 @@ def parse_row_date(date_str):
     except Exception:
         return None
 
+ARABIC_RE = re.compile(r"[\u0600-\u06FF]")
+
+def translate_titles(titles):
+    """Return Modern Standard Arabic versions of the headlines, in the same order.
+    Any headline that cannot be translated gets an empty string, and the site then
+    shows the English headline in Arabic mode."""
+    if not titles:
+        return []
+    prompt = (
+        "Translate each payments-industry news headline into Modern Standard Arabic for a "
+        "professional advisory website. Keep company, product and scheme names in Latin script. "
+        "Keep numbers and currencies exact. Do not add or drop information. "
+        "Return ONLY a JSON array of strings, one per headline, in the same order.\n\n"
+        + json.dumps(titles, ensure_ascii=False)
+    )
+    try:
+        out = parse_json_array(ask(prompt, max_tokens=3000))
+    except Exception as e:
+        print(f"  Arabic translation failed: {e}")
+        return [""] * len(titles)
+    if len(out) != len(titles):
+        print(f"  Arabic translation returned {len(out)} items for {len(titles)} headlines; skipping")
+        return [""] * len(titles)
+    result = []
+    for t in out:
+        t = str(t).strip()
+        result.append(t if ARABIC_RE.search(t) and "<" not in t and ">" not in t and len(t) < 300 else "")
+    return result
+
 REGION_LABELS = {"gcc": "GCC", "uk": "UK", "europe": "Europe", "global": "Global"}
 CATEGORY_LABELS = {
     "card-networks": "Card Networks",
@@ -169,10 +198,11 @@ CATEGORY_LABELS = {
     "fx": "FX &amp; Cross-Border",
 }
 
-def make_news_row(date_str, region, category, title, url):
+def make_news_row(date_str, region, category, title, url, ar_title=""):
     region_label = REGION_LABELS[region]
     cat_label = CATEGORY_LABELS[category]
-    safe_title = title.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    safe_title = html.escape(title, quote=False)
+    ar_attr = f' data-ar="{html.escape(ar_title, quote=True)}"' if ar_title else ""
     return (
         f'          <div class="news-row" data-region="{region}" data-category="{category}" data-date="{date_str}">'
         f'<span class="news-row-date">{date_str}</span>'
@@ -180,7 +210,7 @@ def make_news_row(date_str, region, category, title, url):
         f'<span class="news-tag region-{region}">{region_label}</span>'
         f'<span class="news-tag category">{cat_label}</span>'
         f'</span>'
-        f'<span class="news-row-title"><a href="{url}" target="_blank" rel="noopener noreferrer">{safe_title}</a></span>'
+        f'<span class="news-row-title"><a href="{url}" target="_blank" rel="noopener noreferrer"{ar_attr}>{safe_title}</a></span>'
         f'</div>'
     )
 
@@ -189,11 +219,15 @@ def make_news_row(date_str, region, category, title, url):
 print("Loading existing news.html...")
 news_html = fetch_site_file("news.html")
 
-existing_rows = re.findall(
-    r'<div class="news-row" data-region="([^"]+)" data-category="([^"]+)" data-date="([^"]+)">.*?href="([^"]+)"[^>]*>([^<]+)</a>',
+existing_rows = []
+for m in re.finditer(
+    r'<div class="news-row" data-region="([^"]+)" data-category="([^"]+)" data-date="([^"]+)">.*?href="([^"]+)"([^>]*)>([^<]+)</a>',
     news_html
-)
-# existing_rows: list of (region, category, date_str, url, title)
+):
+    ar_m = re.search(r'data-ar="([^"]*)"', m.group(5))
+    existing_rows.append((m.group(1), m.group(2), m.group(3), m.group(4),
+                          html.unescape(m.group(6)), html.unescape(ar_m.group(1)) if ar_m else ""))
+# existing_rows: list of (region, category, date_str, url, title, ar_title); titles are unescaped text
 existing_urls = {r[3] for r in existing_rows}
 print(f"  Found {len(existing_rows)} existing items")
 
@@ -202,10 +236,10 @@ print(f"  Found {len(existing_rows)} existing items")
 cutoff = today - datetime.timedelta(days=EXPIRY_DAYS)
 kept_rows = []
 expired_count = 0
-for region, category, date_str, url, title in existing_rows:
+for region, category, date_str, url, title, ar_title in existing_rows:
     parsed = parse_row_date(date_str)
     if parsed is None or parsed >= cutoff:
-        kept_rows.append((region, category, date_str, url, title, parsed))
+        kept_rows.append((region, category, date_str, url, title, parsed, ar_title))
     else:
         expired_count += 1
 print(f"  Expiring {expired_count} item(s) older than {EXPIRY_DAYS} days")
@@ -311,7 +345,7 @@ for c in candidates:
         continue
 
     print(f"  Verified: [{region}/{category}] {title[:70]}")
-    verified.append((region, category, date_str, url, title, parsed_date))
+    verified.append((region, category, date_str, url, title, parsed_date, ""))
     existing_urls.add(url)
 
 print(f"  {len(verified)} item(s) passed verification")
@@ -321,9 +355,21 @@ print(f"  {len(verified)} item(s) passed verification")
 all_rows = kept_rows + verified
 all_rows.sort(key=lambda r: r[5] or datetime.date.min, reverse=True)
 
+# Arabic headlines: translate new rows, and any older row that still has none.
+need = [i for i, r in enumerate(all_rows) if not r[6]]
+arabic_changed = False
+if need:
+    print(f"Translating {len(need)} headline(s) into Arabic...")
+    translated = translate_titles([all_rows[i][4] for i in need])
+    for i, ar in zip(need, translated):
+        if ar:
+            all_rows[i] = all_rows[i][:6] + (ar,)
+            arabic_changed = True
+    print(f"  {sum(1 for t in translated if t)} of {len(need)} translated")
+
 rows_html = "\n".join(
-    make_news_row(date_str, region, category, title, url)
-    for region, category, date_str, url, title, _ in all_rows
+    make_news_row(date_str, region, category, title, url, ar_title)
+    for region, category, date_str, url, title, _, ar_title in all_rows
 )
 
 if not news_html:
