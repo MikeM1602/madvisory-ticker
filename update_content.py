@@ -1,5 +1,8 @@
-import anthropic, json, datetime, os, re, urllib.request, base64
+import anthropic, sys, json, datetime, os, re, urllib.request, base64
 
+if not os.environ.get("ANTHROPIC_API_KEY"):
+    print("::warning::ANTHROPIC_API_KEY not set. Nothing was changed on the site.")
+    sys.exit(0)
 client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 today      = datetime.date.today()
 today_str  = today.strftime("%B %d, %Y")
@@ -21,8 +24,20 @@ ARTICLE_SHELL_TEMPLATE = open(os.path.join(os.path.dirname(__file__), "article_s
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
+def api_stop(e):
+    """No API credit or API outage: leave the live site untouched and end the run cleanly."""
+    print(f"Anthropic API unavailable ({e}). Nothing was changed on the site.")
+    print("::warning::Content not updated: Anthropic API unavailable (check the account credit balance).")
+    sys.exit(0)
+
+def create(**kwargs):
+    try:
+        return client.messages.create(**kwargs)
+    except (anthropic.APIStatusError, anthropic.APIConnectionError) as e:
+        api_stop(e)
+
 def search(query):
-    r = client.messages.create(
+    r = create(
         model="claude-sonnet-4-6",
         max_tokens=4000,
         tools=[{"type": "web_search_20250305", "name": "web_search"}],
@@ -31,7 +46,7 @@ def search(query):
     return "".join(b.text for b in r.content if hasattr(b, "text"))
 
 def ask(prompt, max_tokens=2000):
-    r = client.messages.create(
+    r = create(
         model="claude-sonnet-4-6",
         max_tokens=max_tokens,
         messages=[{"role": "user", "content": prompt}]
@@ -131,7 +146,7 @@ print("Loading existing site content...")
 reg_html = fetch_site_file("regulatory.html")
 ins_html = fetch_site_file("insights.html")
 
-existing_reg_titles = re.findall(r'<h3 class="reg-card-title">([^<]+)</h3>', reg_html)
+existing_reg_titles = re.findall(r'<h3 class="reg-card-title"[^>]*>([^<]+)</h3>', reg_html)
 existing_art_links  = re.findall(r'href="(/insights-[^"]+\.html)"', ins_html)
 existing_art_slugs  = [l.split("/")[-1].replace(".html","") for l in existing_art_links]
 print(f"  Found {len(existing_reg_titles)} regulatory cards, {len(existing_art_links)} articles")
@@ -252,14 +267,18 @@ if new_cards and reg_html:
 print("\n── Insights Articles ────────────────────────────────────────────")
 
 ARTICLE_GAPS = """
-High-priority topics not yet covered that are relevant to GCC/MENA payments professionals in 2026:
-- BNPL regulation in the GCC: QCB, CBUAE and SAMA frameworks
-- Stablecoins as a payment instrument: regulatory and commercial landscape 2026
-- Cross-border payment corridors: GCC-Asia and GCC-UK economics
-- Real-time payments: a comparison of GCC rails versus European SEPA Instant
-- Open Banking VRPs (Variable Recurring Payments): UK 2026 progress
+High-priority topics not yet covered that are relevant to GCC/MENA payments professionals:
+- Open Banking VRPs (Variable Recurring Payments): UK progress and lessons for the GCC
 - ISO 20022 migration: practical operational impact for GCC banks
-- Card scheme fee economics: PSR/FCA intervention and what it means for acquirers
+- Network tokenisation and card-on-file: what GCC issuers and merchants need to do
+- Merchant surcharging and scheme fee transparency rules in the GCC
+- Payment fraud data sharing between banks and PSPs: UK and GCC approaches
+
+Topics already covered on the site (do NOT write another article on these, even under
+a different title): BNPL regulation, stablecoin regulation, cross-border remittances,
+card scheme fees, GCC instant payments, open banking go-live, Qatar payments regulation,
+PSD3/PSR, EU AI Act, digital euro, tokenised settlement, agentic commerce, A2A payments,
+APP fraud, AML/KYC/PEP, card issuing, B2B fintech, AI in payments.
 """
 
 print("Researching article topics...")
