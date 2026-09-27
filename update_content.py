@@ -1,4 +1,4 @@
-import anthropic, sys, json, datetime, os, re, urllib.request, base64
+import anthropic, sys, json, datetime, os, re, html, urllib.request, base64
 
 if not os.environ.get("ANTHROPIC_API_KEY"):
     print("::warning::ANTHROPIC_API_KEY not set. Nothing was changed on the site.")
@@ -126,6 +126,76 @@ def is_new(date_str):
     recent = [months_2026[max(0, idx-1)], months_2026[idx]]
     return any(m in date_str for m in recent)
 
+# ── Arabic helpers ────────────────────────────────────────────────────────────
+# Everything the weekly run publishes also gets Arabic. main.js shows it in Arabic
+# mode: data-ar="..." swaps an element's text, and data-lang-block="ar" holds the
+# Arabic copy of an article body. If a translation fails, the English is published
+# on its own and the site shows English in Arabic mode, as before.
+
+ARABIC_RE = re.compile(r"[\u0600-\u06FF]")
+AR_MONTHS = {"January": "يناير", "February": "فبراير", "March": "مارس", "April": "أبريل",
+             "May": "مايو", "June": "يونيو", "July": "يوليو", "August": "أغسطس",
+             "September": "سبتمبر", "October": "أكتوبر", "November": "نوفمبر", "December": "ديسمبر"}
+AR_STYLE = ("Translate into Modern Standard Arabic for a professional payments advisory website. "
+            "Keep company, product, scheme, regulator acronyms and law names that are usually written "
+            "in Latin script (for example PSD3, CBUAE, SAMA, QCB) in Latin script. Keep numbers, dates "
+            "and currencies exact. Do not add, drop or soften any information.")
+
+def ar_attr(text):
+    return f' data-ar="{html.escape(text, quote=True)}"' if text else ""
+
+def ar_date(date_str):
+    """'September 2026' -> 'سبتمبر 2026' (anything unrecognised is returned unchanged)."""
+    for en, ar in AR_MONTHS.items():
+        date_str = date_str.replace(en, ar)
+    return date_str
+
+def ar_readtime(minutes):
+    n = int(minutes)
+    return f"قراءة {n} {'دقائق' if 3 <= n <= 10 else 'دقيقة'}"
+
+def translate_fields(fields):
+    """fields: dict of short English strings. Returns a dict with the same keys;
+    any value that could not be translated is an empty string."""
+    empty = {k: "" for k in fields}
+    if not fields:
+        return empty
+    prompt = (AR_STYLE + " Translate each value of this JSON object. Return ONLY a JSON object "
+              "with exactly the same keys.\n\n" + json.dumps(fields, ensure_ascii=False))
+    try:
+        out = parse_json_object(ask(prompt, max_tokens=3000))
+    except Exception as e:
+        print(f"  Arabic translation failed: {e}")
+        return empty
+    result = {}
+    for k in fields:
+        v = str(out.get(k, "")).strip()
+        result[k] = v if ARABIC_RE.search(v) and "<" not in v and ">" not in v else ""
+    return result
+
+def translate_body(body_html):
+    """Arabic version of an article body, same HTML tags. Empty string if it fails checks."""
+    prompt = (AR_STYLE + " Translate this article body HTML. Keep every HTML tag exactly as it is "
+              "and translate only the text between tags. Do not use the em dash character. "
+              "Return ONLY the translated HTML.\n\n" + body_html)
+    try:
+        ar = ask(prompt, max_tokens=6000)
+    except Exception as e:
+        print(f"  Arabic body translation failed: {e}")
+        return ""
+    ar = re.sub(r"^```[a-z]*\s*|\s*```$", "", ar.strip())
+    tags = lambda t: [x for x in re.findall(r"</?([a-z0-9]+)", t.lower())]
+    if not ARABIC_RE.search(ar):
+        print("  Arabic body rejected: no Arabic text")
+        return ""
+    if tags(ar) != tags(body_html):
+        print("  Arabic body rejected: HTML structure differs from the English")
+        return ""
+    if len(ar) < 0.5 * len(body_html):
+        print("  Arabic body rejected: much shorter than the English")
+        return ""
+    return ar
+
 # ── Month sort key ────────────────────────────────────────────────────────────
 
 MONTH_ORDER = {
@@ -218,6 +288,17 @@ except Exception as e:
 # Sort new cards newest-first
 new_cards.sort(key=lambda c: date_sort_key(c.get("sort_date","January 2020")), reverse=True)
 
+if new_cards:
+    print("Translating new regulatory cards into Arabic...")
+    fields = {}
+    for i, card in enumerate(new_cards):
+        fields[f"t{i}"] = card.get("title", "")
+        fields[f"d{i}"] = card.get("description", "")
+        fields[f"w{i}"] = card.get("date_label", "")
+    ar = translate_fields(fields)
+    for i, card in enumerate(new_cards):
+        card["ar_title"], card["ar_description"], card["ar_date_label"] = ar[f"t{i}"], ar[f"d{i}"], ar[f"w{i}"]
+
 if new_cards and reg_html:
     print("Injecting cards into regulatory.html...")
     updated_reg = reg_html
@@ -234,9 +315,9 @@ if new_cards and reg_html:
             f'<span class="reg-badge {card["badge_class"]}" data-i18n="{card["badge_i18n"]}">{card["badge_label"]}</span>'
             f'{new_badge}'
             f'</div>'
-            f'<h3 class="reg-card-title">{card["title"]}</h3>'
-            f'<p class="reg-card-desc">{card["description"]}</p>'
-            f'<p class="reg-card-date">{card["date_label"]}</p>'
+            f'<h3 class="reg-card-title"{ar_attr(card.get("ar_title", ""))}>{card["title"]}</h3>'
+            f'<p class="reg-card-desc"{ar_attr(card.get("ar_description", ""))}>{card["description"]}</p>'
+            f'<p class="reg-card-date"{ar_attr(card.get("ar_date_label", ""))}>{card["date_label"]}</p>'
             f'</div>'
         )
         # Find the correct region group and prepend inside its reg-grid (newest first)
@@ -366,6 +447,15 @@ Return ONLY the HTML body content, no wrapper tags.
 """
     art_body = ask(body_prompt, max_tokens=2500)
 
+    print("Translating article into Arabic...")
+    art_ar = translate_fields({
+        "title": meta["title"], "h1": meta["h1"], "eyebrow": meta["eyebrow"],
+        "card_eyebrow": meta["card_eyebrow"], "card_desc": meta["card_desc"],
+    })
+    art_body_ar = translate_body(art_body)
+    ar_meta_line = f'{ar_date(meta["date"])} · {ar_readtime(meta["readtime"])} · MENA Advisory'
+    print(f"  Arabic: fields {sum(1 for v in art_ar.values() if v)}/5, body {'yes' if art_body_ar else 'no'}")
+
     # Build article using the embedded static template (NOT fetched from the live site)
     print("Building article page...")
 
@@ -383,6 +473,13 @@ Return ONLY the HTML body content, no wrapper tags.
         new_article = new_article.replace("__DATE__", meta["date"])
         new_article = new_article.replace("__READTIME__", str(meta["readtime"]))
         new_article = new_article.replace("__VERSION__", ARTICLE_VERSION)
+        new_article = new_article.replace("__AR_TITLE__", html.escape(art_ar["title"], quote=True))
+        new_article = new_article.replace("__EYEBROW_AR__", html.escape(art_ar["eyebrow"], quote=True))
+        new_article = new_article.replace("__H1_AR__", html.escape(art_ar["h1"], quote=True))
+        new_article = new_article.replace("__META_AR__", html.escape(ar_meta_line, quote=True))
+        new_article = new_article.replace(
+            "__ARTICLE_BODY_AR_BLOCK__",
+            f'<div data-lang-block="ar" hidden>\n{art_body_ar}\n</div>' if art_body_ar else "")
         new_article = new_article.replace("__ARTICLE_BODY__", art_body)
 
         # ── Verify before deploying ────────────────────────────────────────────
@@ -392,7 +489,8 @@ Return ONLY the HTML body content, no wrapper tags.
         remaining_placeholders = [
             ph for ph in ["__TITLE__", "__META_DESC__", "__SLUG__", "__OG_TITLE__",
                           "__EYEBROW__", "__H1__", "__DATE__", "__READTIME__",
-                          "__VERSION__", "__ARTICLE_BODY__"]
+                          "__VERSION__", "__ARTICLE_BODY__", "__AR_TITLE__", "__EYEBROW_AR__",
+                          "__H1_AR__", "__META_AR__", "__ARTICLE_BODY_AR_BLOCK__"]
             if ph in new_article
         ]
         if remaining_placeholders:
@@ -403,6 +501,8 @@ Return ONLY the HTML body content, no wrapper tags.
             verification_errors.append("missing standard site shell elements (burger/ticker)")
         if art_body[:60] not in new_article:
             verification_errors.append("generated article body not found in final HTML")
+        if 'data-lang-block="en"' not in new_article:
+            verification_errors.append("article template is missing the English body block (data-lang-block)")
         em_dash_count = len(re.findall(r"—", new_article))
         if em_dash_count > 5:  # small allowance for headings/labels, not body prose
             verification_errors.append(f"{em_dash_count} em-dashes found, expected near zero")
@@ -428,10 +528,11 @@ Return ONLY the HTML body content, no wrapper tags.
 
                 new_card = (
                     f'<a href="/{art_filename}" class="news-card" style="text-decoration:none;">'
-                    f'<p class="news-card-eyebrow">{meta["card_eyebrow"]}</p>'
-                    f'<h3>{meta["title"]}{new_badge}</h3>'
-                    f'<p>{meta["card_desc"]}</p>'
-                    f'<p class="news-card-meta">{meta["date"]} · {meta["readtime"]} min read</p>'
+                    f'<p class="news-card-eyebrow"{ar_attr(art_ar["card_eyebrow"])}>{meta["card_eyebrow"]}</p>'
+                    f'<h3{ar_attr(art_ar["title"])}>{meta["title"]}{new_badge}</h3>'
+                    f'<p{ar_attr(art_ar["card_desc"])}>{meta["card_desc"]}</p>'
+                    # data-ar must come before class here: card_date_key() matches 'class="news-card-meta">'
+                    f'<p{ar_attr(ar_date(meta["date"]) + " · " + ar_readtime(meta["readtime"]))} class="news-card-meta">{meta["date"]} · {meta["readtime"]} min read</p>'
                     f'</a>'
                 )
 
