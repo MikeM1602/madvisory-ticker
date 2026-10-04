@@ -1,53 +1,47 @@
 {
-  "updated": "2026-09-27",
+  "updated": "2026-10-04",
   "items": [
     {
       "tag": "New",
-      "text": "SAMA and Qatar Central Bank announce gradual cross-border acceptance of mada and HIMYAN cards",
+      "text": "Saudi Arabia and Qatar link mada and HIMYAN national card schemes in cross-border interoperability deal",
       "ar_tag": "جديد",
-      "ar_text": "SAMA والبنك المركزي القطري يعلنان القبول التدريجي العابر للحدود لبطاقتي mada وHIMYAN"
+      "ar_text": "ربطت المملكة العربية السعودية وقطر مخططَي البطاقات الوطنية mada وHIMYAN في اتفاقية تشغيل بيني عابر للحدود"
     },
     {
       "tag": "New",
-      "text": "SAMA Open Banking Forum identifies Payment Initiation Services as next development priority",
+      "text": "SAMA says over 307 entities operate under Saudi open banking framework with fintech investment topping SAR 30 billion",
       "ar_tag": "جديد",
-      "ar_text": "منتدى SAMA للبنوك المفتوحة يحدد خدمات بدء الدفع باعتبارها الأولوية التنموية التالية"
+      "ar_text": "تؤكد SAMA أن أكثر من 307 جهات تعمل في إطار الخدمات المصرفية المفتوحة السعودية مع تجاوز الاستثمار في التقنية المالية 30 مليار ريال سعودي"
     },
     {
       "tag": "New",
-      "text": "SAMA confirms Alipay+ acceptance for international visitors and plans Apple Tap to Pay rollout",
+      "text": "Electronic payments account for over 85 percent of Saudi retail transactions, SAMA governor confirms",
       "ar_tag": "جديد",
-      "ar_text": "SAMA تؤكد قبول Alipay+ للزوار الدوليين وتخطط لطرح Apple Tap to Pay"
+      "ar_text": "تؤكد محافظة SAMA أن المدفوعات الإلكترونية تمثل أكثر من 85 بالمئة من معاملات التجزئة السعودية"
     },
     {
       "tag": "New",
-      "text": "SAMA and Ant International to connect mada with Alipay+ for cross-border QR code payments",
+      "text": "Saudi central bank confirms exit from China-linked mBridge cross-border CBDC platform after completing trial",
       "ar_tag": "جديد",
-      "ar_text": "SAMA وAnt International تربطان mada بـAlipay+ لمدفوعات رمز QR العابرة للحدود"
+      "ar_text": "يؤكد البنك المركزي السعودي انسحابه من منصة mBridge العابرة للحدود المرتبطة بالعملة الرقمية للبنوك المركزية بعد استكمال التجربة"
+    },
+    {
+      "tag": "New",
+      "text": "PhonePe receives in-principle approval from UAE central bank for retail payment services, card schemes and stored value facilities licences",
+      "ar_tag": "جديد",
+      "ar_text": "تحصل PhonePe على موافقة مبدئية من المصرف المركزي لدولة الإمارات لتراخيص خدمات الدفع بالتجزئة ومخططات البطاقات ومرافق القيمة المخزنة"
+    },
+    {
+      "tag": "New",
+      "text": "Dubai-based Fasset and NEXUS sign MoU to pilot AED and KRW-linked stablecoin payment infrastructure",
+      "ar_tag": "جديد",
+      "ar_text": "توقّع Fasset ومقرها دبي وNEXUS مذكرة تفاهم لتجربة البنية التحتية لمدفوعات العملات المستقرة المرتبطة بـAED وKRW"
     },
     {
       "tag": "Regulatory",
-      "text": "PhonePe receives in-principle approval from CBUAE for two payment licences in UAE",
+      "text": "FCA opens cryptoasset authorisation gateway for stablecoin issuers with applications accepted until 28 February 2027",
       "ar_tag": "تنظيمي",
-      "ar_text": "PhonePe تحصل على موافقة مبدئية من CBUAE على ترخيصَي دفع في الإمارات"
-    },
-    {
-      "tag": "New",
-      "text": "Jaywan cards to gain acceptance outside UAE and GCC through MoU with UnionPay International",
-      "ar_tag": "جديد",
-      "ar_text": "بطاقات Jaywan ستحظى بالقبول خارج الإمارات ودول الخليج عبر اتفاقية مع UnionPay International"
-    },
-    {
-      "tag": "New",
-      "text": "Oman launches national fintech strategy and centralised digital portal led by CBO and FSA",
-      "ar_tag": "جديد",
-      "ar_text": "عُمان تطلق استراتيجية وطنية للتكنولوجيا المالية وبوابة رقمية مركزية بقيادة البنك المركزي العُماني والهيئة المالية"
-    },
-    {
-      "tag": "New",
-      "text": "FinTra Holding launches UPN Consortium as open global cross-border payments platform at Money20/20",
-      "ar_tag": "جديد",
-      "ar_text": "FinTra Holding تطلق تحالف UPN بوصفه منصة مفتوحة عالمية للمدفوعات العابرة للحدود في Money20/20"
+      "ar_text": "تفتح FCA بوابة ترخيص الأصول المشفرة لمُصدري العملات المستقرة مع قبول الطلبات حتى 28 فبراير 2027"
     }
   ]
 }
