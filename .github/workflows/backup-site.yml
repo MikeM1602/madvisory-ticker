@@ -2,7 +2,7 @@ name: Backup site files
 
 on:
   schedule:
-    - cron: '0 9 * * 0'
+    - cron: '0 10 * * 1'
   workflow_dispatch:
 
 env:
