@@ -15,9 +15,9 @@
     },
     {
       "tag": "New",
-      "text": "Electronic payments account for over 85 percent of Saudi retail transactions, SAMA governor confirms",
+      "text": "Electronic payments account for over 85 per cent of Saudi retail transactions, SAMA governor confirms",
       "ar_tag": "جديد",
-      "ar_text": "تؤكد محافظة SAMA أن المدفوعات الإلكترونية تمثل أكثر من 85 بالمئة من معاملات التجزئة السعودية"
+      "ar_text": "يؤكد محافظ البنك المركزي السعودي أن المدفوعات الإلكترونية تمثل أكثر من 85 بالمئة من معاملات التجزئة في السعودية"
     },
     {
       "tag": "New",
@@ -39,9 +39,9 @@
     },
     {
       "tag": "Regulatory",
-      "text": "FCA opens cryptoasset authorisation gateway for stablecoin issuers with applications accepted until 28 February 2027",
+      "text": "FCA opens cryptoasset authorisation gateway, with applications accepted until 28 February 2027",
       "ar_tag": "تنظيمي",
-      "ar_text": "تفتح FCA بوابة ترخيص الأصول المشفرة لمُصدري العملات المستقرة مع قبول الطلبات حتى 28 فبراير 2027"
+      "ar_text": "تفتح FCA بوابة ترخيص الأصول المشفرة مع قبول الطلبات حتى 28 فبراير 2027"
     }
   ]
 }

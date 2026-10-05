@@ -2,7 +2,7 @@
 backup_site.py — one-shot backup of all live madvisory.qa files to backups/ in the repo.
 Run manually via workflow_dispatch when needed. Safe to re-run; updates existing files.
 """
-import urllib.request, base64, json, os, datetime
+import urllib.request, base64, json, os, datetime, re
 
 GITHUB_TOKEN = os.environ["GITHUB_TOKEN"]
 REPO = "MikeM1602/madvisory-ticker"
@@ -15,10 +15,15 @@ FILES = [
     "news.html",
     "careers.html",
     "contact.html",
+    "about.html",
+    "services.html",
+    "solutions.html",
+    "privacy.html",
+    "terms.html",
+    "404.html",
     "sitemap.xml",
     "style.css",
     "main.js",
-    "deploy.php",
     "services/due-diligence.html",
     "services/strategic-planning.html",
     "services/digital-transformation.html",
@@ -28,7 +33,20 @@ FILES = [
     "solutions/compliance-risk.html",
     "solutions/digital-emerging.html",
     "solutions/licensing-market-entry.html",
+    "solutions/card-issuing.html",
+    "solutions/fx-treasury-payments.html",
 ]
+
+# Every article linked from the live insights page is backed up too, so new ones are picked up automatically.
+try:
+    _req = urllib.request.Request("https://www.madvisory.qa/insights.html", headers={"User-Agent": "MadvisoryBackupBot/1.0"})
+    with urllib.request.urlopen(_req, timeout=20) as _r:
+        _page = _r.read().decode("utf-8")
+    for _m in re.findall(r'href="/(insights-[^"#?]+\.html)', _page):
+        if _m not in FILES:
+            FILES.append(_m)
+except Exception as _e:
+    print(f"  Could not read insights.html to list articles: {_e}")
 
 def fetch_live(path):
     url = f"https://www.madvisory.qa/{path}"
