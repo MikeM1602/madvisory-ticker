@@ -22,7 +22,7 @@ ARTICLE_VERSION = "v" + today.strftime("%Y%m%d")
 
 ARTICLE_SHELL_TEMPLATE = open(os.path.join(os.path.dirname(__file__), "article_shell_template.html")).read() if os.path.exists(os.path.join(os.path.dirname(__file__), "article_shell_template.html")) else None
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# ── Helpers ──────────────────────────────────────────────────────────────────────────
 
 def api_stop(e):
     """No API credit or API outage: leave the live site untouched and end the run cleanly."""
@@ -55,27 +55,40 @@ def ask(prompt, max_tokens=2000):
 
 def fetch_site_file(path):
     try:
-        with urllib.request.urlopen(f"https://www.madvisory.qa/{path}", timeout=15) as r:
+        req = urllib.request.Request(f"https://www.madvisory.qa/{path}", headers={"User-Agent": "MadvisoryContentBot/1.0"})
+        with urllib.request.urlopen(req, timeout=15) as r:
             return r.read().decode("utf-8")
     except Exception as e:
         print(f"  Warning: could not fetch {path}: {e}")
         return ""
 
+DEPLOY_FAILURES = 0
+
 def deploy_file(filename, content):
+    global DEPLOY_FAILURES
     payload = json.dumps({"filename": filename, "content": content}).encode()
     req = urllib.request.Request(DEPLOY_URL, data=payload, method="POST")
     req.add_header("Content-Type", "application/json")
     req.add_header("X-Deploy-Token", DEPLOY_TOKEN)
+    req.add_header("User-Agent", "MadvisoryContentBot/1.0")
+    raw = b""
     try:
         with urllib.request.urlopen(req, timeout=30) as r:
-            result = json.loads(r.read())
+            raw = r.read()
+            result = json.loads(raw)
             if result.get("ok"):
                 print(f"  ✓ Deployed {filename} ({result.get('bytes', 0):,} bytes)")
                 return True
             print(f"  ✗ Deploy failed: {result}")
+            DEPLOY_FAILURES += 1
             return False
     except Exception as e:
+        # Show what the server actually sent back (a bot-protection page, for example)
         print(f"  ✗ Deploy error {filename}: {e}")
+        if raw:
+            print(f"    Response started: {raw[:200]!r}")
+        print(f"::error::Deploy of {filename} failed: {e}")
+        DEPLOY_FAILURES += 1
         return False
 
 def commit_to_github(path, content, message):
@@ -126,7 +139,7 @@ def is_new(date_str):
     recent = [months_2026[max(0, idx-1)], months_2026[idx]]
     return any(m in date_str for m in recent)
 
-# ── Arabic helpers ────────────────────────────────────────────────────────────
+# ── Arabic helpers ────────────────────────────────────────────────────────────────────────
 # Everything the weekly run publishes also gets Arabic. main.js shows it in Arabic
 # mode: data-ar="..." swaps an element's text, and data-lang-block="ar" holds the
 # Arabic copy of an article body. If a translation fails, the English is published
@@ -196,7 +209,7 @@ def translate_body(body_html):
         return ""
     return ar
 
-# ── Month sort key ────────────────────────────────────────────────────────────
+# ── Month sort key ──────────────────────────────────────────────────────────────────────
 
 MONTH_ORDER = {
     "January":1,"February":2,"March":3,"April":4,"May":5,"June":6,
@@ -210,7 +223,7 @@ def date_sort_key(date_str):
         return (int(m.group(2)), MONTH_ORDER.get(m.group(1), 0))
     return (0, 0)
 
-# ── Load existing site content ────────────────────────────────────────────────
+# ── Load existing site content ────────────────────────────────────────────────────────────────
 
 print("Loading existing site content...")
 reg_html = fetch_site_file("regulatory.html")
@@ -220,10 +233,15 @@ existing_reg_titles = re.findall(r'<h3 class="reg-card-title"[^>]*>([^<]+)</h3>'
 existing_art_links  = re.findall(r'href="(/insights-[^"]+\.html)"', ins_html)
 existing_art_slugs  = [l.split("/")[-1].replace(".html","") for l in existing_art_links]
 print(f"  Found {len(existing_reg_titles)} regulatory cards, {len(existing_art_links)} articles")
+if not reg_html or not ins_html or not existing_reg_titles or not existing_art_links:
+    # The live site always has cards and articles. Finding none means the pages were not
+    # read properly, and carrying on would skip the duplicate-topic check and break the card lists.
+    print("::error::Could not read the live regulatory.html or insights.html (0 cards or articles found). Stopping without changing the site.")
+    sys.exit(1)
 
-# ── REGULATORY HUB UPDATE ─────────────────────────────────────────────────────
+# ── REGULATORY HUB UPDATE ────────────────────────────────────────────────────────────────
 
-print("\n── Regulatory Hub ───────────────────────────────────────────────")
+print("\n── Regulatory Hub ────────────────────────────────────────────────────────────")
 
 KNOWN_GAPS = """
 Priority regulatory developments that may not yet be covered:
@@ -308,7 +326,7 @@ if new_cards and reg_html:
 
     for card in new_cards:
         region = card.get("region", "gcc").lower()
-        new_badge = '<span class="new-badge" style="display:inline-block;background:var(--accent);color:#040810;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:2px 7px;border-radius:3px;margin-left:8px;vertical-align:middle;">NEW</span>' if card.get("is_new") else ""
+        new_badge = '<span class="new-badge" style="display:inline-block;background:var(--accent);color:#040810;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:2px 7px;border-radius:3px;margin-left:8px;vertical-align:middle;" data-ar="جديد">NEW</span>' if card.get("is_new") else ""
         card_html = (
             f'<div class="reg-card">'
             f'<div class="reg-card-header">'
@@ -343,9 +361,9 @@ if new_cards and reg_html:
             deploy_file("regulatory.html", updated_reg)
             commit_to_github("snapshots/regulatory.html", updated_reg, f"Regulatory hub update: {today_str}")
 
-# ── INSIGHTS UPDATE ───────────────────────────────────────────────────────────
+# ── INSIGHTS UPDATE ──────────────────────────────────────────────────────────────────
 
-print("\n── Insights Articles ────────────────────────────────────────────")
+print("\n── Insights Articles ────────────────────────────────────────────────────────────")
 
 ARTICLE_GAPS = """
 High-priority topics not yet covered that are relevant to GCC/MENA payments professionals:
@@ -482,7 +500,7 @@ Return ONLY the HTML body content, no wrapper tags.
             f'<div data-lang-block="ar" hidden>\n{art_body_ar}\n</div>' if art_body_ar else "")
         new_article = new_article.replace("__ARTICLE_BODY__", art_body)
 
-        # ── Verify before deploying ────────────────────────────────────────────
+        # ── Verify before deploying ───────────────────────────────────────────────────────────────
         # Catches the exact failure mode hit previously: a substitution silently
         # not landing, leaving placeholder text or stale content live.
         verification_errors = []
@@ -515,15 +533,17 @@ Return ONLY the HTML body content, no wrapper tags.
 
         if new_article is not None:
             art_filename = f'{meta["slug"]}.html'
-            deploy_file(art_filename, new_article)
+            article_ok = deploy_file(art_filename, new_article)
             commit_to_github(f"drafts/{art_filename}", new_article, f"Auto article: {meta['title']}")
 
-            # ── Add card to insights.html, sorted newest first ────────────────
+            # ── Add card to insights.html, sorted newest first ─────────────────────────────────
             print("Updating insights.html card list...")
-            if ins_html:
+            if not article_ok:
+                print("  Article was not deployed, so no card or sitemap entry will be added.")
+            if ins_html and article_ok:
                 new_badge = (' <span style="display:inline-block;background:var(--accent);color:#040810;'
                             'font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:1px 6px;'
-                            'border-radius:3px;margin-left:6px;vertical-align:middle;">NEW</span>'
+                            'border-radius:3px;margin-left:6px;vertical-align:middle;" data-ar="جديد">NEW</span>'
                             if meta.get("is_new") else "")
 
                 new_card = (
@@ -558,7 +578,7 @@ Return ONLY the HTML body content, no wrapper tags.
                     if is_new(date_str) and 'NEW</span>' not in c:
                         # Add NEW badge to h3 if not already there
                         c = re.sub(r'(<h3>[^<]+)(</h3>)',
-                                   r'\1 <span style="display:inline-block;background:var(--accent);color:#040810;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;">NEW</span>\2',
+                                   r'\1 <span style="display:inline-block;background:var(--accent);color:#040810;font-size:0.65rem;font-weight:700;letter-spacing:0.08em;padding:1px 6px;border-radius:3px;margin-left:6px;vertical-align:middle;" data-ar="جديد">NEW</span>\2',
                                    c, count=1)
                     marked.append(c)
 
@@ -582,5 +602,21 @@ Return ONLY the HTML body content, no wrapper tags.
         else:
             print("  Skipping insights.html card insertion since article failed verification.")
 
-print("\n✓ Content update complete")
+# ── SITEMAP ─────────────────────────────────────────────────────────────────────────────────
+try:
+    if new_article is not None and article_ok:
+        sm = fetch_site_file("sitemap.xml")
+        loc = f"https://www.madvisory.qa/{art_filename}"
+        if sm and "</urlset>" in sm and loc not in sm:
+            entry = (f"<url><loc>{loc}</loc><lastmod>{today.isoformat()}</lastmod>"
+                     f"<changefreq>monthly</changefreq><priority>0.7</priority></url>\n")
+            deploy_file("sitemap.xml", sm.replace("</urlset>", entry + "</urlset>"))
+            print(f"  Added {art_filename} to sitemap.xml")
+except NameError:
+    pass  # no article was written this run
 
+if DEPLOY_FAILURES:
+    print(f"::error::{DEPLOY_FAILURES} deploy(s) failed. See the log above.")
+    sys.exit(1)
+
+print("\n✓ Content update complete")
