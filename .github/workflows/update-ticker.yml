@@ -41,7 +41,7 @@ jobs:
     permissions:
       contents: write
     if: >-
-      (github.event_name == 'schedule' && github.event.schedule == '0 8 * * 1') ||
+      (github.event_name == 'schedule' && github.event.schedule == '0 9 * * 1') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'content')
     steps:
       - uses: actions/checkout@v4
