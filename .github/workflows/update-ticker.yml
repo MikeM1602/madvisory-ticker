@@ -2,7 +2,9 @@ name: Update ticker and content
 
 on:
   schedule:
-    - cron: '0 9 * * 1'
+    # Sundays 17:23 UTC (17:23 London in winter, 18:23 in summer).
+    # Off the hour because GitHub delays jobs queued at :00.
+    - cron: '23 17 * * 0'
   workflow_dispatch:
     inputs:
       job:
@@ -36,12 +38,13 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+  # Scheduled content updates run from update-content.yml (Mondays).
+  # This job is kept for manual runs only.
   content:
     runs-on: ubuntu-latest
     permissions:
       contents: write
     if: >-
-      (github.event_name == 'schedule' && github.event.schedule == '0 9 * * 1') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.job == 'content')
     steps:
       - uses: actions/checkout@v4
