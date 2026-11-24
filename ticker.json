@@ -1,41 +1,53 @@
 {
-  "updated": "2026-10-12",
+  "updated": "2026-11-24",
   "items": [
     {
       "tag": "New",
-      "text": "UAE FIU and VARA sign MoU to share intelligence on virtual asset financial crime.",
+      "text": "Dubai Finance and VARA sign MoU to advance Dubai Cashless Strategy and digital economy transition",
       "ar_tag": "جديد",
-      "ar_text": "وقّعت UAE FIU وVARA مذكرة تفاهم لتبادل المعلومات الاستخباراتية بشأن الجرائم المالية المتعلقة بالأصول الافتراضية."
+      "ar_text": "دبي فاينانس وVARA يوقّعان مذكرة تفاهم للنهوض باستراتيجية دبي للاقتصاد غير النقدي والتحول نحو الاقتصاد الرقمي"
     },
     {
       "tag": "New",
-      "text": "CBUAE and Central Bank of Syria sign MoU covering payment systems and fintech cooperation.",
+      "text": "VARA and Mastercard sign MoU to support Dubai virtual assets ecosystem and stablecoin development",
       "ar_tag": "جديد",
-      "ar_text": "وقّع CBUAE والمصرف المركزي السوري مذكرة تفاهم تشمل أنظمة الدفع والتعاون في مجال التكنولوجيا المالية."
+      "ar_text": "VARA وMastercard يوقّعان مذكرة تفاهم لدعم منظومة الأصول الافتراضية في دبي وتطوير العملات المستقرة"
     },
     {
       "tag": "New",
-      "text": "CBUAE and Bank Al-Maghrib sign twin MoUs covering CBDCs, instant payments and Islamic finance.",
+      "text": "Visa adds Jaywan domestic card scheme support to its acceptance platform for online payments",
       "ar_tag": "جديد",
-      "ar_text": "وقّع CBUAE وبنك Al-Maghrib مذكرتَي تفاهم توأم تغطيان العملات الرقمية للبنوك المركزية CBDCs والمدفوعات الفورية والتمويل الإسلامي."
+      "ar_text": "Visa تُضيف دعم مخطط البطاقات المحلية Jaywan إلى منصتها لقبول المدفوعات عبر الإنترنت"
     },
     {
       "tag": "New",
-      "text": "Paymentology and Huru expand partnership to launch Jaywan card in the UAE in Q4 2026.",
+      "text": "Commercial Bank of Dubai completes cross-border wholesale Digital Dirham transfers with Bank of China",
       "ar_tag": "جديد",
-      "ar_text": "توسّعت شراكة Paymentology وHuru لإطلاق بطاقة Jaywan في الإمارات العربية المتحدة في Q4 2026."
+      "ar_text": "بنك دبي التجاري يُتمّ تحويلات الدرهم الرقمي بالجملة عبر الحدود مع Bank of China"
     },
     {
       "tag": "New",
-      "text": "Fasset and NEXUS sign MoU to explore dirham and Korean won stablecoin infrastructure.",
+      "text": "Sokin secures DFSA licence and launches AED-denominated accounts in the UAE",
       "ar_tag": "جديد",
-      "ar_text": "وقّعت Fasset وNEXUS مذكرة تفاهم لاستكشاف البنية التحتية للعملات المستقرة بالدرهم والوون الكوري."
+      "ar_text": "Sokin تحصل على ترخيص DFSA وتُطلق حسابات مقوّمة بالدرهم الإماراتي في الإمارات"
     },
     {
-      "tag": "New",
-      "text": "Fintech Forward 2026 closes in Bahrain with more than 60 agreements across payments, trade finance and AI.",
-      "ar_tag": "جديد",
-      "ar_text": "اختُتمت فعاليات Fintech Forward 2026 في البحرين بتوقيع أكثر من 60 اتفاقية تشمل المدفوعات وتمويل التجارة والذكاء الاصطناعي."
+      "tag": "Regulatory",
+      "text": "SAMA grants 34th payment services licence to SPL ANT Saudi for e-wallet solutions",
+      "ar_tag": "تنظيمي",
+      "ar_text": "SAMA تمنح الترخيص رقم 34 لخدمات الدفع إلى SPL ANT Saudi لحلول المحافظ الإلكترونية"
+    },
+    {
+      "tag": "Regulatory",
+      "text": "Bank of England sets out modular architecture plan for next-generation retail payments infrastructure",
+      "ar_tag": "تنظيمي",
+      "ar_text": "Bank of England يُحدّد خطة هندسة معيارية لبنية تحتية للمدفوعات بالتجزئة من الجيل القادم"
+    },
+    {
+      "tag": "Updated",
+      "text": "Bank of England confirms work underway on extended CHAPS settlement hours opening from 1.30am",
+      "ar_tag": "محدّث",
+      "ar_text": "Bank of England يؤكد المضيَّ في العمل على توسيع ساعات تسوية CHAPS لتبدأ من الساعة 1:30 صباحاً"
     }
   ]
 }
