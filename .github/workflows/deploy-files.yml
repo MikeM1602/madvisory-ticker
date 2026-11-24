@@ -1,0 +1,51 @@
+name: Deploy files to site
+
+# Manual only. Uploads files from this repo to the live site through deploy.php.
+# "files" is a space-separated list of repo_path:site_path pairs, for example:
+#   drafts/insights-x.html:insights-x.html snapshots/insights.html:insights.html
+
+on:
+  workflow_dispatch:
+    inputs:
+      files:
+        description: 'repo_path:site_path pairs, space-separated'
+        required: true
+        type: string
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        env:
+          DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+          FILES: ${{ inputs.files }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys, urllib.request
+          token = os.environ["DEPLOY_TOKEN"]
+          failed = 0
+          for pair in os.environ["FILES"].split():
+              src, _, dest = pair.partition(":")
+              if not dest or ".." in src or src.startswith("/"):
+                  print(f"::error::Bad pair: {pair}"); failed += 1; continue
+              content = open(src, encoding="utf-8").read()
+              req = urllib.request.Request("https://www.madvisory.qa/deploy.php",
+                  data=json.dumps({"filename": dest, "content": content}).encode(), method="POST")
+              req.add_header("Content-Type", "application/json")
+              req.add_header("X-Deploy-Token", token)
+              req.add_header("User-Agent", "MadvisoryContentBot/1.0")
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      res = json.loads(r.read())
+                  if res.get("ok"):
+                      print(f"Deployed {src} -> {dest} ({res.get('bytes', 0):,} bytes)")
+                  else:
+                      print(f"::error::Deploy failed for {dest}: {res}"); failed += 1
+              except Exception as e:
+                  print(f"::error::Deploy error {dest}: {e}"); failed += 1
+          sys.exit(1 if failed else 0)
+          PY
